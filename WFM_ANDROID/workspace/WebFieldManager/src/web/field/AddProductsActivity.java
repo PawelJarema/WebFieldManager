@@ -1,6 +1,7 @@
 package web.field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class AddProductsActivity extends Activity {
 	
 	// Db
 	private IDBAdapter db;
-	private List<ProductSimple> products = new ArrayList<ProductSimple>();
 	private HashMap<Integer, Float> product_quantity_memo;
+	private List<OrderDetail> orderDetails;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,15 @@ public class AddProductsActivity extends Activity {
 		order = db.getOrder(orderTempId);
 		
 		
+		OrderDetail[] orderDetailsArr = order.getOrderDetails().toArray(new OrderDetail[] {});
+
+		orderDetails = new ArrayList<OrderDetail>(Arrays.asList(orderDetailsArr));
 		prepareUiElements();
 	}
 
 	private void prepareUiElements() {
-		db = new DBAdapter(getHelper());
-		products = db.listProducts();
-		ProductsAdapter adapter = new ProductsAdapter(this, R.layout.list_row_addproducts, products);
+		
+		OrderDetailsAdapter adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
 		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
 		lvOrderLines.setAdapter(adapter);
 		

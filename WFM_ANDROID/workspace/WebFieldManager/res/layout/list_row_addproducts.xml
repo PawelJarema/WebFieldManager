@@ -37,6 +37,14 @@
             android:paddingLeft="17dip"
             android:text="name"
             android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/order_line_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:layout_weight="18"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -96,14 +104,6 @@
             android:layout_gravity="left|center_vertical"
             android:layout_weight="35"
             android:text="789"
-            android:textSize="12sp" />
-
-        <EditText
-            android:id="@+id/order_line_qty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_weight="18"
             android:textSize="12sp" />
     </LinearLayout>
 

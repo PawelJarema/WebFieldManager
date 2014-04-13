@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import web.field.helpers.Converter;
 import web.field.model.entity.*;
@@ -822,7 +823,7 @@ public class DBAdapter implements IDBAdapter {
 			PromoThreshold threshold = dao.queryForId(id);
 
 			return threshold;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -924,36 +925,47 @@ public class DBAdapter implements IDBAdapter {
 
 	@Override
 	public Order saveOrderFromTemplate(Order order, OrderTemplate orderTemplate) {
-		// add order lines basing on template data
-		for (OrderTemplateDetail templateDetail : orderTemplate
-				.getOrdersTemplateDetails()) {
-			OrderDetail orderDetail = new OrderDetail();
-			orderDetail.setOrder(order);
-			orderDetail.setProduct(templateDetail.getProduct());
-			orderDetail.setOrderDetailTempId(UUID.randomUUID().toString());
-			orderDetail.setQty(templateDetail.getQtyProposal());
-			orderDetail.setTenantId(order.getTenantId());
+		try {
+			Dao<Order, String> dao = daoProvider.getOrderDao();
+			ForeignCollection<OrderDetail> details = dao.getEmptyForeignCollection("OrdersDetail");
+			// add order lines basing on template data
+			for (OrderTemplateDetail templateDetail : orderTemplate
+					.getOrdersTemplateDetails()) {
+				OrderDetail orderDetail = new OrderDetail();
+				orderDetail.setOrder(order);
+				orderDetail.setProduct(templateDetail.getProduct());
+				orderDetail.setOrderDetailTempId(UUID.randomUUID().toString());
+				orderDetail.setQty(templateDetail.getQtyProposal());
+				orderDetail.setTenantId(order.getTenantId());
+				details.add(orderDetail);
+			}
+			order.setOrderDetails(details);
+			dao.createOrUpdate(order);
+
+			return order;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
-		return order;
+		return null;
 	}
 
 	@Override
 	public User getUser(String token) {
 		try {
 			Dao<User, Integer> dao = daoProvider.getUserDao();
-			
+
 			List<User> userResult = dao.queryBuilder().where()
 					.eq("Token", token.toUpperCase()).query();
 
 			for (User user : userResult) {
 				return user;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -982,8 +994,7 @@ public class DBAdapter implements IDBAdapter {
 				// save
 				dao.createOrUpdate(entity);
 			}
-					
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
