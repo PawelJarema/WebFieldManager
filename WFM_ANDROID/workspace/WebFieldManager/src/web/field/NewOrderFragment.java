@@ -75,6 +75,9 @@ public class NewOrderFragment extends WebFieldFragment {
 			
 			// set order date
 			order.setOrderDate(Converter.dateToSeconds(new Date()));
+			
+			// set delivery date
+			order.setDeliveryDate(Converter.dateToSeconds(new Date()));
 		}
 
 		long customerId = getArguments().getLong("customerId");
@@ -119,7 +122,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		tvShippingAddress.setText(addresses[0].fullAddress());
 
 		etDeliveryDate = (EditText) view.findViewById(R.id.order_delivery_date);
-		
+		etDeliveryDate.setText(Converter.secondsToDateString(order.getDeliveryDate()));
 				
 		etComments = (EditText) view.findViewById(R.id.order_comments);
 
@@ -208,6 +211,7 @@ public class NewOrderFragment extends WebFieldFragment {
 			contextMenu.getItem(i).setOnMenuItemClickListener(listener);
 		}
 	}
+	
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -232,6 +236,7 @@ public class NewOrderFragment extends WebFieldFragment {
 				Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
+		
 			
 			// set order template
 			OrderTemplate template = db.getOrderTemplate(item.getItemId());

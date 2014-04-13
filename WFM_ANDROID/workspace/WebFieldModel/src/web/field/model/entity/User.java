@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 public class User {
 	
-	@DatabaseField
+	@DatabaseField(id = true, generatedId = false)
 	public int UserId;
 	
 	@DatabaseField

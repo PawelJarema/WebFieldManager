@@ -944,7 +944,7 @@ public class DBAdapter implements IDBAdapter {
 			Dao<User, Integer> dao = daoProvider.getUserDao();
 			
 			List<User> userResult = dao.queryBuilder().where()
-					.eq("Token", token).query();
+					.eq("Token", token.toUpperCase()).query();
 
 			for (User user : userResult) {
 				return user;
@@ -978,7 +978,7 @@ public class DBAdapter implements IDBAdapter {
 				entity.setTitle(json.getTitle());
 				entity.setUserId(json.getUserId());
 				entity.setVAT(json.getVAT());
-				entity.setToken(json.getToken());
+				entity.setToken(json.getToken().toUpperCase());
 				// save
 				dao.createOrUpdate(entity);
 			}

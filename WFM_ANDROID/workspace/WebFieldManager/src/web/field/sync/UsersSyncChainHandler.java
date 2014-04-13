@@ -28,6 +28,7 @@ public class UsersSyncChainHandler implements ISyncChainHandler {
 	public void setNext(ISyncChainHandler handler) {
 		nextHandler = handler;
 	}
+	
 
 	@Override
 	public void handle(final SyncCommand command) {
