@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:key="pref_shared" >
+        <EditTextPreference
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="connection_service"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_connection_service" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

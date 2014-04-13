@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="black">#000</color>
+    <color name="grey">#eeeeee</color>
+    <color name="holo_blue">#0099cc</color>
+    
+    <color name="background">#2d3b49</color>
+    <color name="list_light">#2c3948</color>
+    <color name="list_dark">#2a3744</color>
+    <color name="list_div">#2f3c4b</color>
+    
+    <color name="app_orange">#ff7f66</color>
+    <color name="app_orange_clicked">#e06050</color>
+    <color name="opaque_red">#ff7f66</color>
+    
+</resources>

@@ -1,0 +1,53 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip"
+    android:orientation="vertical"
+    tools:context="web.field.AddproductsActivity$PlaceholderFragment" >
+
+    <TableRow
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:weightSum="4"
+    	android:layout_marginBottom="7dip">
+    	<Button
+    	    android:id="@+id/sort_by_family"
+    	    android:layout_weight="1"
+    	    android:layout_width="0dip"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/family" />
+    	<Button
+    	    android:id="@+id/sort_by_category"
+    	    android:layout_weight="1"
+    	    android:layout_width="0dip"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/category" />
+    	<Button
+    	    android:id="@+id/sort_by_manufacturer"
+    	    android:layout_weight="1"
+    	    android:layout_width="0dip"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/manufacturer" />
+    	<Button
+    	    android:id="@+id/sort_by_brand"
+    	    android:layout_weight="1"
+    	    android:layout_width="0dip"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/brand" />
+    	
+    </TableRow>
+    	
+    <TableRow android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal"
+    	android:weightSum="2">
+        <View></View>
+    </TableRow>
+  
+
+</TableLayout>

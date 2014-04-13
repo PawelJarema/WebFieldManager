@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dip">
+    
+    <TableRow 
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_marginBottom="7dip"
+    	android:orientation="horizontal"
+    	android:weightSum="110">
+    	
+        <ImageView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:gravity="center_horizontal"
+    		android:src="@drawable/ic_email"
+    		android:layout_weight="30" />
+        <ImageView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:layout_gravity="center_horizontal"
+    		android:src="@drawable/ic_phone"
+    		android:layout_weight="20" />
+        <ImageView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:layout_gravity="center_horizontal"
+    		android:src="@drawable/ic_phone"
+    		android:layout_weight="20" />
+        <ImageView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:layout_gravity="center_horizontal"
+    		android:src="@drawable/ic_fax"
+    		android:layout_weight="20" />
+        <TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:gravity="center"
+    		android:text="@string/VAT"
+    		android:layout_weight="20"
+    		android:textColor="@color/black"
+    		android:textSize="24sp" 
+    		android:textStyle="bold" />
+        
+    </TableRow>
+	<TableRow
+	    android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_marginBottom="14dip"
+    	android:orientation="horizontal"
+    	android:weightSum="110">
+    		    
+    	<TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:id="@+id/customer_email"
+    		android:textSize="12sp"
+    		
+    		android:text="someemail@gmail.com"
+    		android:layout_weight="30" 
+    		android:gravity="center" />
+
+    	<TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:id="@+id/customer_phone1"
+    		android:textSize="12sp"
+    		
+    		android:text="some phone no"
+    		android:layout_weight="20" android:gravity="center" />
+    	
+    	<TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:id="@+id/customer_phone2"
+    		android:textSize="12sp"
+    		
+    		android:text="some phone no"
+    		android:layout_weight="20" android:gravity="center" />
+    	
+    	<TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:id="@+id/customer_fax"
+    		android:textSize="12sp"
+    		
+    		android:text="some fax no"
+    		android:layout_weight="20" android:gravity="center" />
+    	  	    
+    	<TextView
+    	    android:layout_width="0dip"
+    		android:layout_height="match_parent"
+    		android:id="@+id/customer_vat"
+    		android:textSize="12sp"
+    		
+    		android:text="some vat no"
+    		android:layout_weight="20" android:gravity="center" />
+    	
+	</TableRow>
+	<TableRow
+	    android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+	    android:layout_marginBottom="7dip">
+    	
+	    <TextView 
+	        android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:text="@string/order_bill_to"
+    		android:textStyle="bold" />
+	    
+	</TableRow>
+	<TableRow
+	    android:layout_width="match_parent"
+    	android:layout_height="match_parent">
+	    
+	    <TextView 
+	        android:id="@+id/customer_bill_to"
+	        android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:gravity="left"
+    		android:text="Some address\nwith street\npostal code and city" />
+    	
+	</TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:orientation="vertical">
+        <ListView
+	        android:id="@+id/customer_address_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10dip"
+	        android:divider="@color/list_div"
+	        android:dividerHeight="1dip" />
+    </TableRow>
+</TableLayout>

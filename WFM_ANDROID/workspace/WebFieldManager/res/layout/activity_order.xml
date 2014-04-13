@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools" 
+	android:id="@+id/container"
+	android:layout_width="match_parent" 
+	android:layout_height="match_parent"
+	tools:context="com.example.wfm.Order" 
+	tools:ignore="MergeRootFrame" >
+
+    <TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+		android:weightSum="4">
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_customer" 
+				android:layout_weight="1" />
+			
+			<TextView android:id="@+id/order_customer"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+			
+			
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_date" 
+				android:layout_weight="1" />
+					
+			<TextView android:id="@+id/order_date" 
+				android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_weight="1" />
+	</TableRow>
+	<TableRow
+	    android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+		android:weightSum="4">
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="2" />
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="right"
+			    android:text="@string/order_delivery"
+			    android:textAlignment="viewEnd"
+			    android:layout_weight="1" />
+			<TextView android:id="@+id/order_customer"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+	</TableRow>
+	<TableRow 
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+		android:weightSum="2">
+	    <LinearLayout
+	        android:layout_width="0dip" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_bill_to" />
+	        <TextView 
+	            android:id="@+id/order_billing_address"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_billing_address" />
+	    </LinearLayout>  
+	    <LinearLayout
+	        android:layout_width="0dip" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_ship_to" />
+	        <TextView 
+	            android:id="@+id/order_billing_address"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_shipping_address" />
+	    </LinearLayout> 
+	</TableRow>
+	<TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+	    <ScrollView
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent">
+	        <ListView
+		        android:id="@+id/order_product_list"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:padding="10dip"
+		        android:divider="@color/list_div"
+		        android:dividerHeight="1dip" />
+	    </ScrollView>
+	</TableRow>
+	<TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="wrap_content">
+	    <LinearLayout
+	        android:layout_width="match_parent" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_comments" />
+	        <TextView 
+	            android:id="@+id/order_comments"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_example_comment" />
+	    </LinearLayout>
+	</TableRow>
+	<!-- Sum up -->
+	<TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+		android:weightSum="4">
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_total_products" 
+				android:layout_weight="1" />
+			
+			<TextView android:id="@+id/order_total_products"
+			    android:text="@string/order_tp_example"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+			
+			
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_total_value"
+				android:textSize="24sp" 
+				android:layout_weight="1" />
+					
+			<TextView android:id="@+id/order_value" 
+				android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:text="@string/order_value_example"
+				android:textSize="24sp"
+				android:layout_weight="1" />
+	</TableRow>
+	<TableRow
+	    android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+		android:weightSum="4">
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="right"
+			    android:text="@string/order_discount"
+			    android:textAlignment="viewEnd"
+			    android:layout_weight="1" />
+			<TextView android:id="@+id/order_discount"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="2" />
+	</TableRow>
+</TableLayout>
+

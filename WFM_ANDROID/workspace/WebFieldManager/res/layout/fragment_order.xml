@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	tools:context="com.example.wfm.Order" 
+	tools:ignore="MergeRootFrame"
+	android:orientation="vertical"
+	android:padding="10dip"
+	android:weightSum="140" >
+
+    <TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="0dip"
+		android:layout_weight="10"
+		android:weightSum="4">
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_customer" 
+				android:textStyle="bold"
+				android:layout_weight="1" />
+			
+			<TextView android:id="@+id/order_customer"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+			
+			
+			<TextView android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:text="@string/order_date" 
+				android:textStyle="bold"
+				android:layout_weight="1" />
+					
+			<TextView android:id="@+id/order_date" 
+				android:layout_width="0dip"
+				android:layout_height="wrap_content" 
+				android:layout_weight="1" />
+	</TableRow>
+	<TableRow
+	    android:layout_width="match_parent" 
+		android:layout_height="0dip"
+		android:layout_weight="10"
+		android:weightSum="4">
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_weight="2" />
+			<TextView
+			    android:layout_width="0dip"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="right"
+			    android:text="@string/order_delivery"
+			    android:textStyle="bold"
+			    android:textAlignment="viewEnd"
+			    android:layout_weight="1" />
+			<TextView android:id="@+id/order_delivery"
+				android:layout_width="0dip" 
+				android:layout_height="wrap_content"
+				android:layout_weight="1" />
+	</TableRow>
+	<TableRow 
+		android:layout_width="match_parent" 
+		android:layout_height="0dip"
+		android:layout_weight="10"
+		android:weightSum="2">
+	    <LinearLayout
+	        android:layout_width="0dip" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_bill_to"
+	            android:textStyle="bold" />
+	        <TextView 
+	            android:id="@+id/order_billing_address"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_billing_address" />
+	    </LinearLayout>  
+	    <LinearLayout
+	        android:layout_width="0dip" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_ship_to"
+	            android:textStyle="bold" />
+	        <TextView 
+	            android:id="@+id/order_shipping_address"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_shipping_address" />
+	    </LinearLayout> 
+	</TableRow>
+	<TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="0dip"
+		android:layout_weight="70">
+	    
+	    <ListView
+		    android:id="@+id/order_product_list"
+		    android:layout_width="fill_parent"
+		    android:layout_height="170dip"
+		    android:padding="10dip"
+		    android:divider="@color/list_div"
+		    android:dividerHeight="1dip" />
+	    
+	</TableRow>
+	<TableRow
+        android:layout_width="match_parent" 
+		android:layout_height="0dip"
+		android:layout_weight="10">
+	    <LinearLayout
+	        android:layout_width="match_parent" 
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+	        <TextView 
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:text="@string/order_comments"
+	            android:textStyle="bold" />
+    		<TextView
+	            android:id="@+id/order_comments"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" 
+	            android:gravity="center_horizontal"
+	            android:text="@string/order_example_comment" />
+	    </LinearLayout>
+	</TableRow>
+	<!-- Sum up -->
+
+</TableLayout>

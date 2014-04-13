@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="web.field"
+    android:versionCode="1"
+    android:versionName="1.1" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="web.field.WebFieldApplication"
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/BusinessTheme" >
+        <activity
+            android:name="web.field.CustomersActivity"
+            android:label="@string/title_activity_customers" >
+            <intent-filter>
+                <action android:name="web.field.CustomersActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!--
+        <activity
+            android:name="web.field.CustomersActivity"
+            android:label="@string/title_activity_customers" >
+        </activity>
+        -->
+        <activity android:name="web.field.CustomerDetailsActivity" >
+            <intent-filter>
+                <action android:name="web.field.CustomerDetailsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.LoginActivity"
+            android:label="@string/title_activity_login" >
+            <intent-filter>
+                <action android:name="web.field.LoginActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+            <intent-filter>
+                <action android:name="web.field.SettingsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.LauncherActivity"
+            android:label="@string/title_activity_launcher" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.SynchronizationActivity"
+            android:label="@string/title_activity_synchronization" >
+            <intent-filter>
+                <action android:name="web.field.SynchronizationActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.ProductsActivity"
+            android:label="@string/title_activity_products" >
+            <intent-filter>
+                <action android:name="web.field.ProductsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.OrderTemplatesActivity"
+            android:label="@string/title_activity_order_templates" >
+            <intent-filter>
+                <action android:name="web.field.OrderTemplatesActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.OrdersActivity"
+            android:label="@string/title_activity_orders" >
+            <intent-filter>
+                <action android:name="web.field.OrdersActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="web.field.HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name="web.field.AddProductsActivity"
+            android:label="@string/title_activity_addproducts" >
+            <intent-filter> 
+       			<action android:name="web.field..AddProductsActivity" />  
+        	    <category android:name="android.intent.category.DEFAULT" />  
+   			</intent-filter>
+        </activity>
+    </application>
+
+</manifest>

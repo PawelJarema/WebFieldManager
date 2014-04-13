@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   <PreferenceCategory android:key="pref_shared" >
+        <Preference
+        android:key="user_name"
+        android:title="@string/pref_title_user_name" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
