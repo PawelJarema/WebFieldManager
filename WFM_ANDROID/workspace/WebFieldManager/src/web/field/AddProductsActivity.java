@@ -7,11 +7,14 @@ import java.util.List;
 
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
-import web.field.model.entity.*;
-import web.field.model.simple.ProductSimple;
-import android.app.ActionBar;
+import web.field.model.entity.Order;
+import web.field.model.entity.OrderDetail;
+import web.field.model.entity.OrderTemplate;
+import web.field.model.entity.PromoPayTermDetail;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,17 +55,36 @@ public class AddProductsActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
 		
+		getActionBar().setTitle("Compose Order");
+	
+		
 		// get order
 		String orderTempId = getIntent().getStringExtra("orderTempId");
 		order = db.getOrder(orderTempId);
 		
 		
 		OrderDetail[] orderDetailsArr = order.getOrderDetails().toArray(new OrderDetail[] {});
-
+		
 		orderDetails = new ArrayList<OrderDetail>(Arrays.asList(orderDetailsArr));
 		prepareUiElements();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.addproducts, menu);
+		return true;
+	}
+	
+	private boolean saveDraft() {
+		//TODO
+		return true;
+	}
+	
+	private boolean sendOrder() {
+		//TODO
+		return true;
+	}
+	
 	private void prepareUiElements() {
 		
 		OrderDetailsAdapter adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
@@ -89,12 +111,20 @@ public class AddProductsActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == android.R.id.home){
+		switch(id) {
+			case android.R.id.home:
 			this.finish();
 			return true;
-		}
-		if (id == R.id.action_settings) {
+			case R.id.action_save_draft:
+				saveDraft();
+				return true;
+			case R.id.action_send_order:
+				sendOrder();
+
 			return true;
+			case R.id.action_settings:
+				return true;
+			default:
 		}
 		return super.onOptionsItemSelected(item);
 	}

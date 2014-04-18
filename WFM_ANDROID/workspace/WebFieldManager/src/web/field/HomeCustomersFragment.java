@@ -14,15 +14,20 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class HomeCustomersFragment extends WebFieldListFragment {
 
 	int uniqueContextMenuId = 11111;
 
+	private static ListView lv;
 	private List<CustomerSimple> data;
 	private IDBAdapter db;
 	private CustomersAdapter adapter;
@@ -30,6 +35,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 	}
 
 	@Override
@@ -83,7 +89,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu contextMenu, View v,
 			ContextMenuInfo menuInfo) {
-		if (v.getId() == R.id.home_customer_list) {
+		if (v.getId() == getListView().getId()) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			contextMenu.setHeaderTitle(data.get(info.position)
 					.getCustomerName());

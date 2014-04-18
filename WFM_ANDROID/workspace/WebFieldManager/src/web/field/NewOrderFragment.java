@@ -8,18 +8,26 @@ import java.util.UUID;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.helpers.Converter;
-import web.field.model.entity.*;
-import web.field.model.simple.*;
+import web.field.model.entity.Customer;
+import web.field.model.entity.CustomerAddress;
+import web.field.model.entity.Order;
+import web.field.model.entity.OrderTemplate;
+import web.field.model.entity.User;
+import web.field.model.simple.OrderTemplateSimple;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,16 +48,17 @@ public class NewOrderFragment extends WebFieldFragment {
 	// TextViews
 	ListView product_list;
 	TextView tvCustomer;
-	TextView tvOrderDate;
 	TextView tvBillingAddress;
 	TextView tvShippingAddress;
 	
+	EditText etOrderDate;
+	EditText etOrderTime;
 	EditText etDeliveryDate;
+	EditText etDeliveryTime;
 	EditText etComments;
 
 	Button bBillTo;
 	Button bShipTo;
-	Button bSave;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,10 +69,54 @@ public class NewOrderFragment extends WebFieldFragment {
 
 		getRelatedDbData();
 		populateTextViews(view);
+		setHasOptionsMenu(true);
 
 		return view;
 	}
 
+	// validation helpers
+	private boolean dateOk(String date) {
+		if (!date.matches("\\d{4}-[01]\\d-[0-3]\\d"))
+			return false;
+		return true;
+	}
+	private boolean timeOk(String time) {
+		if (!time.matches("\\d{1,2}:\\d{2}"))
+			return false;
+		return true;
+	}
+	//TODO make validation more sublime, save to db?
+	private boolean validateEntries() {
+		String errors = "";
+		
+		String billing_address = (String) tvBillingAddress.getText();
+		String shipping_address = (String) tvShippingAddress.getText();
+		
+		if (billing_address == null || billing_address.length() < 1) 
+			errors += "Please pick billing address\n";
+		if (shipping_address == null || billing_address.length() < 1) 
+			errors += "Please pick shipping address\n";
+		
+		String order_date = etOrderDate.getText().toString();
+		String order_time = etOrderTime.getText().toString();;
+		String delivery_date = etDeliveryDate.getText().toString();;
+		String delivery_time = etDeliveryTime.getText().toString();;
+		if (!dateOk(order_date))
+			errors += "Please add proper order date\n";
+		if (!dateOk(delivery_date))
+			errors += "Please add proper delivery date\n";
+		if (!timeOk(order_time))
+			errors += "Please enter proper order time\n";
+		if (!timeOk(delivery_time))
+			errors += "Please enter proper delivery time\n";
+	
+		if (errors != "") {
+			Toast.makeText(getActivity(), errors, Toast.LENGTH_LONG).show();
+			return false;
+		}
+		return true;
+	}
+	
 	private void getRelatedDbData() {
 		db = new DBAdapter(getHelper());
 		orderId = getArguments().getInt("order_id");
@@ -93,19 +146,25 @@ public class NewOrderFragment extends WebFieldFragment {
 
 	public void onResume() {
 		super.onResume();
+	}
 
+	// Date / Time pickers
+	public void showTimePicker(EditText v) {
+		DialogFragment timePicker = new TimePickerFragment(v);
+		timePicker.show(getFragmentManager(), "timepicker");
+	}
+	public void showDatePicker(EditText v) {
+		DialogFragment datePicker = new DatePickerFragment(v);
+		datePicker.show(getFragmentManager(), "datepicker");
 	}
 
 	private void populateTextViews(View view) {
-
+		getActivity().getActionBar().setTitle("New Order");
 		product_list = (ListView) view.findViewById(R.id.order_product_list);
 
 		// set customer data
 		tvCustomer = (TextView) view.findViewById(R.id.order_customer);
 		tvCustomer.setText(customer.getCustomerName());
-
-		tvOrderDate = (TextView) view.findViewById(R.id.neworder_order_date);
-		tvOrderDate.setText(Converter.secondsToDateString(order.getOrderDate()));
 
 		// if customer has only one address, disable buttons
 		tvBillingAddress = (TextView) view
@@ -121,12 +180,46 @@ public class NewOrderFragment extends WebFieldFragment {
 		tvBillingAddress.setText(addresses[0].fullAddress());
 		tvShippingAddress.setText(addresses[0].fullAddress());
 
+		String date = Converter.secondsToDateString(order.getOrderDate()).split(" ")[0];
+		String time = Converter.secondsToDateString(order.getOrderDate()).split(" ")[1];
+		
+		etOrderDate = (EditText) view.findViewById(R.id.neworder_order_date);
+		etOrderDate.setText(date);
+		etOrderTime = (EditText) view.findViewById(R.id.order_time);
+		etOrderTime.setText(time);
+
 		etDeliveryDate = (EditText) view.findViewById(R.id.order_delivery_date);
-		etDeliveryDate.setText(Converter.secondsToDateString(order.getDeliveryDate()));
+		etDeliveryDate.setText(date);
+		etDeliveryTime = (EditText) view.findViewById(R.id.order_delivery_time);
+		etDeliveryTime.setText(time);
+
+		//	Time / Date picker listeners
+		OnFocusChangeListener pickListener = new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {	
+				if (hasFocus) {
+					int id = v.getId();
+					switch(id) {
+						case R.id.neworder_order_date:
+						case R.id.order_delivery_date:
+							showDatePicker((EditText)v);
+							break;
+						case R.id.order_time:
+						case R.id.order_delivery_time:
+							showTimePicker((EditText)v);
+							break;
+					}
+				}			
+			}
+		};
+		
+		etOrderDate.setOnFocusChangeListener(pickListener);
+		etDeliveryDate.setOnFocusChangeListener(pickListener);
+		etOrderTime.setOnFocusChangeListener(pickListener);
+		etDeliveryTime.setOnFocusChangeListener(pickListener);
 				
 		etComments = (EditText) view.findViewById(R.id.order_comments);
-
-		bSave = (Button) view.findViewById(R.id.neworder_goto_add_product);
 
 		/*
 		 * OrderAdapter adapter = new OrderAdapter(getActivity(),
@@ -141,7 +234,6 @@ public class NewOrderFragment extends WebFieldFragment {
 				switch (v.getId()) {
 				case R.id.order_bill_to:
 				case R.id.order_ship_to:
-				case R.id.neworder_goto_add_product:
 				default:
 					registerForContextMenu(v);
 					getActivity().openContextMenu(v);
@@ -152,7 +244,25 @@ public class NewOrderFragment extends WebFieldFragment {
 		};
 		bBillTo.setOnClickListener(click_listener);
 		bShipTo.setOnClickListener(click_listener);
-		bSave.setOnClickListener(click_listener);
+	}	
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.new_order, menu);
+	}
+	
+	@Override 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.action_new_order_save) 
+		{
+			if (validateEntries()) 
+			{
+				registerForContextMenu(getView());
+				getActivity().openContextMenu(getView());
+				unregisterForContextMenu(getView());
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -173,7 +283,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		// sets up context menu
 		int action_group_code = 108; // 0 = bill to; 1 = ship_to; 108 = select
 
-		switch (v.getId()) {
+		/*switch (v.getId()) {
 		case R.id.order_bill_to:
 			contextMenu.setHeaderTitle("Bill to:");
 			int addrBillToPos = 0;
@@ -196,15 +306,16 @@ public class NewOrderFragment extends WebFieldFragment {
 			contextMenu.setHeaderTitle("Ship to:");
 
 			break;
-		case R.id.neworder_goto_add_product:
+		case R.id.neworder_goto_add_product: */
 			int templatePos = 0;
 			action_group_code = 108;
-			for (OrderTemplateSimple template : templates) {
+			for (OrderTemplateSimple template : templates) 
+			{
 				contextMenu.add(action_group_code, template.getTemplateId(),
 						templatePos, template.getTemplateName());
 				templatePos++;
 			}
-		}
+		//} 
 
 		// sets context menu clicks to be handled from fragment, not activity
 		for (int i = 0; i < contextMenu.size(); i++) {
@@ -249,7 +360,9 @@ public class NewOrderFragment extends WebFieldFragment {
 					SharedPreferencesKeys.user_token, null);
 
 			User currentUser = db.getUser(token);
+			//TODO this doesn't work
 			order.setTenantId(currentUser.getTenantId());
+			//order.setTenantId(1); << stub
 
 			// save order as draft and go to next step
 			db.saveOrderFromTemplate(order, template);
