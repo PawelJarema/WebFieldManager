@@ -14,15 +14,20 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class HomeCustomersFragment extends WebFieldListFragment {
 
 	int uniqueContextMenuId = 11111;
 
+	private static ListView lv;
 	private List<CustomerSimple> data;
 	private IDBAdapter db;
 	private CustomersAdapter adapter;
@@ -30,8 +35,9 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 	}
-
+	
 	@Override
 	public void onViewStateRestored(Bundle bundle) {
 		super.onViewStateRestored(bundle);
@@ -46,13 +52,16 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 		// created; then, the method above will do the rest
 		if (adapter == null) {
 			data = new ArrayList<CustomerSimple>();
+			data.add(new CustomerSimple(0, "0name", "14343545", false));
+			data.add(new CustomerSimple(1, "1name", "24343545", false));
+			data.add(new CustomerSimple(2, "2name", "34343545", false));
+			data.add(new CustomerSimple(3, "3name", "44343545", false));
 			adapter = new CustomersAdapter(getActivity(),
 					R.layout.list_row_home_customers, data);
 		}
-
+		
 		getListView().setAdapter(adapter);
 		getListView().setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -75,7 +84,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 						.commit();
 			}
 
-		});
+		}); 
 		// initiate the loader to do the background work
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -83,7 +92,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu contextMenu, View v,
 			ContextMenuInfo menuInfo) {
-		if (v.getId() == R.id.home_customer_list) {
+		if (v.getId() == getListView().getId()) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			contextMenu.setHeaderTitle(data.get(info.position)
 					.getCustomerName());
@@ -145,6 +154,11 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 
 				db = new DBAdapter(getHelper());
 				data = db.listCustomersNearMe(latitude, longitude);
+
+				data.add(new CustomerSimple(0, "0name", "14343545", false));
+				data.add(new CustomerSimple(1, "1name", "24343545", false));
+				data.add(new CustomerSimple(2, "2name", "34343545", false));
+				data.add(new CustomerSimple(3, "3name", "44343545", false));
 				return null;
 			}
 		};

@@ -5,6 +5,18 @@ public class CustomerSimple {
 	private String customerName;
 	private String vatId;
 	private boolean active;
+	
+	public CustomerSimple() {
+	
+	}
+	public CustomerSimple(int customerId, String customerName, String vatId,
+			boolean active) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.vatId = vatId;
+		this.active = active;
+	}
 
 	public int getCustomerId() {
 		return customerId;
