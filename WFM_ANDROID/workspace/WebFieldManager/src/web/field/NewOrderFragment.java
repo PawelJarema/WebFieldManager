@@ -359,8 +359,9 @@ public class NewOrderFragment extends WebFieldFragment {
 					SharedPreferencesKeys.user_token, null);
 
 			User currentUser = db.getUser(token);
-			//order.setTenantId(currentUser.getTenantId());
-			order.setTenantId(1);
+			//TODO this doesn't work
+			order.setTenantId(currentUser.getTenantId());
+			//order.setTenantId(1); << stub
 			
 			// save order as draft and go to next step
 			db.saveOrderFromTemplate(order, template);
