@@ -926,12 +926,8 @@ public class DBAdapter implements IDBAdapter {
 	@Override
 	public Order saveOrderFromTemplate(Order order, OrderTemplate orderTemplate) {
 		try {
-			Dao<Order, String> orderDao = daoProvider.getOrderDao();
-			Dao<OrderDetail, String> orderDetailDao = daoProvider
-					.getOrderDetailDao();
-
-			orderDao.createOrUpdate(order);
-
+			Dao<Order, String> dao = daoProvider.getOrderDao();
+			ForeignCollection<OrderDetail> details = dao.getEmptyForeignCollection("OrdersDetail");
 			// add order lines basing on template data
 			for (OrderTemplateDetail templateDetail : orderTemplate
 					.getOrdersTemplateDetails()) {
@@ -941,9 +937,11 @@ public class DBAdapter implements IDBAdapter {
 				orderDetail.setOrderDetailTempId(UUID.randomUUID().toString());
 				orderDetail.setQty(templateDetail.getQtyProposal());
 				orderDetail.setTenantId(order.getTenantId());
-
-				orderDetailDao.createOrUpdate(orderDetail);
+				details.add(orderDetail);
 			}
+			order.setOrderDetails(details);
+			dao.createOrUpdate(order);
+
 			return order;
 		} catch (SQLException e) {
 			e.printStackTrace();
