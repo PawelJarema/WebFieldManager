@@ -14,6 +14,14 @@
         android:text="Id"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/order_detail_temp_id"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:focusable="false"
+        android:text="TempId"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +47,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/order_line_qty"
+            android:id="@+id/order_detail_qty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
@@ -105,6 +113,8 @@
             android:layout_weight="35"
             android:text="789"
             android:textSize="12sp" />
+
+        
     </LinearLayout>
 
 </LinearLayout>

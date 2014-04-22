@@ -87,6 +87,9 @@
     <string name="order_payterms_discount">Pay terms discount</string>
     <string name="order_template_threshold_discount">Template threshold result</string>
     <string name="order_template_discount">Template discount</string>
+    
+    <string name="order_send_ok">Order send</string>
+    <string name="order_send_error">Order send with errors. Please contatct Administrator.</string>
 
     <string name="save">Save</string>
     <string-array name="nav_titles">

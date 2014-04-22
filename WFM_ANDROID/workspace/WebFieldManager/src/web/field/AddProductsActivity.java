@@ -11,10 +11,12 @@ import web.field.model.entity.Order;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
 import web.field.model.entity.PromoPayTermDetail;
+import web.field.sync.ISendOrderCallback;
+import web.field.sync.ISendOrderStrategy;
+import web.field.sync.SendOrderStrategy;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,10 +24,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-public class AddProductsActivity extends Activity {
+public class AddProductsActivity extends Activity implements ISendOrderCallback{
 
 	// Ui and TextViews
 	private Button bFilterByBrand;
@@ -48,9 +51,14 @@ public class AddProductsActivity extends Activity {
 	private HashMap<Integer, Float> product_quantity_memo;
 	private List<OrderDetail> orderDetails;
 	
+	private ISendOrderStrategy sendOrderStrategy;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		sendOrderStrategy = new SendOrderStrategy(this);
+		
 		setContentView(R.layout.activity_addproducts);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
@@ -81,7 +89,10 @@ public class AddProductsActivity extends Activity {
 	}
 	
 	private boolean sendOrder() {
-		//TODO
+		// copy data to order object
+		
+		
+		this.sendOrderStrategy.sendOrder(order);
 		return true;
 	}
 	
@@ -96,10 +107,7 @@ public class AddProductsActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				/* TODO when list clicked 
-				 * and EditText in row changed
-				 * remember product quantity and store it in product_quantity_memo (HashMap)
-				 */	
+				int i = 0;
 			}		
 		}); 
 	}
@@ -145,4 +153,17 @@ public class AddProductsActivity extends Activity {
             databaseHelper = null;
         }
     }
+    
+	@Override
+	public void orderSend(boolean result) {
+		String msg = ""; 
+		if(result){
+			msg = getString(R.string.order_send_ok);
+		}
+		else{
+			msg = getString(R.string.order_send_error);
+		}
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		
+	}
 }
