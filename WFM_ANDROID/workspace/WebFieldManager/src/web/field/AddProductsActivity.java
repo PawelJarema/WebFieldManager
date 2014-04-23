@@ -189,7 +189,9 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 	@Override
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
-		adapter.addOrderItemQty(position, qty);
-		adapter.notifyDataSetChanged();
+		if (qty > 0) {
+			adapter.addOrderItemQty(position, qty);
+			adapter.notifyDataSetChanged();
+		}
 	}
 }
