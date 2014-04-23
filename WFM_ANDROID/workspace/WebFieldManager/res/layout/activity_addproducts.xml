@@ -1,5 +1,4 @@
-
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,65 +6,62 @@
     android:orientation="vertical"
     tools:context="web.field.AddproductsActivity$PlaceholderFragment" >
 
-    <TableRow
+    <LinearLayout
         android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:weightSum="4"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
     	android:layout_marginBottom="7dip">
     	<Button
     	    android:id="@+id/sort_by_family"
-    	    android:layout_width="wrap_content"
+    	    android:layout_width="0dp"
     		android:layout_height="wrap_content"
+    		android:layout_weight="1"
     	    style="@drawable/basic_button"
     	    android:text="@string/family"
     	    android:textSize="12sp" />
     	<Button
     	    android:id="@+id/sort_by_category"
-    	    android:layout_width="wrap_content"
+    	    android:layout_width="0dp"
     		android:layout_height="wrap_content"
+    		android:layout_weight="1"
     	    style="@drawable/basic_button"
     	    android:text="@string/category"
     	    android:textSize="12sp" />
     	<Button
     	    android:id="@+id/sort_by_manufacturer"
-    	    android:layout_width="wrap_content"
+    	    android:layout_width="0dp"
     		android:layout_height="wrap_content"
+    		android:layout_weight="1"
     	    style="@drawable/basic_button"
     	    android:text="@string/manufacturer"
     	    android:textSize="12sp" />
     	<Button
     	    android:id="@+id/sort_by_brand"
-    	    android:layout_width="wrap_content"
+    	    android:layout_width="0dp"
     		android:layout_height="wrap_content"
+    		android:layout_weight="1"
     	    style="@drawable/basic_button"
     	    android:text="@string/brand"
     	    android:textSize="12sp" />
-    	
-    </TableRow>
-    	
-    <TableRow android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:orientation="horizontal"
-    	android:weightSum="5">
-	</TableRow>
-    <TableRow android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:orientation="horizontal"
-    	android:weightSum="5">
-    	
+    </LinearLayout>
+ 
+    <LinearLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:layout_marginBottom="7dip">
         <ListView
             android:id="@+id/addproduct_list"
-            android:layout_weight="3"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
             android:padding="10dip"
 	        android:divider="@color/list_div"
 	        android:dividerHeight="1dip" />
-        
         <LinearLayout
-            android:layout_weight="2"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
             android:orientation="vertical"
             android:weightSum="100">
             <TextView
@@ -151,11 +147,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:gravity="center"
-	            android:textSize="12sp" />
-            
-        </LinearLayout>
-        
-    </TableRow>
-  
-
-</TableLayout>
+	            android:textSize="12sp" /> 
+        </LinearLayout>    
+    </LinearLayout>
+</LinearLayout>

@@ -4,17 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
+import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
 import web.field.model.entity.PromoPayTermDetail;
-import android.app.Activity;
+import web.field.sync.ISendOrderCallback;
+import web.field.sync.ISendOrderStrategy;
+import web.field.sync.SendOrderStrategy;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,10 +27,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.ForeignCollection;
 
-public class AddProductsActivity extends Activity {
+public class AddProductsActivity extends FragmentActivity implements ISendOrderCallback, OnCompleteListener {
 
 	// Ui and TextViews
 	private Button bFilterByBrand;
@@ -38,6 +45,7 @@ public class AddProductsActivity extends Activity {
 	private PromoPayTermDetail payTermDetail;
 	
 	// Product List
+	private OrderDetailsAdapter adapter;
 	private ListView lvOrderLines;
 	
 	// Summary TextViews
@@ -45,27 +53,28 @@ public class AddProductsActivity extends Activity {
 	
 	// Db
 	private IDBAdapter db;
-	private HashMap<Integer, Float> product_quantity_memo;
 	private List<OrderDetail> orderDetails;
+	
+	private ISendOrderStrategy sendOrderStrategy;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		sendOrderStrategy = new SendOrderStrategy(this);
+		
 		setContentView(R.layout.activity_addproducts);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
 		
 		getActionBar().setTitle("Compose Order");
 	
-		
 		// get order
 		String orderTempId = getIntent().getStringExtra("orderTempId");
 		order = db.getOrder(orderTempId);
-		
-		
 		OrderDetail[] orderDetailsArr = order.getOrderDetails().toArray(new OrderDetail[] {});
-
 		orderDetails = new ArrayList<OrderDetail>(Arrays.asList(orderDetailsArr));
+		
 		prepareUiElements();
 	}
 
@@ -75,19 +84,35 @@ public class AddProductsActivity extends Activity {
 		return true;
 	}
 	
+	private OrderDetail rewriteOrderQty(int position) {
+		OrderDetail order_detail = orderDetails.get(position);
+		// adapter stores order qty data
+		int qty = adapter.getQtyForOrder(position);
+		order_detail.setQty(qty);
+		return order_detail;
+	}
+	
 	private boolean saveDraft() {
 		//TODO
 		return true;
 	}
 	
 	private boolean sendOrder() {
-		//TODO
+		// adapter stores order qty data
+		// adapter has methods to get ordered items with respective quantity
+		Set<Integer> ordered_items_by_list_position = adapter.getAllOrderQtyData().keySet();
+		for (int position : ordered_items_by_list_position) {
+			int qty = adapter.getQtyForOrder(position);
+			orderDetails.set(position, rewriteOrderQty(position));
+		}
+		order.setOrderDetails((ForeignCollection<OrderDetail>) orderDetails);
+		this.sendOrderStrategy.sendOrder(order);
 		return true;
 	}
 	
 	private void prepareUiElements() {
 		
-		OrderDetailsAdapter adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
+		adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
 		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
 		lvOrderLines.setAdapter(adapter);
 		
@@ -95,11 +120,12 @@ public class AddProductsActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				/* TODO when list clicked 
-				 * and EditText in row changed
-				 * remember product quantity and store it in product_quantity_memo (HashMap)
-				 */	
+					int position, long id) {			
+				QtyPickerFragment f = new QtyPickerFragment();
+				Bundle bundle = new Bundle();
+				bundle.putInt("position", position);
+				f.setArguments(bundle);
+				f.show(getSupportFragmentManager(), "quantity picker");
 			}		
 		}); 
 	}
@@ -131,7 +157,7 @@ public class AddProductsActivity extends Activity {
     protected OrmDbHelper getHelper() {
         if (databaseHelper == null) {
             databaseHelper =
-                OpenHelperManager.getHelper(this, OrmDbHelper .class);
+                OpenHelperManager.getHelper(this, OrmDbHelper.class);
         }
         return databaseHelper;
     }
@@ -143,4 +169,27 @@ public class AddProductsActivity extends Activity {
             databaseHelper = null;
         }
     }
+    
+	@Override
+	public void orderSend(boolean result) {
+		String msg = ""; 
+		if(result){
+			msg = getString(R.string.order_send_ok);
+		}
+		else {
+			msg = getString(R.string.order_send_error);
+		}
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();	
+	}
+	
+	private void message(String text) {
+		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onComplete(int position, int qty) {
+		// adapter stores order qty data
+		adapter.addOrderItemQty(position, qty);
+		adapter.notifyDataSetChanged();
+	}
 }

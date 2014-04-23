@@ -34,7 +34,7 @@ public class CustomersSyncChainHandler implements ISyncChainHandler{
 	@Override
 	public void handle(final SyncCommand command) {
 		// load customers
-		HttpPost customersRequest = new HttpPost(command.getServiceAddress() + "GetCustomers/");
+		HttpPost customersRequest = new HttpPost(command.getServiceAddress() + "SaveOrder/");
 
 		customersRequest.setHeader("Accept", "application/json");
 		customersRequest.setHeader("Content-type", "application/json");

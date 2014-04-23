@@ -87,7 +87,17 @@
     <string name="order_payterms_discount">Pay terms discount</string>
     <string name="order_template_threshold_discount">Template threshold result</string>
     <string name="order_template_discount">Template discount</string>
+    
+    <string name="order_send_ok">Order send</string>
+    <string name="order_send_error">Order send with errors. Please contatct Administrator.</string>
 
+    <string name="set_quantity">Set Order Quantity</string>
+    <string name="billing_error">Please pick billing address\n</string>
+    <string name="shipping_error">Please pick shipping address\n</string>
+    <string name="order_date_error">Please add proper order date\n</string>
+    <string name="order_time_error">Please enter proper order time\n</string>
+    <string name="delivery_date_error">Please add proper delivery date\n</string>
+    <string name="delivery_time_error">Please enter proper delivery time\n</string>
     <string name="save">Save</string>
     <string-array name="nav_titles">
         <item>Home</item>

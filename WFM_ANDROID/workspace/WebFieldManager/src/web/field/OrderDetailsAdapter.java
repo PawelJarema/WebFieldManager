@@ -1,29 +1,52 @@
 package web.field;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import web.field.model.entity.*;
+import web.field.model.entity.OrderDetail;
+import web.field.model.entity.Product;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail>{
-	Context context;
-	int layoutResourceId;
-	List<OrderDetail> data = new ArrayList<OrderDetail>();
-
+public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
+	
+	// HashMap with methods
+	private static HashMap<Integer, Integer> itemsOrdered; 
+	public void addOrderItemQty(int position, int qty) {
+		if (qty > 0) {
+			itemsOrdered.put(position, qty);
+		}
+	}
+	public HashMap<Integer, Integer> getAllOrderQtyData() {
+		return itemsOrdered;
+	}
+	public int getQtyForOrder(int position) {
+		return itemsOrdered.get(position);
+	}
+	
+	private
+		Context context;
+		int layoutResourceId;
+		List<OrderDetail> data = new ArrayList<OrderDetail>();
+	
 	public OrderDetailsAdapter(Context context, int layoutResourceId,
 			List<OrderDetail> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
+		this.itemsOrdered = new HashMap<Integer, Integer>();
 	}
 
 	@Override
@@ -39,6 +62,8 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail>{
 			holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
 			holder.tvDescription = (TextView) row.findViewById(R.id.order_product_description);
 			holder.ivPicture = (ImageView) row.findViewById(R.id.order_product_image);
+			holder.etQty = (EditText) row.findViewById(R.id.order_detail_qty);
+			holder.etQty.setFocusable(false);
 			row.setTag(holder);
 		} else {
 			holder = (OrderDetailsHolder) row.getTag();
@@ -49,6 +74,10 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail>{
 		holder.tvCode.setText(product.getCode());
 		holder.tvId.setText(orderDetail.getOrderDetailTempId());
 		holder.tvDescription.setText(product.getProductDescription());
+		if (itemsOrdered.containsKey(Integer.valueOf(position)))
+			holder.etQty.setText(itemsOrdered.get(position).toString());	
+		else
+			holder.etQty.setText("");
 		// holder.cbStatus.setChecked(customer.isActive());
 		
 		// style list depending on position
@@ -56,6 +85,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail>{
 			row.setBackgroundColor(context.getResources().getColor(R.color.list_dark));
 		else
 			row.setBackgroundColor(context.getResources().getColor(R.color.list_light));
+		
 		return row;
 	}
 
@@ -71,16 +101,15 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail>{
 
 	@Override
 	public long getItemId(int index) {
-		// while primery key is string, return index
+		// while primary key is string, return index
 		return index;
-	}
+	}	
 	
-	
-
 	static class OrderDetailsHolder {
+		EditText etQty;
 		ImageView ivPicture;
 		TextView tvId;
 		TextView tvCode;
 		TextView tvDescription;
-	}
+	}	
 }

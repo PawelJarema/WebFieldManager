@@ -57,7 +57,6 @@ public class NewOrderFragment extends WebFieldFragment {
 	EditText etDeliveryTime;
 	EditText etComments;
 	
-
 	Button bBillTo;
 	Button bShipTo;
 
@@ -71,7 +70,6 @@ public class NewOrderFragment extends WebFieldFragment {
 		getRelatedDbData();
 		populateTextViews(view);
 		setHasOptionsMenu(true);
-		
 		return view;
 	}
 
@@ -94,22 +92,22 @@ public class NewOrderFragment extends WebFieldFragment {
 		String shipping_address = (String) tvShippingAddress.getText();
 		
 		if (billing_address == null || billing_address.length() < 1) 
-			errors += "Please pick billing address\n";
+			errors += getResources().getString(R.string.billing_error);
 		if (shipping_address == null || billing_address.length() < 1) 
-			errors += "Please pick shipping address\n";
+			errors += getResources().getString(R.string.shipping_error);
 		
 		String order_date = etOrderDate.getText().toString();
 		String order_time = etOrderTime.getText().toString();;
 		String delivery_date = etDeliveryDate.getText().toString();;
 		String delivery_time = etDeliveryTime.getText().toString();;
 		if (!dateOk(order_date))
-			errors += "Please add proper order date\n";
+			errors += getResources().getString(R.string.order_date_error);
 		if (!dateOk(delivery_date))
-			errors += "Please add proper delivery date\n";
+			errors += getResources().getString(R.string.delivery_date_error);
 		if (!timeOk(order_time))
-			errors += "Please enter proper order time\n";
+			errors += getResources().getString(R.string.order_time_error);
 		if (!timeOk(delivery_time))
-			errors += "Please enter proper delivery time\n";
+			errors += getResources().getString(R.string.order_date_error);
 	
 		if (errors != "") {
 			Toast.makeText(getActivity(), errors, Toast.LENGTH_LONG).show();
@@ -148,7 +146,7 @@ public class NewOrderFragment extends WebFieldFragment {
 	public void onResume() {
 		super.onResume();
 	}
-	
+
 	// Date / Time pickers
 	public void showTimePicker(EditText v) {
 		DialogFragment timePicker = new TimePickerFragment(v);
@@ -193,7 +191,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		etDeliveryDate.setText(date);
 		etDeliveryTime = (EditText) view.findViewById(R.id.order_delivery_time);
 		etDeliveryTime.setText(time);
-		
+
 		//	Time / Date picker listeners
 		OnFocusChangeListener pickListener = new OnFocusChangeListener() {
 			
@@ -219,7 +217,6 @@ public class NewOrderFragment extends WebFieldFragment {
 		etDeliveryDate.setOnFocusChangeListener(pickListener);
 		etOrderTime.setOnFocusChangeListener(pickListener);
 		etDeliveryTime.setOnFocusChangeListener(pickListener);
-		
 		etComments = (EditText) view.findViewById(R.id.order_comments);
 
 		/*
@@ -246,7 +243,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		bBillTo.setOnClickListener(click_listener);
 		bShipTo.setOnClickListener(click_listener);
 	}	
-	
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.new_order, menu);
@@ -265,7 +262,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		}
 		return true;
 	}
-	
+		
 	@Override
 	public void onCreateContextMenu(ContextMenu contextMenu, View v,
 			ContextMenuInfo menuInfo) {
@@ -361,8 +358,7 @@ public class NewOrderFragment extends WebFieldFragment {
 			User currentUser = db.getUser(token);
 			//TODO this doesn't work
 			order.setTenantId(currentUser.getTenantId());
-			//order.setTenantId(1); << stub
-			
+			//order.setTenantId(1); //<< stub
 			// save order as draft and go to next step
 			db.saveOrderFromTemplate(order, template);
 

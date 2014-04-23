@@ -14,36 +14,43 @@
         android:text="Id"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/order_detail_temp_id"
+        android:layout_width="0dip"
+        android:layout_height="0dip"
+        android:focusable="false"
+        android:text="TempId"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dip"
-        android:orientation="horizontal"
-        android:weightSum="100" >
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/order_product_image"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_gravity="left"
-            android:layout_weight="5" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/order_product_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
-            android:layout_weight="25"
-            android:paddingLeft="17dip"
+            android:layout_weight="75"
             android:text="name"
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/order_line_qty"
+            android:id="@+id/order_detail_qty"
+            android:inputType="number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
-            android:layout_weight="18"
+            android:layout_gravity="right|center_vertical"
+            android:layout_weight="25"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -105,6 +112,8 @@
             android:layout_weight="35"
             android:text="789"
             android:textSize="12sp" />
+
+        
     </LinearLayout>
 
 </LinearLayout>
