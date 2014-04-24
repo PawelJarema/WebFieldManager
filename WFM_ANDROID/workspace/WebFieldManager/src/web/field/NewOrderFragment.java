@@ -281,7 +281,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		// sets up context menu
 		int action_group_code = 108; // 0 = bill to; 1 = ship_to; 108 = select
 
-		/*switch (v.getId()) {
+		switch (v.getId()) {
 		case R.id.order_bill_to:
 			contextMenu.setHeaderTitle("Bill to:");
 			int addrBillToPos = 0;
@@ -304,7 +304,7 @@ public class NewOrderFragment extends WebFieldFragment {
 			contextMenu.setHeaderTitle("Ship to:");
 
 			break;
-		case R.id.neworder_goto_add_product: */
+		default:
 			int templatePos = 0;
 			action_group_code = 108;
 			for (OrderTemplateSimple template : templates) 
@@ -313,7 +313,7 @@ public class NewOrderFragment extends WebFieldFragment {
 						templatePos, template.getTemplateName());
 				templatePos++;
 			}
-		//} 
+		} 
 		// sets context menu clicks to be handled from fragment, not activity
 		for (int i = 0; i < contextMenu.size(); i++) {
 			contextMenu.getItem(i).setOnMenuItemClickListener(listener);
