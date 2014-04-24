@@ -39,7 +39,7 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 	private Button bFilterByCategory;
 	private Button bFilterByProducer;
 	private Button bFilterByFamiliy;
-	
+
 	private Order order;
 	private OrderTemplate orderTemplate;
 	private PromoPayTermDetail payTermDetail;

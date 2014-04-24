@@ -62,8 +62,8 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 			holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
 			holder.tvDescription = (TextView) row.findViewById(R.id.order_product_description);
 			holder.ivPicture = (ImageView) row.findViewById(R.id.order_product_image);
-			holder.etQty = (EditText) row.findViewById(R.id.order_detail_qty);
-			holder.etQty.setFocusable(false);
+			holder.tvQty = (TextView) row.findViewById(R.id.order_detail_qty);
+			holder.tvQty.setFocusable(false);
 			row.setTag(holder);
 		} else {
 			holder = (OrderDetailsHolder) row.getTag();
@@ -75,9 +75,9 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 		holder.tvId.setText(orderDetail.getOrderDetailTempId());
 		holder.tvDescription.setText(product.getProductDescription());
 		if (itemsOrdered.containsKey(Integer.valueOf(position)))
-			holder.etQty.setText(itemsOrdered.get(position).toString());	
+			holder.tvQty.setText(itemsOrdered.get(position).toString());	
 		else
-			holder.etQty.setText("");
+			holder.tvQty.setText("");
 		// holder.cbStatus.setChecked(customer.isActive());
 		
 		// style list depending on position
@@ -106,7 +106,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 	}	
 	
 	static class OrderDetailsHolder {
-		EditText etQty;
+		TextView tvQty;
 		ImageView ivPicture;
 		TextView tvId;
 		TextView tvCode;
