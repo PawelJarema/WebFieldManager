@@ -76,12 +76,36 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 		orderDetails = new ArrayList<OrderDetail>(Arrays.asList(orderDetailsArr));
 		
 		prepareUiElements();
+		restoreQtyData(savedInstanceState, adapter);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.addproducts, menu);
 		return true;
+	}
+	
+	private void prepareUiElements() {
+		
+		adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
+		
+		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
+		lvOrderLines.setAdapter(adapter);
+		
+		lvOrderLines.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {			
+				QtyPickerFragment f = new QtyPickerFragment();
+				Bundle bundle = new Bundle();
+				int current_qty = adapter.getQtyForOrder(position);
+				bundle.putInt("position", position);
+				bundle.putInt("qty", current_qty);
+				f.setArguments(bundle);
+				f.show(getSupportFragmentManager(), "quantity picker");
+			}		
+		}); 
 	}
 	
 	private OrderDetail rewriteOrderQty(int position) {
@@ -100,7 +124,7 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 	private boolean sendOrder() {
 		// adapter stores order qty data
 		// adapter has methods to get ordered items with respective quantity
-		Set<Integer> ordered_items_by_list_position = adapter.getAllOrderQtyData().keySet();
+		Set<Integer> ordered_items_by_list_position = adapter.getOrderQtyDataHash().keySet();
 		for (int position : ordered_items_by_list_position) {
 			int qty = adapter.getQtyForOrder(position);
 			orderDetails.set(position, rewriteOrderQty(position));
@@ -108,26 +132,6 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 		order.setOrderDetails((ForeignCollection<OrderDetail>) orderDetails);
 		this.sendOrderStrategy.sendOrder(order);
 		return true;
-	}
-	
-	private void prepareUiElements() {
-		
-		adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts, orderDetails);
-		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
-		lvOrderLines.setAdapter(adapter);
-		
-		lvOrderLines.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {			
-				QtyPickerFragment f = new QtyPickerFragment();
-				Bundle bundle = new Bundle();
-				bundle.putInt("position", position);
-				f.setArguments(bundle);
-				f.show(getSupportFragmentManager(), "quantity picker");
-			}		
-		}); 
 	}
 
 	@Override
@@ -191,6 +195,21 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 		// adapter stores order qty data
 		if (qty > 0) {
 			adapter.addOrderItemQty(position, qty);
+			adapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (adapter != null) {
+			outState.putSerializable("qty_values", adapter.getOrderQtyDataHash());
+		}
+	}
+	
+	private void restoreQtyData(Bundle savedInstanceState, OrderDetailsAdapter adapter) {
+		if (savedInstanceState != null) {
+			adapter.setOrderQtyDataHash((HashMap<Integer, Integer>) savedInstanceState.getSerializable("qty_values"));
 			adapter.notifyDataSetChanged();
 		}
 	}

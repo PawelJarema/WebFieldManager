@@ -28,11 +28,18 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 			itemsOrdered.put(position, qty);
 		}
 	}
-	public HashMap<Integer, Integer> getAllOrderQtyData() {
+	public HashMap<Integer, Integer> getOrderQtyDataHash() {
 		return itemsOrdered;
 	}
+	public void setOrderQtyDataHash(HashMap<Integer, Integer> qty_data) {
+		if (qty_data != null)
+			this.itemsOrdered = qty_data;
+	}
 	public int getQtyForOrder(int position) {
-		return itemsOrdered.get(position);
+		if (itemsOrdered.containsKey(position))
+			return itemsOrdered.get(position);
+		else 
+			return 0;
 	}
 	
 	private

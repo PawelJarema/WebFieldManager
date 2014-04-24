@@ -58,9 +58,12 @@ public class QtyPickerFragment extends DialogFragment implements OnClickListener
 		getDialog().setTitle(getResources().getString(R.string.set_quantity));
 		getDialog().setCanceledOnTouchOutside(false);
 		this.position = getArguments().getInt("position");
+		int previous_qty = getArguments().getInt("qty"); 
 		
 		etQty = (EditText) view.findViewById(R.id.qty_edit);
 		etQty.setFocusable(false); // edit text worked via visual keyboard
+		if (previous_qty > 0)
+			etQty.setText(String.valueOf(previous_qty));
 		Button btnOk = (Button) view.findViewById(R.id.qty_ok);
 		btnOk.setOnClickListener(this);
 		
