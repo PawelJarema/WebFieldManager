@@ -111,7 +111,7 @@ public class HomeActivity extends FragmentActivity {
 			settingsScreen.show(settingsScreen);
 		}
 		
-		
+
 		drawer_layout.closeDrawers();
 	}
 
