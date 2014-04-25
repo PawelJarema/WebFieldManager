@@ -14,6 +14,7 @@ import web.field.helpers.SyncCommand;
 import web.field.helpers.SynchronizationResult;
 import web.field.model.json.JsonRequest;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 
@@ -110,5 +111,4 @@ public class SynchronizationService implements Subject {
 	public Object getUpdate(Observer obj) {
 		return result;
 	}
-
 }

@@ -1,21 +1,36 @@
 package web.field;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-
 import web.field.helpers.Observer;
 import web.field.helpers.SynchronizationResult;
 import web.field.sync.SynchronizationService;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
 public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 		implements Observer {
 
+	private ProgressDialog dialog;
+	
+	private void showProgressBar() {
+		dialog = new ProgressDialog(this); 
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
+		dialog.setMessage(getResources().getString(R.string.synchronization_in_progress)); 
+		dialog.show();
+	}
+	
+	private void hideProgressBar() {
+		dialog.dismiss();
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		showProgressBar();
 		setContentView(R.layout.activity_synchronization);
 
 		SharedPreferences preferences = WebFieldApplication
@@ -29,7 +44,6 @@ public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 			service.register(this);
 
 			service.doInitialDataPull(getHelper());
-
 		}
 
 	}
@@ -37,6 +51,7 @@ public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 	@Override
 	public void update(Object obj) {
 		SynchronizationResult syncResult = (SynchronizationResult) obj;
+		hideProgressBar();
 		if (syncResult != null) {
 			if (syncResult.isSucceed()) {
 				SharedPreferences preferences = WebFieldApplication
