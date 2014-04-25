@@ -2,13 +2,15 @@ package web.field;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
-public class HomeTabsAdapter extends FragmentPagerAdapter {
+public class HomeTabsAdapter extends FragmentStatePagerAdapter {
+	
 	public HomeTabsAdapter(FragmentManager fm) {
 		super(fm);
 	}
-
+	
 	@Override
 	public Fragment getItem(int index) {
 		switch (index) {

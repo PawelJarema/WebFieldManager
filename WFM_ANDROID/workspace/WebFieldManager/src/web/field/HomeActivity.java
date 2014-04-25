@@ -188,22 +188,4 @@ public class HomeActivity extends FragmentActivity {
 		boolean drawerOpen = drawer_layout.isDrawerOpen(drawer_list);
 		return super.onPrepareOptionsMenu(menu);
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_home, container,
-					false);
-			return rootView;
-		}
-	}
-
 }

@@ -121,7 +121,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 			switch (item.getItemId()) {
 			case 0:
 				// assign position
-				break;
+				return false;
 			case 1:
 				// customer details
 				fragment = new CustomerFragment();
