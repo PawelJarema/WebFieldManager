@@ -31,12 +31,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	private List<CustomerSimple> data;
 	private IDBAdapter db;
 	private CustomersAdapter adapter;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-	}
 	
 	@Override
 	public void onViewStateRestored(Bundle bundle) {
@@ -46,7 +40,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		setRetainInstance(true);
+		setRetainInstance(false);
 
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest

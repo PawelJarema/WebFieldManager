@@ -25,11 +25,11 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 	private List<OrderSimple> data;
 	private IDBAdapter db;
 	private DraftOrdersAdapter adapter;
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		setRetainInstance(true);
+		setRetainInstance(false);
 
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest

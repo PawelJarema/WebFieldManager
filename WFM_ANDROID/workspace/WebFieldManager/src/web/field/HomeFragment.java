@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 public class HomeFragment extends WebFieldFragment implements
 		ActionBar.TabListener {
 
+	private View view;
 	private ViewPager view_pager;
 	private HomeTabsAdapter tabs_adapter;
 	private ActionBar action_bar;
@@ -20,14 +20,13 @@ public class HomeFragment extends WebFieldFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		action_bar = getActivity().getActionBar();
-		action_bar.removeAllTabs();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		action_bar.removeAllTabs();
-		setSwipeTabs(getView());
+		if (view != null)
+			setSwipeTabs(view);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class HomeFragment extends WebFieldFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_home, container, false);
+		view = inflater.inflate(R.layout.fragment_home, container, false);
 		setSwipeTabs(view);
 		return view;
 	}
@@ -61,8 +60,9 @@ public class HomeFragment extends WebFieldFragment implements
 	}
 
 	private void setSwipeTabs(View view) {
+		action_bar.removeAllTabs();
 		view_pager = (ViewPager) view.findViewById(R.id.home_pager);
-		tabs_adapter = new HomeTabsAdapter(getFragmentManager());
+		tabs_adapter = new HomeTabsAdapter(getChildFragmentManager());
 		view_pager.setAdapter(tabs_adapter);
 		view_pager
 			.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

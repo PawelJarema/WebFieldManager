@@ -48,20 +48,21 @@
     <LinearLayout
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:orientation="vertical"
+    	android:orientation="horizontal"
     	android:layout_marginBottom="7dip">
         <ListView
             android:id="@+id/addproduct_list"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:padding="10dip"
 	        android:divider="@color/list_div"
 	        android:dividerHeight="1dip" />
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dip"
+            android:padding="10dip"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="100">
             <TextView
@@ -148,6 +149,11 @@
 	            android:layout_height="wrap_content"
 	            android:gravity="center"
 	            android:textSize="12sp" /> 
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:orientation="vertical"
+	            android:id="@+id/addproducts_fragment_container" />
         </LinearLayout>    
     </LinearLayout>
 </LinearLayout>

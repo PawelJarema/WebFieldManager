@@ -24,14 +24,16 @@ public class WebFieldFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
     	super.onCreate(savedInstanceState);
-    	setRetainInstance(true);
+    	setRetainInstance(false);
     	checkNavigationLevelAndSetBackButton();
     }
     
     private void checkNavigationLevelAndSetBackButton() {
     	Bundle arguments = getArguments();
 	    if (arguments != null && arguments.getInt("fragment_nav_level") == 1) {
-	    	((HomeActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);			
+	    	try {
+	    		((HomeActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
+	    	} catch(Exception e) { };
 	    }
     }
 

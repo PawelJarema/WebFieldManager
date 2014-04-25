@@ -121,6 +121,8 @@ public class QtyPickerFragment extends DialogFragment implements
 
 	private void addNumberToEditText(char digit) {
 		String current_text = etQty.getText().toString();
+		if (current_text.length() == 0 && digit == '0')
+			return;
 		etQty.setText(current_text + digit);
 	}
 
