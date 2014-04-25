@@ -27,10 +27,6 @@ public class WebFieldFragment extends Fragment {
     	setRetainInstance(true);
     	checkNavigationLevelAndSetBackButton();
     }
-   
-    private void runAnotherFragment() {
-    	
-    }
     
     private void checkNavigationLevelAndSetBackButton() {
     	Bundle arguments = getArguments();

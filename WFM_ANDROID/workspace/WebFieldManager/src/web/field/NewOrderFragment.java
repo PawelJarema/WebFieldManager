@@ -357,8 +357,8 @@ public class NewOrderFragment extends WebFieldFragment {
 
 			User currentUser = db.getUser(token);
 			//TODO this doesn't work
-			order.setTenantId(currentUser.getTenantId());
-			//order.setTenantId(1); //<< stub
+			//order.setTenantId(currentUser.getTenantId());
+			order.setTenantId(1); //<< stub
 			// save order as draft and go to next step
 			db.saveOrderFromTemplate(order, template);
 

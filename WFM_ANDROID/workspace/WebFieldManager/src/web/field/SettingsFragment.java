@@ -3,6 +3,7 @@ package web.field;
 import java.util.List;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
@@ -40,20 +41,41 @@ public class SettingsFragment extends PreferenceFragment {
 	 */
 
 	private static final boolean ALWAYS_SIMPLE_PREFS = false;
+	
+	private boolean visible = false;
+	private ActionBar action_bar;
 
 	//TODO delete (in case)
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_headers);
+        action_bar = getActivity().getActionBar();
+        ((HomeActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
     }
 	
 	@Override
 	public void onStart() {
-		//super.onStart(savedInstanceState);
+		super.onStart();
 		setupSimplePreferencesScreen();
 	}
-
+	
+	public boolean _isVisible() {
+		return visible;
+	}
+	
+	public void show(SettingsFragment itself) {
+		visible = true;
+	}
+	
+	public void hide(SettingsFragment itself) {
+		visible = false;
+		action_bar.setTitle("Home");
+		((HomeActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(true);
+	}
+	
+	public void onBackPressed() {
+	    // your code.
+	}
 	/**
 	 * Shows the simplified settings UI if the device configuration if the
 	 * device configuration dictates that a simplified, single-pane UI should be

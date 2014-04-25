@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,7 +37,8 @@ public class HomeActivity extends FragmentActivity {
 	// private ViewPager view_pager;
 	// private HomeTabsAdapter tabs_adapter;
 	private ActionBar action_bar;
-
+	private SettingsFragment settingsScreen;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,15 +92,25 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 	private void selectItem(int position) {
-		// TODO code
-		action_bar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		action_bar.setNavigationMode(ActionBar.DISPLAY_HOME_AS_UP);
 		String[] titles = getResources().getStringArray(R.array.nav_titles);
-		Fragment fragment = Fragment.instantiate(HomeActivity.this, fragments[position]);
-		action_bar.setTitle(titles[position]);	
-		FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-		tx.replace(R.id.home_content_frame, fragment);
-		tx.addToBackStack(null);
-		tx.commit();
+		// there's currently no Preference Fragment compatible with v4 support Fragment
+		// prefs at position 4 must be run from old FragmentManager
+		if (position < 4) {
+			Fragment fragment = Fragment.instantiate(HomeActivity.this, fragments[position]);
+			action_bar.setTitle(titles[position]);	
+			FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+			tx.replace(R.id.home_content_frame, fragment);
+			tx.addToBackStack(null);
+			tx.commit();
+		} else {
+			action_bar.setTitle(titles[position]);
+			settingsScreen = new SettingsFragment();
+			getSupportFragmentManager().beginTransaction().replace(R.id.home_content_frame, new Fragment()).addToBackStack(null).commit();
+			getFragmentManager().beginTransaction().add(R.id.home_content_frame, settingsScreen).addToBackStack("show_settings").commit();
+			settingsScreen.show(settingsScreen);
+		}
+		
 		
 		drawer_layout.closeDrawers();
 	}
@@ -112,14 +124,16 @@ public class HomeActivity extends FragmentActivity {
 			return true;
 		}
 		
-		//TODO here's the code for back button using back stack (fragment history) 
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// TODO navigate to home fragment or to root activity
 			drawer_toggle.setDrawerIndicatorEnabled(true);
 			FragmentManager sfm = getSupportFragmentManager();
 			if (sfm.getBackStackEntryCount() > 0){	
 			    sfm.popBackStackImmediate();
+			    if (settingsScreen != null && settingsScreen._isVisible()) {
+			    	getFragmentManager().popBackStack();
+			    	settingsScreen.hide(settingsScreen);
+			    }
 			}
 			return true;
 		case R.id.action_orders:
@@ -134,6 +148,15 @@ public class HomeActivity extends FragmentActivity {
 		action_bar.setTitle(title);
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (settingsScreen != null && settingsScreen._isVisible()) {
+			settingsScreen.hide(settingsScreen);
+			getFragmentManager().popBackStack();
+		}
+		super.onBackPressed();
+	}
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
