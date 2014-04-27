@@ -19,12 +19,14 @@ import web.field.sync.SendOrderStrategy;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,8 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 	// Product List
 	private OrderDetailsAdapter adapter;
 	private ListView lvOrderLines;
+	private LinearLayout product_data_popup;
+	private LinearLayout qty_picker_fragment_layout;
 	
 	// Summary TextViews
 	private TextView summary;  // <to display total order value and messages
@@ -64,6 +68,7 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 		sendOrderStrategy = new SendOrderStrategy(this);
 		
 		setContentView(R.layout.activity_addproducts);
+		qty_picker_fragment_layout = (LinearLayout) this.findViewById(R.id.addproducts_qty_fragment_container);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
 		
@@ -96,14 +101,26 @@ public class AddProductsActivity extends FragmentActivity implements ISendOrderC
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {			
-				QtyPickerFragment f = new QtyPickerFragment();
+					int position, long id) {
+				if (product_data_popup != null)
+					product_data_popup.setVisibility(View.GONE);
+				product_data_popup = (LinearLayout) view.findViewById(R.id.order_popup_layout);
+				product_data_popup.setVisibility(View.VISIBLE);
+				//TODO showMoreProductData();
+				QtyPickerFragment frag = new QtyPickerFragment();
 				Bundle bundle = new Bundle();
 				int current_qty = adapter.getQtyForOrder(position);
 				bundle.putInt("position", position);
 				bundle.putInt("qty", current_qty);
-				f.setArguments(bundle);
-				f.show(getSupportFragmentManager(), "quantity picker");
+				frag.setArguments(bundle);
+				// shows QtyPicker as Dialog Window:
+				// f.show(getSupportFragmentManager(), "quantity picker");
+				// shows QtyPicker as layout child
+				//qty_picker_fragment_layout;
+				FragmentManager manager = getSupportFragmentManager();
+				FragmentTransaction transaction = manager.beginTransaction();
+				transaction.replace(R.id.addproducts_qty_fragment_container, frag);
+				transaction.commit();
 			}		
 		}); 
 	}

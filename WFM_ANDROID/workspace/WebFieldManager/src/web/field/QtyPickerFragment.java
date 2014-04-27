@@ -57,8 +57,8 @@ public class QtyPickerFragment extends DialogFragment implements
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.qty_picker_fragment, container,
 				false);
-		getDialog().setTitle(getResources().getString(R.string.set_quantity));
-		getDialog().setCanceledOnTouchOutside(false);
+		//getDialog().setTitle(getResources().getString(R.string.set_quantity));
+		//getDialog().setCanceledOnTouchOutside(false);
 		this.position = getArguments().getInt("position");
 		int previous_qty = getArguments().getInt("qty"); 
 		etQty = (EditText) view.findViewById(R.id.qty_edit);
