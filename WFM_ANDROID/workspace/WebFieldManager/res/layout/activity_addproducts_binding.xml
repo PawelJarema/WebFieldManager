@@ -1,0 +1,163 @@
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:binding="http://www.gueei.com/android-binding/"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip"
+    android:orientation="vertical"
+    tools:context="web.field.AddproductsBindingActivity$PlaceholderFragment" >
+
+    <TableRow
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:weightSum="4"
+    	android:layout_marginBottom="7dip">
+    	<Button
+    	    android:id="@+id/sort_by_family"
+    	    android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/family"
+    	    android:textSize="12sp" />
+    	<Button
+    	    android:id="@+id/sort_by_category"
+    	    android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/category"
+    	    android:textSize="12sp" />
+    	<Button
+    	    android:id="@+id/sort_by_manufacturer"
+    	    android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/manufacturer"
+    	    android:textSize="12sp" />
+    	<Button
+    	    android:id="@+id/sort_by_brand"
+    	    android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    	    style="@drawable/basic_button"
+    	    android:text="@string/brand"
+    	    android:textSize="12sp" />
+    	
+    </TableRow>
+    	
+    <TableRow android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal"
+    	android:weightSum="5">
+	</TableRow>
+    <TableRow android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:orientation="horizontal"
+    	android:weightSum="5">
+    	
+        <ListView
+            android:id="@+id/addproduct_list"
+            android:layout_weight="3"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:padding="10dip"
+	        android:divider="@color/list_div"
+	        android:dividerHeight="1dip"
+	        binding:itemSource="OrderDetails" />
+        
+        <LinearLayout
+            android:layout_weight="2"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100">
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_template_discount"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+	            android:id="@+id/order_template_discount"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_template_threshold_discount"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+	            android:id="@+id/order_template_threshold_discount"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+             <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_payterms_discount"
+	            android:gravity="center" 
+	            android:textSize="12sp"/>
+            <TextView
+	            android:id="@+id/order_payterms_discount"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_total_before_discount"
+	            android:gravity="center" 
+	            android:textSize="12sp"/>
+            <TextView
+	            android:id="@+id/order_total_before_discount"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center" 
+	            android:textSize="12sp"/>
+             <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_total_discount"
+	            android:gravity="center" />
+            <TextView
+                 android:id="@+id/order_total_discount"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center" 
+	            android:textSize="12sp"/>
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_total_free_qty_value"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+                 android:id="@+id/order_total_free_qty_value"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/order_total_value"
+	            android:gravity="center"
+	            android:textSize="12sp" 
+	             />
+            <TextView
+                 android:id="@+id/order_total_value"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:gravity="center"
+	            android:textSize="12sp" />
+            
+        </LinearLayout>
+        
+    </TableRow>
+  
+
+</TableLayout>

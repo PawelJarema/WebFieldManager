@@ -103,4 +103,6 @@ public interface IDBAdapter {
 	public List<CustomerSimple> listCustomersNearMe(double latitude, double longitude);
 	public User getUser(String token);
 	public void loadUsers(List<JsonUser> users);
+	
+	public List<PromoPayTermDetail> getPromoPayTermDetails();
 }

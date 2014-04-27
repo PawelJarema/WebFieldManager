@@ -3,10 +3,9 @@ package web.field.order.processing;
 import java.math.BigDecimal;
 import java.util.*;
 
-import web.field.db.IDBAdapter;
 import web.field.model.entity.*;
 
-public class OrderCache {
+public class OrderViewModel {
 	private OrderTemplate orderTemplate;
 	private List<OrderTemplateDetail> orderTemplateDetails = new ArrayList<OrderTemplateDetail>();
 	private List<PromoPayTermDetail> promoPayTermDetails = new ArrayList<PromoPayTermDetail>();
@@ -17,41 +16,6 @@ public class OrderCache {
 
 	private Map<Integer, OrderTemplateDetail> templateByProduct = new Hashtable<Integer, OrderTemplateDetail>();
 	private Map<Integer, List<PromoThresholdDetail>> promoThresholdsByProduct = new Hashtable<Integer, List<PromoThresholdDetail>>();
-
-	public OrderCache(OrderTemplate orderTemplate,
-			List<PromoPayTermDetail> promoPayTermDetails, IDBAdapter db) {
-		super();
-		this.orderTemplate = orderTemplate;
-
-		OrderTemplateDetail[] otDetails = orderTemplate
-				.getOrdersTemplateDetails().toArray(
-						new OrderTemplateDetail[] {});
-		this.orderTemplateDetails = Arrays.asList(otDetails);
-
-		this.promoPayTermDetails = promoPayTermDetails;
-		this.orderTemplateThreshold = db
-				.getOrderTemplateThreshold(orderTemplate
-						.getOrderTemplateThreshold()
-						.getOrdersTemplateThresholdId());
-
-		if (orderTemplateThreshold != null) {
-			OrderTemplateThresholdDetail[] thresholdDetails = orderTemplateThreshold
-					.getOrdersTemplateThresholdDetails().toArray(
-							new OrderTemplateThresholdDetail[] {});
-			this.orderTemplateThresholdDetails = Arrays
-					.asList(thresholdDetails);
-		}
-
-		this.promoThreshold = db.getPromoThreshold(orderTemplate.getPromoThreshold().getPromoThresholdId());
-
-		if (promoThreshold != null) {
-			PromoThresholdDetail[] promoThresholdDetails = promoThreshold
-					.getPromoThresholdDetail().toArray(
-							new PromoThresholdDetail[] {});
-
-			this.promoThresholdDetails = Arrays.asList(promoThresholdDetails);
-		}
-	}
 
 	public OrderTemplate getOrderTemplate() {
 		return orderTemplate;
@@ -139,6 +103,7 @@ public class OrderCache {
 	public OrderTemplateThresholdDetail getOrderTemplateThresholdDetailForOrder(
 			double orderTotal) {
 		OrderTemplateThresholdDetail result = null;
+		
 
 		return result;
 	}
@@ -149,33 +114,33 @@ public class OrderCache {
 		int productId = detail.getProduct().getProductId();
 		BigDecimal productPrice = detail.getProduct().getPrice();
 		List<PromoThresholdDetail> promoThresholdDetails = null;
-
+		
 		// get by product
-		if (promoThresholdsByProduct.containsKey(productId)) {
+		if(promoThresholdsByProduct.containsKey(productId)){
 			promoThresholdDetails = promoThresholdsByProduct.get(productId);
-		} else {
+		}
+		else{
 			promoThresholdDetails = new ArrayList<PromoThresholdDetail>();
-			for (PromoThresholdDetail thresholdDetail : this.promoThresholdDetails) {
-				if (thresholdDetail.getProduct().getProductId() == productId) {
+			for(PromoThresholdDetail thresholdDetail : this.promoThresholdDetails){
+				if(thresholdDetail.getProduct().getProductId() == productId){
 					promoThresholdDetails.add(thresholdDetail);
 				}
 			}
 			promoThresholdsByProduct.put(productId, promoThresholdDetails);
 		}
-
+		
 		// get basing on detail value
 		int qty = detail.getQty();
 		BigDecimal detailValue = productPrice.multiply(new BigDecimal(qty));
-		for (PromoThresholdDetail thresholdDetail : promoThresholdDetails) {
+		for(PromoThresholdDetail thresholdDetail : promoThresholdDetails){
 			int minValue = thresholdDetail.getThresholdMinValue();
 			int maxValue = thresholdDetail.getThresholdMaxValue();
-			if (detailValue.compareTo(new BigDecimal(minValue)) > 0
-					&& detailValue.compareTo(new BigDecimal(maxValue)) < 0) {
+			if(detailValue.compareTo(new BigDecimal(minValue)) > 0 && detailValue.compareTo(new BigDecimal(maxValue)) < 0){
 				result = thresholdDetail;
 				return result;
 			}
 		}
-
+		
 		return result;
 	}
 

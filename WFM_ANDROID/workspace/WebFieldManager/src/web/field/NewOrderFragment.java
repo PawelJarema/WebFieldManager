@@ -50,13 +50,13 @@ public class NewOrderFragment extends WebFieldFragment {
 	TextView tvCustomer;
 	TextView tvBillingAddress;
 	TextView tvShippingAddress;
-	
+
 	EditText etOrderDate;
 	EditText etOrderTime;
 	EditText etDeliveryDate;
 	EditText etDeliveryTime;
 	EditText etComments;
-	
+
 	Button bBillTo;
 	Button bShipTo;
 
@@ -79,27 +79,32 @@ public class NewOrderFragment extends WebFieldFragment {
 			return false;
 		return true;
 	}
+
 	private boolean timeOk(String time) {
 		if (!time.matches("\\d{1,2}:\\d{2}"))
 			return false;
 		return true;
 	}
-	//TODO make validation more sublime, save to db?
+
+	// TODO make validation more sublime, save to db?
 	private boolean validateEntries() {
 		String errors = "";
-		
+
 		String billing_address = (String) tvBillingAddress.getText();
 		String shipping_address = (String) tvShippingAddress.getText();
-		
-		if (billing_address == null || billing_address.length() < 1) 
+
+		if (billing_address == null || billing_address.length() < 1)
 			errors += getResources().getString(R.string.billing_error);
-		if (shipping_address == null || billing_address.length() < 1) 
+		if (shipping_address == null || billing_address.length() < 1)
 			errors += getResources().getString(R.string.shipping_error);
-		
+
 		String order_date = etOrderDate.getText().toString();
-		String order_time = etOrderTime.getText().toString();;
-		String delivery_date = etDeliveryDate.getText().toString();;
-		String delivery_time = etDeliveryTime.getText().toString();;
+		String order_time = etOrderTime.getText().toString();
+		;
+		String delivery_date = etDeliveryDate.getText().toString();
+		;
+		String delivery_time = etDeliveryTime.getText().toString();
+		;
 		if (!dateOk(order_date))
 			errors += getResources().getString(R.string.order_date_error);
 		if (!dateOk(delivery_date))
@@ -108,14 +113,14 @@ public class NewOrderFragment extends WebFieldFragment {
 			errors += getResources().getString(R.string.order_time_error);
 		if (!timeOk(delivery_time))
 			errors += getResources().getString(R.string.order_date_error);
-	
+
 		if (errors != "") {
 			Toast.makeText(getActivity(), errors, Toast.LENGTH_LONG).show();
 			return false;
 		}
 		return true;
 	}
-	
+
 	private void getRelatedDbData() {
 		db = new DBAdapter(getHelper());
 		orderId = getArguments().getInt("order_id");
@@ -124,10 +129,10 @@ public class NewOrderFragment extends WebFieldFragment {
 		} else {
 			order = new Order();
 			order.setOrderTempId(UUID.randomUUID().toString());
-			
+
 			// set order date
 			order.setOrderDate(Converter.dateToSeconds(new Date()));
-			
+
 			// set delivery date
 			order.setDeliveryDate(Converter.dateToSeconds(new Date()));
 		}
@@ -136,7 +141,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		this.customer = db.getCustomer((int) customerId);
 		this.addresses = customer.getAddresses().toArray(
 				new CustomerAddress[] {});
-		
+
 		order.setCustomer(customer);
 		order.setBillTo(addresses[0]);
 		order.setShipTo(addresses[0]);
@@ -152,11 +157,12 @@ public class NewOrderFragment extends WebFieldFragment {
 		DialogFragment timePicker = new TimePickerFragment(v);
 		timePicker.show(getFragmentManager(), "timepicker");
 	}
+
 	public void showDatePicker(EditText v) {
 		DialogFragment datePicker = new DatePickerFragment(v);
 		datePicker.show(getFragmentManager(), "datepicker");
 	}
-	
+
 	private void populateTextViews(View view) {
 		getActivity().getActionBar().setTitle("New Order");
 		product_list = (ListView) view.findViewById(R.id.order_product_list);
@@ -179,9 +185,11 @@ public class NewOrderFragment extends WebFieldFragment {
 		tvBillingAddress.setText(addresses[0].fullAddress());
 		tvShippingAddress.setText(addresses[0].fullAddress());
 
-		String date = Converter.secondsToDateString(order.getOrderDate()).split(" ")[0];
-		String time = Converter.secondsToDateString(order.getOrderDate()).split(" ")[1];
-		
+		String date = Converter.secondsToDateString(order.getOrderDate())
+				.split(" ")[0];
+		String time = Converter.secondsToDateString(order.getOrderDate())
+				.split(" ")[1];
+
 		etOrderDate = (EditText) view.findViewById(R.id.neworder_order_date);
 		etOrderDate.setText(date);
 		etOrderTime = (EditText) view.findViewById(R.id.order_time);
@@ -192,27 +200,27 @@ public class NewOrderFragment extends WebFieldFragment {
 		etDeliveryTime = (EditText) view.findViewById(R.id.order_delivery_time);
 		etDeliveryTime.setText(time);
 
-		//	Time / Date picker listeners
+		// Time / Date picker listeners
 		OnFocusChangeListener pickListener = new OnFocusChangeListener() {
-			
+
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {	
+			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
 					int id = v.getId();
-					switch(id) {
-						case R.id.neworder_order_date:
-						case R.id.order_delivery_date:
-							showDatePicker((EditText)v);
-							break;
-						case R.id.order_time:
-						case R.id.order_delivery_time:
-							showTimePicker((EditText)v);
-							break;
+					switch (id) {
+					case R.id.neworder_order_date:
+					case R.id.order_delivery_date:
+						showDatePicker((EditText) v);
+						break;
+					case R.id.order_time:
+					case R.id.order_delivery_time:
+						showTimePicker((EditText) v);
+						break;
 					}
-				}			
+				}
 			}
 		};
-		
+
 		etOrderDate.setOnFocusChangeListener(pickListener);
 		etDeliveryDate.setOnFocusChangeListener(pickListener);
 		etOrderTime.setOnFocusChangeListener(pickListener);
@@ -242,19 +250,17 @@ public class NewOrderFragment extends WebFieldFragment {
 		};
 		bBillTo.setOnClickListener(click_listener);
 		bShipTo.setOnClickListener(click_listener);
-	}	
+	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.new_order, menu);
 	}
-	
-	@Override 
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_new_order_save) 
-		{
-			if (validateEntries()) 
-			{
+		if (item.getItemId() == R.id.action_new_order_save) {
+			if (validateEntries()) {
 				registerForContextMenu(getView());
 				getActivity().openContextMenu(getView());
 				unregisterForContextMenu(getView());
@@ -262,7 +268,7 @@ public class NewOrderFragment extends WebFieldFragment {
 		}
 		return true;
 	}
-		
+
 	@Override
 	public void onCreateContextMenu(ContextMenu contextMenu, View v,
 			ContextMenuInfo menuInfo) {
@@ -307,13 +313,12 @@ public class NewOrderFragment extends WebFieldFragment {
 		default:
 			int templatePos = 0;
 			action_group_code = 108;
-			for (OrderTemplateSimple template : templates) 
-			{
+			for (OrderTemplateSimple template : templates) {
 				contextMenu.add(action_group_code, template.getTemplateId(),
 						templatePos, template.getTemplateName());
 				templatePos++;
 			}
-		} 
+		}
 		// sets context menu clicks to be handled from fragment, not activity
 		for (int i = 0; i < contextMenu.size(); i++) {
 			contextMenu.getItem(i).setOnMenuItemClickListener(listener);
@@ -334,17 +339,31 @@ public class NewOrderFragment extends WebFieldFragment {
 			address = addresses[position].fullAddress();
 			tvBillingAddress.setText(address);
 		} else if (action_group == 108) {
-			
+
 			// set order data
-			String orderDetiveryDateStr = etDeliveryDate.getText().toString();
+			String orderDetiveryDateStr = etDeliveryDate.getText().toString()
+					.trim();
+			orderDetiveryDateStr += " "
+					+ etDeliveryTime.getText().toString().trim();
 			try {
-				order.setDeliveryDate(Converter.stringDateToSeconds(orderDetiveryDateStr));
+				order.setDeliveryDate(Converter
+						.stringDateToSeconds(orderDetiveryDateStr));
 			} catch (ParseException e) {
-				Toast.makeText(this.getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(this.getActivity(), e.getMessage(),
+						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
-		
-			
+
+			String orderDateStr = etOrderDate.getText().toString().trim();
+			orderDateStr += " " + etOrderTime.getText().toString().trim();
+			try {
+				order.setOrderDate(Converter.stringDateToSeconds(orderDateStr));
+			} catch (ParseException e) {
+				Toast.makeText(this.getActivity(), e.getMessage(),
+						Toast.LENGTH_SHORT).show();
+				e.printStackTrace();
+			}
+
 			// set order template
 			OrderTemplate template = db.getOrderTemplate(item.getItemId());
 			order.setOrderTemplate(template);
@@ -356,9 +375,8 @@ public class NewOrderFragment extends WebFieldFragment {
 					SharedPreferencesKeys.user_token, null);
 
 			User currentUser = db.getUser(token);
-			//TODO this doesn't work
-			//order.setTenantId(currentUser.getTenantId());
-			order.setTenantId(1); //<< stub
+			order.setTenantId(currentUser.getTenantId());
+
 			// save order as draft and go to next step
 			db.saveOrderFromTemplate(order, template);
 

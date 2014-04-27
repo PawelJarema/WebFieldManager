@@ -11,6 +11,9 @@ public class OrderDetail implements IVisited{
 
 	@DatabaseField(id = true, generatedId = false)
 	private String OrderDetailTempId;
+	
+	@DatabaseField
+	private int OrderDetailId;
 
 	@DatabaseField
 	private int TenantId;
@@ -39,6 +42,14 @@ public class OrderDetail implements IVisited{
 	public OrderDetail() {
 		// all persisted classes must define a no-arg constructor
 		// with at least package visibility
+	}
+	
+	public int getOrderDetailId() {
+		return OrderDetailId;
+	}
+
+	public void setOrderDetailId(int orderDetailId) {
+		OrderDetailId = orderDetailId;
 	}
 
 	public String getOrderDetailTempId() {
