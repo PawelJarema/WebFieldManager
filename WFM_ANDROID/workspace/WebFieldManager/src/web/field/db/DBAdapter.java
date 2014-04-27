@@ -927,7 +927,8 @@ public class DBAdapter implements IDBAdapter {
 	public Order saveOrderFromTemplate(Order order, OrderTemplate orderTemplate) {
 		try {
 			Dao<Order, String> dao = daoProvider.getOrderDao();
-			ForeignCollection<OrderDetail> details = dao.getEmptyForeignCollection("OrdersDetail");
+			ForeignCollection<OrderDetail> details = dao
+					.getEmptyForeignCollection("OrdersDetail");
 			// add order lines basing on template data
 			for (OrderTemplateDetail templateDetail : orderTemplate
 					.getOrdersTemplateDetails()) {
@@ -999,6 +1000,18 @@ public class DBAdapter implements IDBAdapter {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public List<PromoPayTermDetail> getPromoPayTermDetails() {
+		try {
+			Dao<PromoPayTermDetail, Integer> dao = daoProvider.getPromoPayTermsDetailDao();
+			return dao.queryForAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

@@ -29,6 +29,7 @@ public class ProcessOrderTask extends
 					.multiply(new BigDecimal(detail.getQty()));
 			fullValue = fullValue.add(detailValue);
 		}
+		result.setFullValue(fullValue);
 
 		// get threshold for total order value
 		BigDecimal orderTemplateThresholdDiscount = new BigDecimal(0);
@@ -37,7 +38,9 @@ public class ProcessOrderTask extends
 		if (thresholdDetail != null) {
 			orderTemplateThresholdDiscount = new BigDecimal(
 					thresholdDetail.getDiscount());
+			result.setOrderTemplateThresholdDiscount(orderTemplateThresholdDiscount);
 		}
+		
 
 		// get template discount
 		BigDecimal templateDiscount = new BigDecimal(0);
@@ -45,7 +48,6 @@ public class ProcessOrderTask extends
 			templateDiscount = calculationRequest.getOrder().getOrderTemplate()
 					.getDiscount();
 		}
-
 		// process order details
 		for (OrderDetail detail : calculationRequest.getOrderDetails()) {
 

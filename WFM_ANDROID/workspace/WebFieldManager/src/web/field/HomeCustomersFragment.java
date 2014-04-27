@@ -46,10 +46,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 		// created; then, the method above will do the rest
 		if (adapter == null) {
 			data = new ArrayList<CustomerSimple>();
-			data.add(new CustomerSimple(0, "0name", "14343545", false));
-			data.add(new CustomerSimple(1, "1name", "24343545", false));
-			data.add(new CustomerSimple(2, "2name", "34343545", false));
-			data.add(new CustomerSimple(3, "3name", "44343545", false));
 			adapter = new CustomersAdapter(getActivity(),
 					R.layout.list_row_home_customers, data);
 		}
@@ -149,10 +145,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 				db = new DBAdapter(getHelper());
 				data = db.listCustomersNearMe(latitude, longitude);
 
-				data.add(new CustomerSimple(0, "0name", "14343545", false));
-				data.add(new CustomerSimple(1, "1name", "24343545", false));
-				data.add(new CustomerSimple(2, "2name", "34343545", false));
-				data.add(new CustomerSimple(3, "3name", "44343545", false));
 				return null;
 			}
 		};
