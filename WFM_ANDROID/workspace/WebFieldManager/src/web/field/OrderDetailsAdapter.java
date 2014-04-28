@@ -9,26 +9,53 @@ import web.field.model.entity.Product;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
+public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements OnClickListener {
 
-	// HashMap with methods
+	// HashMap with method
+	private int active_row_position = 0;
 	private static HashMap<Integer, Integer> itemsOrdered;
-
-	public void addOrderItemQty(int position, int qty) {
-		if (qty > 0) {
+	
+	public void notifyRowIsActive(int position) {
+		this.active_row_position = position;
+	}
+	
+	public void increaseOrderItemQty(int position) {
+		int qty = 0;
+		if (itemsOrdered.containsKey(position)) {
+			qty = itemsOrdered.get(position);
+		}
+		setOrderItemQty(position, ++qty);
+	}
+	
+	public void decreaseOrderItemQty(int position) {
+		int qty = 0;
+		if (itemsOrdered.containsKey(position)) {
+			qty = itemsOrdered.get(position);
+		}
+		if (qty > 0)
+			setOrderItemQty(position, --qty);
+	}
+	
+	public void setOrderItemQty(int position, int qty) {
+		if (qty >= 0) {
 			itemsOrdered.put(position, qty);
 			data.get(position).setQty(qty);
 		}
+	}
+	
+	public int getQtyForOrder(int position) {
+		if (itemsOrdered.containsKey(position))
+			return itemsOrdered.get(position);
+		else
+			return 0;
 	}
 
 	public HashMap<Integer, Integer> getOrderQtyDataHash() {
@@ -40,12 +67,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 			this.itemsOrdered = qty_data;
 	}
 
-	public int getQtyForOrder(int position) {
-		if (itemsOrdered.containsKey(position))
-			return itemsOrdered.get(position);
-		else
-			return 0;
-	}
+	
 	
 	private Context context;
 	int layoutResourceId;
@@ -78,6 +100,9 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 					.findViewById(R.id.order_product_image);
 			holder.tvQty = (TextView) row.findViewById(R.id.order_detail_qty);
 			holder.tvQty.setFocusable(false);
+			holder.bPlus = (Button) row.findViewById(R.id.order_plus_one);
+			holder.bMinus = (Button) row.findViewById(R.id.order_minus_one);
+			
 			row.setTag(holder);
 		} else {
 			holder = (OrderDetailsHolder) row.getTag();
@@ -89,6 +114,8 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 		holder.tvCode.setText(product.getCode());
 		holder.tvId.setText(orderDetail.getOrderDetailTempId());
 		holder.tvDescription.setText(product.getProductDescription());
+		holder.bPlus.setOnClickListener(this);
+		holder.bMinus.setOnClickListener(this);
 		if (itemsOrdered.containsKey(Integer.valueOf(position)))
 			holder.tvQty.setText(itemsOrdered.get(position).toString());
 		else
@@ -128,5 +155,23 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> {
 		TextView tvId;
 		TextView tvCode;
 		TextView tvDescription;
+		
+		// Product Detail Popup -> +/- buttons
+		Button bPlus;
+		Button bMinus;
+	}
+
+	// Row Expanding Product Detali contains buttons. This is the listener meth for them
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()) {
+			case R.id.order_plus_one:
+				increaseOrderItemQty(active_row_position);
+				break;
+			case R.id.order_minus_one:
+				decreaseOrderItemQty(active_row_position);
+				break;
+		}
+		this.notifyDataSetChanged();
 	}
 }

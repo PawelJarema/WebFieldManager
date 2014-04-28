@@ -1,6 +1,5 @@
 package web.field;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -38,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.ForeignCollection;
 
 public class AddProductsActivity extends FragmentActivity implements
 		ISendOrderCallback, OnCompleteListener {
@@ -48,7 +47,7 @@ public class AddProductsActivity extends FragmentActivity implements
 	private Button bFilterByCategory;
 	private Button bFilterByProducer;
 	private Button bFilterByFamiliy;
-
+	
 	private TextView tvOrderTemplateDiscount;
 	private TextView tvTemplateThresholdDiscount;
 	private TextView tvPayTemrsDiscount;
@@ -132,14 +131,18 @@ public class AddProductsActivity extends FragmentActivity implements
 
 		lvOrderLines.setOnItemClickListener(new OnItemClickListener() {
 
+			// this listener is for product list row clicks
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				//TODO a lot of code to service expanding list row layout (new meth refactor?)
 				if (product_data_popup != null)
 					product_data_popup.setVisibility(View.GONE);
 				product_data_popup = (LinearLayout) view
 						.findViewById(R.id.order_popup_layout);
 				product_data_popup.setVisibility(View.VISIBLE);
+				adapter.notifyRowIsActive(position);
+				
 				// TODO showMoreProductData();
 				QtyPickerFragment frag = new QtyPickerFragment();
 				Bundle bundle = new Bundle();
@@ -202,11 +205,9 @@ public class AddProductsActivity extends FragmentActivity implements
 		return true;
 	}
 
+	// this listener is for action bar menu items and back button
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		switch (id) {
 		case android.R.id.home:
@@ -263,7 +264,7 @@ public class AddProductsActivity extends FragmentActivity implements
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
 		if (qty > 0) {
-			adapter.addOrderItemQty(position, qty);
+			adapter.setOrderItemQty(position, qty);
 
 			// do order recalculation
 			ProcessOrderTask processTask = new ProcessOrderTask() {
