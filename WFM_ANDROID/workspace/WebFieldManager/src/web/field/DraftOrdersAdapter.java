@@ -38,7 +38,7 @@ public class DraftOrdersAdapter extends ArrayAdapter<OrderSimple> {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new DraftOrdersHolder();
-			holder.tvId = (TextView) row.findViewById(R.id.draft_order_id);
+			holder.tvTempId = (TextView) row.findViewById(R.id.draft_order_temp_id);
 			holder.tvSummary = (TextView) row.findViewById(R.id.draft_order_summary);
 			holder.tvDate = (TextView) row.findViewById(R.id.draft_order_date);
 			// holder.cbStatus = (CheckBox)
@@ -49,7 +49,7 @@ public class DraftOrdersAdapter extends ArrayAdapter<OrderSimple> {
 		}
 		OrderSimple order = data.get(position);
 		holder.tvSummary.setText(order.getOrderSummary());
-		holder.tvId.setText(String.valueOf(order.getOrderId()));
+		holder.tvTempId.setText(String.valueOf(order.getOrderTempId()));
 		holder.tvDate.setText(order.getOrderDate());
 		// holder.cbStatus.setChecked(customer.isActive());
 		
@@ -74,11 +74,12 @@ public class DraftOrdersAdapter extends ArrayAdapter<OrderSimple> {
 
 	@Override
 	public long getItemId(int index) {
-		return data.get(index).getOrderId();
+		//return data.get(index).getOrderId();
+		return index;
 	}
 
 	static class DraftOrdersHolder {
-		TextView tvId;
+		TextView tvTempId;
 		TextView tvSummary;
 		TextView tvDate;
 		//CheckBox cbStatus;

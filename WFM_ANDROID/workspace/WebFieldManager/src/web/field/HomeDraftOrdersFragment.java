@@ -6,19 +6,14 @@ import java.util.List;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.simple.OrderSimple;
-import web.field.model.simple.ProductSimple;
 import android.app.ActionBar;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HomeDraftOrdersFragment extends WebFieldListFragment {

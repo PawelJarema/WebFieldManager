@@ -1,6 +1,8 @@
 package web.field.model.simple;
 
 public class OrderSimple {
+	private String orderTempId;
+	
 	private int orderId;
 
 	private String orderDate;
@@ -29,6 +31,14 @@ public class OrderSimple {
 
 	public void setOrderSummary(String orderSummary) {
 		this.orderSummary = orderSummary;
+	}
+
+	public String getOrderTempId() {
+		return orderTempId;
+	}
+
+	public void setOrderTempId(String orderTempId) {
+		this.orderTempId = orderTempId;
 	}
 
 }

@@ -41,15 +41,18 @@ public class OrderCache {
 					.asList(thresholdDetails);
 		}
 
-		this.promoThreshold = db.getPromoThreshold(orderTemplate
-				.getPromoThreshold().getPromoThresholdId());
+		if (orderTemplate.getPromoThreshold() != null) {
+			this.promoThreshold = db.getPromoThreshold(orderTemplate
+					.getPromoThreshold().getPromoThresholdId());
 
-		if (promoThreshold != null) {
-			PromoThresholdDetail[] promoThresholdDetails = promoThreshold
-					.getPromoThresholdDetail().toArray(
-							new PromoThresholdDetail[] {});
+			if (promoThreshold != null) {
+				PromoThresholdDetail[] promoThresholdDetails = promoThreshold
+						.getPromoThresholdDetail().toArray(
+								new PromoThresholdDetail[] {});
 
-			this.promoThresholdDetails = Arrays.asList(promoThresholdDetails);
+				this.promoThresholdDetails = Arrays
+						.asList(promoThresholdDetails);
+			}
 		}
 	}
 

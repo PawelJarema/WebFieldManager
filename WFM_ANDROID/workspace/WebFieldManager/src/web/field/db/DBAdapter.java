@@ -437,6 +437,7 @@ public class DBAdapter implements IDBAdapter {
 			for (Order order : queryResult) {
 				OrderSimple simple = new OrderSimple();
 				simple.setOrderId(order.getOrderId());
+				simple.setOrderTempId(order.getOrderTempId());
 				simple.setOrderDate(Converter.secondsToDateString(order
 						.getOrderDate()));
 				if (order.getShipTo() != null) {
