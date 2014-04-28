@@ -27,6 +27,10 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 		this.active_row_position = position;
 	}
 	
+	public int getNumberOfActiveRow() {
+		return active_row_position;
+	}
+	
 	public void increaseOrderItemQty(int position) {
 		int qty = 0;
 		if (itemsOrdered.containsKey(position)) {

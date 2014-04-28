@@ -3,18 +3,21 @@ package web.field;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class QtyPickerFragment extends DialogFragment implements
 		OnClickListener {
 
+	// list row and activity communication
+	private Activity activity;
+	private OrderDetailsAdapter list_row_adapter;
+	
 	// Ui keyboard
 	private Button btn1;
 	private Button btn2;
@@ -54,9 +57,13 @@ public class QtyPickerFragment extends DialogFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		
+		activity = getActivity();
+		list_row_adapter =  ((AddProductsActivity) activity).getProductListAdapter();
+		
 		View view = inflater.inflate(R.layout.qty_picker_fragment, container,
 				false);
+		
 		//getDialog().setTitle(getResources().getString(R.string.set_quantity));
 		//getDialog().setCanceledOnTouchOutside(false);
 		this.position = getArguments().getInt("position");
@@ -117,6 +124,11 @@ public class QtyPickerFragment extends DialogFragment implements
 			char digit = ((Button) v).getText().toString().charAt(0);
 			addNumberToEditText(digit);
 		}
+		// what is done in editText, goes to list row 
+		String input = etQty.getText().toString();
+		input = input.equals("") ? "0" : input;
+		list_row_adapter.setOrderItemQty(position, Integer.parseInt(input));
+		list_row_adapter.notifyDataSetChanged();
 	}
 
 	private void addNumberToEditText(char digit) {

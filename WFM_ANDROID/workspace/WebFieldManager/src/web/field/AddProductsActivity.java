@@ -291,6 +291,12 @@ public class AddProductsActivity extends FragmentActivity implements
 		}
 	}
 
+	// this comes in handy when communicating with QtyPickerFragment
+	// that has to have access to list row modification meths in adapter
+	public OrderDetailsAdapter getProductListAdapter() {
+		return adapter;
+	}
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
