@@ -24,9 +24,9 @@ public class JsonOrder {
 	private Integer OrderTemplateId;
 	private List<JsonOrderDetail> OrdersDetail = new ArrayList<JsonOrderDetail>();
 	
-	private BigDecimal DiscountHeaderTemplate;
-	private BigDecimal DiscountHeaderThreshold;
-	private BigDecimal DiscountHeaderPayterms;
+	private double DiscountHeaderTemplate;
+	private double DiscountHeaderThreshold;
+	private double DiscountHeaderPayterms;
 
 	public int getOrderId() {
 		return OrderId;
@@ -172,27 +172,27 @@ public class JsonOrder {
 		OrderTemplateId = orderTemplateId;
 	}
 
-	public BigDecimal getDiscountHeaderTemplate() {
+	public double getDiscountHeaderTemplate() {
 		return DiscountHeaderTemplate;
 	}
 
-	public void setDiscountHeaderTemplate(BigDecimal discountHeaderTemplate) {
+	public void setDiscountHeaderTemplate(double discountHeaderTemplate) {
 		DiscountHeaderTemplate = discountHeaderTemplate;
 	}
 
-	public BigDecimal getDiscountHeaderThreshold() {
+	public double getDiscountHeaderThreshold() {
 		return DiscountHeaderThreshold;
 	}
 
-	public void setDiscountHeaderThreshold(BigDecimal discountHeaderThreshold) {
+	public void setDiscountHeaderThreshold(double discountHeaderThreshold) {
 		DiscountHeaderThreshold = discountHeaderThreshold;
 	}
 
-	public BigDecimal getDiscountHeaderPayterms() {
+	public double getDiscountHeaderPayterms() {
 		return DiscountHeaderPayterms;
 	}
 
-	public void setDiscountHeaderPayterms(BigDecimal discountHeaderPayterms) {
+	public void setDiscountHeaderPayterms(double discountHeaderPayterms) {
 		DiscountHeaderPayterms = discountHeaderPayterms;
 	}
 	

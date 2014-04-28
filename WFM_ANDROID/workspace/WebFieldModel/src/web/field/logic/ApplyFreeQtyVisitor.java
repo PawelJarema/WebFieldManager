@@ -1,7 +1,5 @@
 package web.field.logic;
 
-import java.math.BigDecimal;
-
 import web.field.db.IDBAdapter;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
@@ -19,10 +17,10 @@ public class ApplyFreeQtyVisitor extends ThresholdVisitor{
 		int orderQty = orderDetail.getQty();
 		int promoMax = threshold.getThresholdMaxValue();
 		int promoMin = threshold.getThresholdMinValue();
-		BigDecimal freeQty = threshold.getThresholdFreeQty();
+		double freeQty = threshold.getThresholdFreeQty();
 
 		if (orderQty <= promoMax && orderQty >= promoMin) {
-			orderDetail.setFreeQty(freeQty.intValue());
+			orderDetail.setFreeQty((int) freeQty);
 		}
 		
 		return orderDetail;

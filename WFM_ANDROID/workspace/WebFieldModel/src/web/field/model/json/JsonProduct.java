@@ -1,7 +1,5 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
-
 public class JsonProduct {
 
 	private int ProductId;
@@ -12,7 +10,7 @@ public class JsonProduct {
 	private int ProductFamilyId;
 	private int ProductManufacturerId;
 	private String ProductDescription;
-	private BigDecimal Price;
+	private double Price;
 	private boolean FlagActive;
 	private int CreateUserId;
 	private long CreateDate;
@@ -88,11 +86,11 @@ public class JsonProduct {
 		ProductDescription = productDescription;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return Price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		Price = price;
 	}
 

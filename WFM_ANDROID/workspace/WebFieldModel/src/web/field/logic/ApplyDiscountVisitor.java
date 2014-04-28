@@ -1,7 +1,5 @@
 package web.field.logic;
 
-import java.math.BigDecimal;
-
 import web.field.db.IDBAdapter;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
@@ -19,7 +17,7 @@ public class ApplyDiscountVisitor extends ThresholdVisitor {
 		int orderQty = orderDetail.getQty();
 		int promoMax = threshold.getThresholdMaxValue();
 		int promoMin = threshold.getThresholdMinValue();
-		BigDecimal discount = threshold.getThresholdDiscount();
+		double discount = threshold.getThresholdDiscount();
 
 		if (orderQty <= promoMax && orderQty >= promoMin) {
 			orderDetail.setDiscount(discount);

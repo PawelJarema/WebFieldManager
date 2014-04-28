@@ -28,10 +28,10 @@ public class OrderDetail implements IVisited{
 	private int FreeQty;
 
 	@DatabaseField
-	private BigDecimal Discount;
+	private double Discount;
 
 	@DatabaseField
-	private BigDecimal Price;
+	private double Price;
 
 	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Order Order;
@@ -92,19 +92,19 @@ public class OrderDetail implements IVisited{
 		FreeQty = freeQty;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return Price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		Price = price;
 	}
 

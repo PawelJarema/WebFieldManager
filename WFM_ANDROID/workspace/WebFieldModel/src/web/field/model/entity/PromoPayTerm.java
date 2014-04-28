@@ -99,6 +99,5 @@ public class PromoPayTerm {
 			ForeignCollection<PromoPayTermDetail> promoPayTermsDetail) {
 		PromoPayTermsDetail = promoPayTermsDetail;
 	}
-	
-	
+
 }

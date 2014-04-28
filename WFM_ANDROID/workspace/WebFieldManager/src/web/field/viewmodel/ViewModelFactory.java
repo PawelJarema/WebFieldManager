@@ -135,13 +135,9 @@ public class ViewModelFactory {
 						.getCode());
 
 				// values
-				orderDetailVM.Discount
-						.set(orderDetail.getDiscount() != null ? orderDetail
-								.getDiscount().doubleValue() : 0);
+				orderDetailVM.Discount.set(orderDetail.getDiscount());
 				orderDetailVM.FreeQty.set(orderDetail.getFreeQty());
-				orderDetailVM.Price
-						.set(orderDetail.getPrice() != null ? orderDetail
-								.getPrice().doubleValue() : 0);
+				orderDetailVM.Price.set(orderDetail.getPrice());
 				orderDetailVM.Qty.set(orderDetail.getQty());
 
 				vm.OrderDetails.add(orderDetailVM);

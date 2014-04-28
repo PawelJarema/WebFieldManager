@@ -1,6 +1,5 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,8 @@ public class JsonOrderTemplate {
 	private long DeliveriesDateEnd;
 	private long VisibleDateStart;
 	private long VisibleDateEnd;
-	private BigDecimal TotalMinValue;
-	private BigDecimal Discount;
+	private double TotalMinValue;
+	private double Discount;
 	private long CreateDate;
 	private int CreateUserId;
 	private long ModifiedDate;
@@ -180,19 +179,19 @@ public class JsonOrderTemplate {
 		VisibleDateEnd = visibleDateEnd;
 	}
 
-	public BigDecimal getTotalMinValue() {
+	public double getTotalMinValue() {
 		return TotalMinValue;
 	}
 
-	public void setTotalMinValue(BigDecimal totalMinValue) {
+	public void setTotalMinValue(double totalMinValue) {
 		TotalMinValue = totalMinValue;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 

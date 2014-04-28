@@ -1,7 +1,5 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
-
 import com.j256.ormlite.field.DatabaseField;
 
 public class PromoThresholdDetail {
@@ -9,7 +7,7 @@ public class PromoThresholdDetail {
 	private int PromoThresholdDetailId;
 	@DatabaseField
 	private int TenantId;
-	
+
 	@DatabaseField
 	private int ThresholdType;
 	@DatabaseField
@@ -19,9 +17,9 @@ public class PromoThresholdDetail {
 	@DatabaseField
 	private int ThresholdFixedFreeQty;
 	@DatabaseField
-	private BigDecimal ThresholdFreeQty;
+	private double ThresholdFreeQty;
 	@DatabaseField
-	private BigDecimal ThresholdDiscount;
+	private double ThresholdDiscount;
 	@DatabaseField
 	private int CreateUserId;
 	@DatabaseField
@@ -30,15 +28,15 @@ public class PromoThresholdDetail {
 	private int ModifiedUserId;
 	@DatabaseField
 	private long ModifiedDate;
-	
+
 	@DatabaseField(foreign = true)
 	private PromoThreshold PromoThreshold;
-	
+
 	@DatabaseField(foreign = true)
 	private Product Product;
-	
-	public PromoThresholdDetail(){
-		
+
+	public PromoThresholdDetail() {
+
 	}
 
 	public int getPromoThresholdDetailId() {
@@ -97,19 +95,19 @@ public class PromoThresholdDetail {
 		ThresholdFixedFreeQty = thresholdFixedFreeQty;
 	}
 
-	public BigDecimal getThresholdFreeQty() {
+	public double getThresholdFreeQty() {
 		return ThresholdFreeQty;
 	}
 
-	public void setThresholdFreeQty(BigDecimal thresholdFreeQty) {
+	public void setThresholdFreeQty(double thresholdFreeQty) {
 		ThresholdFreeQty = thresholdFreeQty;
 	}
 
-	public BigDecimal getThresholdDiscount() {
+	public double getThresholdDiscount() {
 		return ThresholdDiscount;
 	}
 
-	public void setThresholdDiscount(BigDecimal thresholdDiscount) {
+	public void setThresholdDiscount(double thresholdDiscount) {
 		ThresholdDiscount = thresholdDiscount;
 	}
 
@@ -152,6 +150,5 @@ public class PromoThresholdDetail {
 	public void setPromoThreshold(PromoThreshold promoThreshold) {
 		PromoThreshold = promoThreshold;
 	}
-	
-	
+
 }

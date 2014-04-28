@@ -1,7 +1,5 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
-
 import com.j256.ormlite.field.DatabaseField;
 
 public class PromoPayTermDetail {
@@ -12,7 +10,7 @@ public class PromoPayTermDetail {
 	@DatabaseField
 	private String Description;
 	@DatabaseField
-	private BigDecimal Discount;
+	private double Discount;
 	@DatabaseField
 	private String ExternalId_1;
 	@DatabaseField
@@ -53,11 +51,11 @@ public class PromoPayTermDetail {
 		Description = description;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 
@@ -108,6 +106,5 @@ public class PromoPayTermDetail {
 	public void setPromoPayTerm(PromoPayTerm promoPayTerm) {
 		PromoPayTerm = promoPayTerm;
 	}
-	
-	
+
 }

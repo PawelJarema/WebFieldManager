@@ -1,7 +1,5 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
-
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -54,13 +52,13 @@ public class Order {
 	private OrderTemplate OrderTemplate;
 	
 	@DatabaseField
-	private BigDecimal DiscountHeaderTemplate;
+	private double DiscountHeaderTemplate;
 	
 	@DatabaseField
-	private BigDecimal DiscountHeaderThreshold;
+	private double DiscountHeaderThreshold;
 	
 	@DatabaseField
-	private BigDecimal DiscountHeaderPayterms;
+	private double DiscountHeaderPayterms;
 
 	public CustomerAddress getBillTo() {
 		return BillTo;
@@ -187,27 +185,27 @@ public class Order {
 		OrderTemplate = orderTemplate;
 	}
 
-	public BigDecimal getDiscountHeaderTemplate() {
+	public double getDiscountHeaderTemplate() {
 		return DiscountHeaderTemplate;
 	}
 
-	public void setDiscountHeaderTemplate(BigDecimal discountHeaderTemplate) {
+	public void setDiscountHeaderTemplate(double discountHeaderTemplate) {
 		DiscountHeaderTemplate = discountHeaderTemplate;
 	}
 
-	public BigDecimal getDiscountHeaderThreshold() {
+	public double getDiscountHeaderThreshold() {
 		return DiscountHeaderThreshold;
 	}
 
-	public void setDiscountHeaderThreshold(BigDecimal discountHeaderThreshold) {
+	public void setDiscountHeaderThreshold(double discountHeaderThreshold) {
 		DiscountHeaderThreshold = discountHeaderThreshold;
 	}
 
-	public BigDecimal getDiscountHeaderPayterms() {
+	public double getDiscountHeaderPayterms() {
 		return DiscountHeaderPayterms;
 	}
 
-	public void setDiscountHeaderPayterms(BigDecimal discountHeaderPayterms) {
+	public void setDiscountHeaderPayterms(double discountHeaderPayterms) {
 		DiscountHeaderPayterms = discountHeaderPayterms;
 	}
 	

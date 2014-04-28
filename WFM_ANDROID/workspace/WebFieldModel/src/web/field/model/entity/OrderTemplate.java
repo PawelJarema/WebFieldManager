@@ -57,10 +57,10 @@ public class OrderTemplate {
 	private long VisibleDateEnd;
 
 	@DatabaseField
-	private BigDecimal TotalMinValue;
+	private double TotalMinValue;
 
 	@DatabaseField
-	private BigDecimal Discount;
+	private double Discount;
 
 	@DatabaseField(foreign = true)
 	private OrderTemplateThreshold OrderTemplateThreshold;
@@ -227,19 +227,19 @@ public class OrderTemplate {
 		VisibleDateEnd = visibleDateEnd;
 	}
 
-	public BigDecimal getTotalMinValue() {
+	public double getTotalMinValue() {
 		return TotalMinValue;
 	}
 
-	public void setTotalMinValue(BigDecimal totalMinValue) {
+	public void setTotalMinValue(double totalMinValue) {
 		TotalMinValue = totalMinValue;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 

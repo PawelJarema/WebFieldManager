@@ -1,7 +1,5 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
-
 import com.j256.ormlite.field.DatabaseField;
 
 public class Product {
@@ -19,7 +17,7 @@ public class Product {
 	private String ProductDescription;
 
 	@DatabaseField
-	private BigDecimal Price;
+	private double Price;
 
 	@DatabaseField
 	private boolean FlagActive;
@@ -105,11 +103,11 @@ public class Product {
 		ProductDescription = productDescription;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return Price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		Price = price;
 	}
 

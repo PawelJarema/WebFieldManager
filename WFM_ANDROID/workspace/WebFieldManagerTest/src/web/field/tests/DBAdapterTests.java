@@ -12,7 +12,6 @@ import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.db.IDaoProvider;
 import web.field.model.entity.Order;
-import web.field.model.entity.OrderDetail;
 import web.field.model.simple.CustomerSimple;
 import web.field.model.simple.OrderSimple;
 import web.field.tests.TestDaoProvider;

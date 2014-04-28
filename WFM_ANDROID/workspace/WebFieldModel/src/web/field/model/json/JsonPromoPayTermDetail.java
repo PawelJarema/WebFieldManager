@@ -1,13 +1,11 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
-
 public class JsonPromoPayTermDetail {
 	private int PromoPayTermDetailId;
 	private int TenantId;
 	private int PromoPayTermId;
 	private String Description;
-	private BigDecimal Discount;
+	private double Discount;
 	private String ExternalId_1;
 	private int CreateUserId;
 	private long CreateDate;
@@ -46,11 +44,11 @@ public class JsonPromoPayTermDetail {
 		Description = description;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 

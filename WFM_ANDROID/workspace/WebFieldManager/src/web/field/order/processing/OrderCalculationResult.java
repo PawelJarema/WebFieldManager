@@ -1,6 +1,5 @@
 package web.field.order.processing;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderCalculationResult {
@@ -11,8 +10,8 @@ public class OrderCalculationResult {
 	private double totalDiscounts;
 	private double promoSum;
 	
-	private BigDecimal orderTemplateThresholdDiscount;
-	private BigDecimal fullValue;
+	private double orderTemplateThresholdDiscount;
+	private double fullValue;
 	
 	private double orderTotal;
 
@@ -58,20 +57,20 @@ public class OrderCalculationResult {
 		this.calculationDetails = calculationDetails;
 	}
 
-	public BigDecimal getOrderTemplateThresholdDiscount() {
+	public double getOrderTemplateThresholdDiscount() {
 		return orderTemplateThresholdDiscount;
 	}
 
 	public void setOrderTemplateThresholdDiscount(
-			BigDecimal orderTemplateThresholdDiscount) {
+			double orderTemplateThresholdDiscount) {
 		this.orderTemplateThresholdDiscount = orderTemplateThresholdDiscount;
 	}
 
-	public BigDecimal getFullValue() {
+	public double getFullValue() {
 		return fullValue;
 	}
 
-	public void setFullValue(BigDecimal fullValue) {
+	public void setFullValue(double fullValue) {
 		this.fullValue = fullValue;
 	}
 

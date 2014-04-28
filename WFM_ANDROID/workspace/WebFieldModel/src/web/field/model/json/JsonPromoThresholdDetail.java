@@ -1,7 +1,5 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
-
 public class JsonPromoThresholdDetail {
 	private int PromoThresholdDetailId;
 	private int TenantId;
@@ -11,8 +9,8 @@ public class JsonPromoThresholdDetail {
 	private int ThresholdMinValue;
 	private int ThresholdMaxValue;
 	private int ThresholdFixedFreeQty;
-	private BigDecimal ThresholdFreeQty;
-	private BigDecimal ThresholdDiscount;
+	private double ThresholdFreeQty;
+	private double ThresholdDiscount;
 	private int CreateUserId;
 	private long CreateDate;
 	private int ModifiedUserId;
@@ -82,19 +80,19 @@ public class JsonPromoThresholdDetail {
 		ThresholdFixedFreeQty = thresholdFixedFreeQty;
 	}
 
-	public BigDecimal getThresholdFreeQty() {
+	public double getThresholdFreeQty() {
 		return ThresholdFreeQty;
 	}
 
-	public void setThresholdFreeQty(BigDecimal thresholdFreeQty) {
+	public void setThresholdFreeQty(double thresholdFreeQty) {
 		ThresholdFreeQty = thresholdFreeQty;
 	}
 
-	public BigDecimal getThresholdDiscount() {
+	public double getThresholdDiscount() {
 		return ThresholdDiscount;
 	}
 
-	public void setThresholdDiscount(BigDecimal thresholdDiscount) {
+	public void setThresholdDiscount(double thresholdDiscount) {
 		ThresholdDiscount = thresholdDiscount;
 	}
 

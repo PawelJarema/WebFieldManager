@@ -26,7 +26,7 @@ public class OrderTemplateThreshold {
 
 	@ForeignCollectionField(eager = false)
 	private ForeignCollection<OrderTemplateThresholdDetail> OrdersTemplateThresholdDetails;
-	
+
 	public OrderTemplateThreshold() {
 		// all persisted classes must define a no-arg constructor
 		// with at least package visibility
@@ -112,7 +112,5 @@ public class OrderTemplateThreshold {
 			ForeignCollection<OrderTemplateThresholdDetail> ordersTemplateThresholdDetails) {
 		OrdersTemplateThresholdDetails = ordersTemplateThresholdDetails;
 	}
-	
-	
 
 }

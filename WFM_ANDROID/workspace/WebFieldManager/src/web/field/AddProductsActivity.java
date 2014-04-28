@@ -66,7 +66,7 @@ public class AddProductsActivity extends FragmentActivity implements
 	private ListView lvOrderLines;
 	private LinearLayout product_data_popup;
 	private LinearLayout qty_picker_fragment_layout;
-	
+
 	// Summary TextViews
 	private TextView summary; // <to display total order value and messages
 
@@ -87,7 +87,8 @@ public class AddProductsActivity extends FragmentActivity implements
 		sendOrderStrategy = new SendOrderStrategy(this);
 
 		setContentView(R.layout.activity_addproducts);
-		qty_picker_fragment_layout = (LinearLayout) this.findViewById(R.id.addproducts_qty_fragment_container);
+		qty_picker_fragment_layout = (LinearLayout) this
+				.findViewById(R.id.addproducts_qty_fragment_container);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
 
@@ -136,9 +137,10 @@ public class AddProductsActivity extends FragmentActivity implements
 					int position, long id) {
 				if (product_data_popup != null)
 					product_data_popup.setVisibility(View.GONE);
-				product_data_popup = (LinearLayout) view.findViewById(R.id.order_popup_layout);
+				product_data_popup = (LinearLayout) view
+						.findViewById(R.id.order_popup_layout);
 				product_data_popup.setVisibility(View.VISIBLE);
-				//TODO showMoreProductData();
+				// TODO showMoreProductData();
 				QtyPickerFragment frag = new QtyPickerFragment();
 				Bundle bundle = new Bundle();
 				int current_qty = adapter.getQtyForOrder(position);
@@ -150,12 +152,14 @@ public class AddProductsActivity extends FragmentActivity implements
 				// shows QtyPicker as layout's child
 				FragmentManager manager = getSupportFragmentManager();
 				FragmentTransaction transaction = manager.beginTransaction();
-				transaction.replace(R.id.addproducts_qty_fragment_container, frag);
+				transaction.replace(R.id.addproducts_qty_fragment_container,
+						frag);
 				transaction.commit();
-			}		
-		}); 
+			}
+		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		tvOrderTemplateDiscount.setText(orderTemplate.getDiscount().toString());
+		tvOrderTemplateDiscount.setText(Double.toString(orderTemplate
+				.getDiscount()));
 
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
 		if (orderTemplate.getOrderTemplateThreshold() != null) {
@@ -254,32 +258,29 @@ public class AddProductsActivity extends FragmentActivity implements
 	private void message(String text) {
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
-
+	
 	@Override
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
 		if (qty > 0) {
 			adapter.addOrderItemQty(position, qty);
-			
+
 			// do order recalculation
 			ProcessOrderTask processTask = new ProcessOrderTask() {
 				@Override
 				protected void onPostExecute(OrderCalculationResult result) {
 					super.onPostExecute(result);
 
-					if (result.getOrderTemplateThresholdDiscount() != null) {
-						tvTemplateThresholdDiscount
-								.setText(result
-										.getOrderTemplateThresholdDiscount()
-										.toString());
-					}
-					tvOrderValueBeforeDiscounts.setText(result.getFullValue()
-							.toString());
-					tvTotalDisountValue.setText(String.valueOf(result
+					tvTemplateThresholdDiscount.setText(Double.toString(result
+							.getOrderTemplateThresholdDiscount()));
+
+					tvOrderValueBeforeDiscounts.setText(Double.toString(result
+							.getFullValue()));
+					tvTotalDisountValue.setText(Double.toString(result
 							.getTotalDiscounts()));
 					tvValueOfFreeProducts.setText("TODO");
 					tvOrderValue
-							.setText(String.valueOf(result.getOrderTotal()));
+							.setText(Double.toString(result.getOrderTotal()));
 				}
 			};
 			processTask.execute(calculatiorRequest);

@@ -1,6 +1,5 @@
 package web.field.order.processing;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import web.field.db.IDBAdapter;
@@ -42,7 +41,8 @@ public class OrderCache {
 					.asList(thresholdDetails);
 		}
 
-		this.promoThreshold = db.getPromoThreshold(orderTemplate.getPromoThreshold().getPromoThresholdId());
+		this.promoThreshold = db.getPromoThreshold(orderTemplate
+				.getPromoThreshold().getPromoThresholdId());
 
 		if (promoThreshold != null) {
 			PromoThresholdDetail[] promoThresholdDetails = promoThreshold
@@ -147,7 +147,7 @@ public class OrderCache {
 			OrderDetail detail) {
 		PromoThresholdDetail result = null;
 		int productId = detail.getProduct().getProductId();
-		BigDecimal productPrice = detail.getProduct().getPrice();
+		double productPrice = detail.getProduct().getPrice();
 		List<PromoThresholdDetail> promoThresholdDetails = null;
 
 		// get by product
@@ -165,12 +165,11 @@ public class OrderCache {
 
 		// get basing on detail value
 		int qty = detail.getQty();
-		BigDecimal detailValue = productPrice.multiply(new BigDecimal(qty));
+		double detailValue = productPrice * qty;
 		for (PromoThresholdDetail thresholdDetail : promoThresholdDetails) {
 			int minValue = thresholdDetail.getThresholdMinValue();
 			int maxValue = thresholdDetail.getThresholdMaxValue();
-			if (detailValue.compareTo(new BigDecimal(minValue)) > 0
-					&& detailValue.compareTo(new BigDecimal(maxValue)) < 0) {
+			if (detailValue > minValue && detailValue < maxValue) {
 				result = thresholdDetail;
 				return result;
 			}

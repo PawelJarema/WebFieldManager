@@ -1,6 +1,5 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
 
 public class JsonOrderDetail {
 	private int OrderDetailId;
@@ -9,8 +8,8 @@ public class JsonOrderDetail {
 	private int ProductId;
 	private int Qty;
 	private int FreeQty;
-	private BigDecimal Discount;
-	private BigDecimal Price;
+	private double Discount;
+	private double Price;
 	private int CreateUserId;
 	private long CreateDate;
 	private int ModifiedUserId;
@@ -66,19 +65,19 @@ public class JsonOrderDetail {
 		FreeQty = freeQty;
 	}
 
-	public BigDecimal getDiscount() {
+	public double getDiscount() {
 		return Discount;
 	}
 
-	public void setDiscount(BigDecimal discount) {
+	public void setDiscount(double discount) {
 		Discount = discount;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return Price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		Price = price;
 	}
 

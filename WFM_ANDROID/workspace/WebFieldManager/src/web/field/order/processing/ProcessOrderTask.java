@@ -1,6 +1,5 @@
 package web.field.order.processing;
 
-import java.math.BigDecimal;
 
 import web.field.model.entity.*;
 import android.os.AsyncTask;
@@ -23,27 +22,26 @@ public class ProcessOrderTask extends
 		Order order = calculationRequest.getOrder();
 
 		// first count full order value without discounts
-		BigDecimal fullValue = new BigDecimal(0);
+		double fullValue = 0;
 		for (OrderDetail detail : calculationRequest.getOrderDetails()) {
-			BigDecimal detailValue = detail.getProduct().getPrice()
-					.multiply(new BigDecimal(detail.getQty()));
-			fullValue = fullValue.add(detailValue);
+			double detailValue = detail.getProduct().getPrice()
+					* detail.getQty();
+			fullValue += fullValue;
 		}
 		result.setFullValue(fullValue);
 
 		// get threshold for total order value
-		BigDecimal orderTemplateThresholdDiscount = new BigDecimal(0);
+		double orderTemplateThresholdDiscount = 0;
 		OrderTemplateThresholdDetail thresholdDetail = cache
 				.getOrderTemplateThresholdDetailForOrder(result.getOrderTotal());
 		if (thresholdDetail != null) {
-			orderTemplateThresholdDiscount = new BigDecimal(
-					thresholdDetail.getDiscount());
+			orderTemplateThresholdDiscount = thresholdDetail.getDiscount();
 			result.setOrderTemplateThresholdDiscount(orderTemplateThresholdDiscount);
 		}
 		
 
 		// get template discount
-		BigDecimal templateDiscount = new BigDecimal(0);
+		double templateDiscount = 0;
 		if (calculationRequest.getOrder().getOrderTemplate() != null) {
 			templateDiscount = calculationRequest.getOrder().getOrderTemplate()
 					.getDiscount();
@@ -70,8 +68,7 @@ public class ProcessOrderTask extends
 
 				// get qty and value
 				int qty = detail.getQty();
-				BigDecimal value = detail.getProduct().getPrice()
-						.multiply(new BigDecimal(qty));
+				double value = detail.getProduct().getPrice() * qty;
 
 				// check if max qty is provided and if extended
 				if (templateDetail.getQtyMax() != 0) {
@@ -90,46 +87,46 @@ public class ProcessOrderTask extends
 				PromoThresholdDetail promoThresholdDetail = cache
 						.getPromoThresholdDetailForOrderDetail(detail);
 				if (promoThresholdDetail != null) {
-					BigDecimal freeQty = promoThresholdDetail
-							.getThresholdFreeQty()
-							.multiply(new BigDecimal(qty));
-					detail.setFreeQty(freeQty.intValue());
-				}
+					double freeQty = promoThresholdDetail.getThresholdFreeQty()
+							* qty;
+					detail.setFreeQty((int) freeQty);
 
-				if (promoThresholdDetail != null) {
-					BigDecimal discount = promoThresholdDetail
-							.getThresholdDiscount().multiply(value);
+					double discount = promoThresholdDetail
+							.getThresholdDiscount() * value;
 					detail.setDiscount(discount);
 				}
 				
 				// apply all discounts
-				BigDecimal zero = new BigDecimal(0);
-				BigDecimal one = new BigDecimal(1);
-				BigDecimal lineValueAfterDiscounts = value;
-				BigDecimal lineDiscount = detail.getDiscount();
+				double lineValueAfterDiscounts = value;
+				double lineDiscount = detail.getDiscount();
 				
 				// try to apply line discount
-				if(lineDiscount.compareTo(zero) != 0){
-					BigDecimal discountMultiplier = one.subtract(lineDiscount);
-					lineValueAfterDiscounts = lineValueAfterDiscounts.multiply(discountMultiplier);
+				if (lineDiscount != 0) {
+					double discountMultiplier = 1 - lineDiscount;
+					lineValueAfterDiscounts = lineValueAfterDiscounts
+							* discountMultiplier;
 				}
 				
 				// try to apply template discount
-				if(templateDiscount.compareTo(zero) != 0){
-					BigDecimal discountMultiplier = one.subtract(templateDiscount);
-					lineValueAfterDiscounts = lineValueAfterDiscounts.multiply(discountMultiplier);
+				if (templateDiscount != 0) {
+					double discountMultiplier = 1 - templateDiscount;
+					lineValueAfterDiscounts = lineValueAfterDiscounts
+							- discountMultiplier;
 				}
 				
 				// try to apply template threshold discount
-				if(orderTemplateThresholdDiscount.compareTo(zero) != 0){
-					BigDecimal discountMultiplier = one.subtract(orderTemplateThresholdDiscount);
-					lineValueAfterDiscounts = lineValueAfterDiscounts.multiply(discountMultiplier);
+				if (orderTemplateThresholdDiscount != 0) {
+					double discountMultiplier = 1 - orderTemplateThresholdDiscount;
+					lineValueAfterDiscounts = lineValueAfterDiscounts
+							* discountMultiplier;
 				}
 				
 				// try to apply pay term discount
-				if(order.getDiscountHeaderPayterms().compareTo(zero) != 0){
-					BigDecimal discountMultiplier = one.subtract(order.getDiscountHeaderPayterms());
-					lineValueAfterDiscounts = lineValueAfterDiscounts.multiply(discountMultiplier);
+				if (order.getDiscountHeaderPayterms() != 0) {
+					double discountMultiplier = 1 - order
+							.getDiscountHeaderPayterms();
+					lineValueAfterDiscounts = lineValueAfterDiscounts
+							* discountMultiplier;
 				}
 
 			}
