@@ -45,7 +45,6 @@ public class SettingsFragment extends PreferenceFragment {
 	private boolean visible = false;
 	private ActionBar action_bar;
 
-	//TODO delete (in case)
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

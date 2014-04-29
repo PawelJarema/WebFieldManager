@@ -16,6 +16,7 @@ public class HomeFragment extends WebFieldFragment implements
 	private HomeTabsAdapter tabs_adapter;
 	private ActionBar action_bar;
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class HomeFragment extends WebFieldFragment implements
 	private void setSwipeTabs(View view) {
 		action_bar.removeAllTabs();
 		view_pager = (ViewPager) view.findViewById(R.id.home_pager);
-		tabs_adapter = new HomeTabsAdapter(getChildFragmentManager());
+		tabs_adapter = new HomeTabsAdapter(getFragmentManager());
 		view_pager.setAdapter(tabs_adapter);
 		view_pager
 			.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

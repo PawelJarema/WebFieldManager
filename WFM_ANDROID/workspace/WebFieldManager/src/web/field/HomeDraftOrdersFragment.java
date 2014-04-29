@@ -10,8 +10,11 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,20 +60,20 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 			}
 		});
 
-		// initiate the loader to do the background work
-		getLoaderManager().initLoader(0, null, this);
+		getLoaderManager().initLoader(1, null, this);
 	}
 	
-
 	@Override
 	public Loader<Void> onCreateLoader(int arg0, Bundle arg1) {
 		AsyncTaskLoader<Void> loader = new AsyncTaskLoader<Void>(getActivity()) {
+			
 			@Override
 			public Void loadInBackground() {
+				Log.e("In Draft Order", "Async Task Started. Loading Orders data.");
 				db = new DBAdapter(getHelper());
 				
 				// TODO:, only draft orders
-				data = db.listOrders(null);
+				data = db.listOrders(0);
 				return null;
 			}
 		};
@@ -82,6 +85,7 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 
 	@Override
 	public void onLoadFinished(Loader<Void> arg0, Void arg1) {
+		Log.e("In Draft Order", "Async Task Finished. Orders data should be ready.");
 		adapter.clear();
 		adapter.addAll(data);
 		// The list should now be shown.
@@ -90,12 +94,10 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 		} else {
 			setListShownNoAnimation(true);
 		}
-		
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Void> arg0) {
-		// TODO Auto-generated method stub
-		
+		Log.e("In Draft Order", "Resetting loader.");
 	}
 }
