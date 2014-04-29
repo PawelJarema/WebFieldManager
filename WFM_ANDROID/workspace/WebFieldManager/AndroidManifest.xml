@@ -110,7 +110,7 @@
             android:name="web.field.AddProductsActivity"
             android:label="@string/title_activity_addproducts" >
             <intent-filter> 
-       			<action android:name="web.field..AddProductsActivity" />  
+       			<action android:name="web.field.AddProductsActivity" />  
         	    <category android:name="android.intent.category.DEFAULT" />  
    			</intent-filter>
         </activity>

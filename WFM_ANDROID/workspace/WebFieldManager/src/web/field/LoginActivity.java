@@ -63,8 +63,6 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		
-
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
 					.permitAll().build();
@@ -148,6 +146,19 @@ public class LoginActivity extends Activity {
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
+	
+	public void logOut() {
+		mAuthTask.cancel(true);
+		mAuthTask = null;
+		Toast.makeText(this, getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		logOut(); // useful when brought to front again
+	}
+
 	public void attemptLogin() {
 		if (mAuthTask != null) {
 			return;

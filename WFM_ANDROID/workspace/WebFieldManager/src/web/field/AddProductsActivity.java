@@ -161,22 +161,40 @@ public class AddProductsActivity extends FragmentActivity implements
 			}
 		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		tvOrderTemplateDiscount.setText(Double.toString(orderTemplate
-				.getDiscount()));
+		tvOrderTemplateDiscount.setText(
+				getResources().getString(R.string.order_template_discount) + ": " +
+				Double.toString(orderTemplate.getDiscount()));
 
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
 		if (orderTemplate.getOrderTemplateThreshold() != null) {
 			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
 					.getOrderTemplateThreshold();
+			/*tvTemplateTresholdDiscount.setText(
+					getResources().getString(R.string.order_template_threshold_discount) + ": " +
+							orderTemplateThreshold.getDiscount(?)); */
 		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
-		tvPayTemrsDiscount.setText("TODO");
+		tvPayTemrsDiscount.setText(
+				getResources().getString(R.string.order_payterms_discount) + ": " +
+				"TODO");
 
 		tvOrderValueBeforeDiscounts = (TextView) findViewById(R.id.order_total_before_discount);
+		tvOrderValueBeforeDiscounts.setText(
+				getResources().getString(R.string.order_total_before_discount) + ": " +
+				"TODO");
 		tvTotalDisountValue = (TextView) findViewById(R.id.order_total_discount);
+		tvTotalDisountValue.setText(
+				getResources().getString(R.string.order_total_discount) + ": " +
+				"TODO");
 		tvValueOfFreeProducts = (TextView) findViewById(R.id.order_total_free_qty_value);
+		tvValueOfFreeProducts.setText(
+				getResources().getString(R.string.order_total_free_qty_value) + ": " +
+				"TODO");
 		tvOrderValue = (TextView) findViewById(R.id.order_total_value);
+		/* tvOrderValue.setText(
+				getResources().getString(R.string.) + ": " +
+				"TODO"); */
 	}
 
 	private OrderDetail rewriteOrderQty(int position) {

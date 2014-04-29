@@ -5,6 +5,8 @@ import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,9 +20,16 @@ public class HomeFragment extends WebFieldFragment implements
 
 	
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.logout, menu);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		action_bar = getActivity().getActionBar();
+		setHasOptionsMenu(true);
 	}
 
 	@Override

@@ -2,22 +2,22 @@ package web.field;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class HomeActivity extends FragmentActivity {
 	// Nav drawer handling
@@ -125,20 +125,30 @@ public class HomeActivity extends FragmentActivity {
 		}
 		
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			drawer_toggle.setDrawerIndicatorEnabled(true);
-			FragmentManager sfm = getSupportFragmentManager();
-			if (sfm.getBackStackEntryCount() > 0){	
-			    sfm.popBackStackImmediate();
-			    if (settingsScreen != null && settingsScreen._isVisible()) {
-			    	getFragmentManager().popBackStack();
-			    	settingsScreen.hide(settingsScreen);
-			    }
-			}
-			return true;
-		case R.id.action_orders:
-			// startIntent(".Orders");
-			return true;
+			case android.R.id.home:
+				drawer_toggle.setDrawerIndicatorEnabled(true);
+				FragmentManager sfm = getSupportFragmentManager();
+				if (sfm.getBackStackEntryCount() > 0){	
+				    sfm.popBackStackImmediate();
+				    if (settingsScreen != null && settingsScreen._isVisible()) {
+				    	getFragmentManager().popBackStack();
+				    	settingsScreen.hide(settingsScreen);
+				    }
+				}
+				return true;
+			case R.id.action_orders:
+				// startIntent(".Orders");
+				return true;
+			case R.id.action_logout:
+				//Intent logging_screen = new Intent(getApplicationContext().g, LoginActivity.class);
+				//logging_screen.addFlags(logging_screen.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				//startActivity(logging_screen);
+				Intent startMain = new Intent("web.field.LoginActivity");
+				startMain.addCategory(Intent.CATEGORY_DEFAULT);
+				startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(startMain);
+				this.finish();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
