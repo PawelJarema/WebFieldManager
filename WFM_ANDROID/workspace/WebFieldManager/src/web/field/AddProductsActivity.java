@@ -278,7 +278,7 @@ public class AddProductsActivity extends FragmentActivity implements
 					tvOrderValueBeforeDiscounts.setText(Double.toString(result
 							.getFullValue()));
 					tvTotalDisountValue.setText(Double.toString(result
-							.getTotalDiscounts()));
+							.getTotalDiscountsValue()));
 					tvValueOfFreeProducts.setText("TODO");
 					tvOrderValue
 							.setText(Double.toString(result.getOrderTotal()));

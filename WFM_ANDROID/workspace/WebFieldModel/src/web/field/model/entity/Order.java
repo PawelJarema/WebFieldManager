@@ -37,7 +37,7 @@ public class Order {
 	private String Comment;
 
 	@ForeignCollectionField(eager = true)
-	private ForeignCollection<OrderDetail> OrdersDetail;
+	public ForeignCollection<OrderDetail> OrdersDetail;
 
 	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Customer Customer;

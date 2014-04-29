@@ -6,6 +6,8 @@ public class OrderCalculationDetaiResult {
 	private boolean aboweMaxValue;
 	private double discount;
 	private double freeQuantity;
+	private double valueAfterDiscounts;
+	private double valueBeforeDiscounts;
 	
 	public int getProductId() {
 		return productId;
@@ -45,5 +47,21 @@ public class OrderCalculationDetaiResult {
 
 	public void setFreeQuantity(double freeQuantity) {
 		this.freeQuantity = freeQuantity;
+	}
+
+	public double getValueBeforeDiscounts() {
+		return valueBeforeDiscounts;
+	}
+
+	public void setValueBeforeDiscounts(double valueBeforeDiscounts) {
+		this.valueBeforeDiscounts = valueBeforeDiscounts;
+	}
+
+	public double getValueAfterDiscounts() {
+		return valueAfterDiscounts;
+	}
+
+	public void setValueAfterDiscounts(double valueAfterDiscounts) {
+		this.valueAfterDiscounts = valueAfterDiscounts;
 	}
 }

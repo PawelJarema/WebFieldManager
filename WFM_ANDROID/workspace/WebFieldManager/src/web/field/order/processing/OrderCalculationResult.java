@@ -7,7 +7,7 @@ public class OrderCalculationResult {
 	private List<OrderCalculationDetaiResult> calculationDetails;
 	
 	private double subTotal;
-	private double totalDiscounts;
+	private double totalDiscountsValue;
 	private double promoSum;
 	
 	private double orderTemplateThresholdDiscount;
@@ -25,12 +25,12 @@ public class OrderCalculationResult {
 		this.subTotal = subTotal;
 	}
 
-	public double getTotalDiscounts() {
-		return totalDiscounts;
+	public double getTotalDiscountsValue() {
+		return totalDiscountsValue;
 	}
 
-	public void setTotalDiscounts(double totalDiscounts) {
-		this.totalDiscounts = totalDiscounts;
+	public void setTotalDiscountsValue(double totalDiscounts) {
+		this.totalDiscountsValue = totalDiscounts;
 	}
 
 	public double getPromoSum() {

@@ -16,6 +16,10 @@ public class OrderCache {
 
 	private Map<Integer, OrderTemplateDetail> templateByProduct = new Hashtable<Integer, OrderTemplateDetail>();
 	private Map<Integer, List<PromoThresholdDetail>> promoThresholdsByProduct = new Hashtable<Integer, List<PromoThresholdDetail>>();
+	
+	public OrderCache(){
+	
+	}
 
 	public OrderCache(OrderTemplate orderTemplate,
 			List<PromoPayTermDetail> promoPayTermDetails, IDBAdapter db) {
