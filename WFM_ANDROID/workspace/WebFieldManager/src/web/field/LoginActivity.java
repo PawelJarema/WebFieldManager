@@ -5,47 +5,43 @@ import java.io.UnsupportedEncodingException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 import web.field.helpers.LongRunningHttpRequest;
 import web.field.model.LogOnAnswer;
 import web.field.model.LogOnModel;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private LongRunningHttpRequest mAuthTask = null;
-
 
 	// UI references.
 	private View mLoginFormView;
@@ -62,6 +58,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (this.getIntent().hasExtra("logout"))
+			logOut();
 		
 		if (android.os.Build.VERSION.SDK_INT > 9) {
 			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -148,15 +146,14 @@ public class LoginActivity extends Activity {
 	 */
 	
 	public void logOut() {
-		mAuthTask.cancel(true);
 		mAuthTask = null;
+		//TODO clear prefs ?
+		SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putString(SharedPreferencesKeys.user_name, null);
+		editor.putString(SharedPreferencesKeys.user_token, null);
+		editor.commit();
 		Toast.makeText(this, getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		logOut(); // useful when brought to front again
 	}
 
 	public void attemptLogin() {

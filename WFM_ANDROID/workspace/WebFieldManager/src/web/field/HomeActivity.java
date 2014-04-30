@@ -2,6 +2,9 @@ package web.field;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,13 +14,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class HomeActivity extends FragmentActivity {
 	// Nav drawer handling
@@ -140,19 +141,16 @@ public class HomeActivity extends FragmentActivity {
 				// startIntent(".Orders");
 				return true;
 			case R.id.action_logout:
-				//Intent logging_screen = new Intent(getApplicationContext().g, LoginActivity.class);
-				//logging_screen.addFlags(logging_screen.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				//startActivity(logging_screen);
-				Intent startMain = new Intent("web.field.LoginActivity");
-				startMain.addCategory(Intent.CATEGORY_DEFAULT);
-				startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(startMain);
-				this.finish();
+				//AlertDialog
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage(getResources().getString(R.string.do_you_want_to_log_out));
+				builder.setPositiveButton(getResources().getString(R.string.yes), dialogClickListener);
+				builder.setNegativeButton(getResources().getString(R.string.no), dialogClickListener).show();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	@Override
 	public void setTitle(CharSequence t) {
 		action_bar.setTitle(title);
@@ -198,4 +196,22 @@ public class HomeActivity extends FragmentActivity {
 		boolean drawerOpen = drawer_layout.isDrawerOpen(drawer_list);
 		return super.onPrepareOptionsMenu(menu);
 	}
+	
+	// Dialog that handles logout request
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	    @Override
+	    public void onClick(DialogInterface dialog, int which) {
+	        switch (which){
+		        case DialogInterface.BUTTON_POSITIVE:
+		        	Intent login = new Intent("web.field.LoginActivity");
+					login.putExtra("logout", true);
+					startActivity(login);
+					dialog.dismiss();
+		            break;
+		        case DialogInterface.BUTTON_NEGATIVE:
+		            dialog.dismiss();
+		            break;
+	        }
+	    }
+	};
 }
