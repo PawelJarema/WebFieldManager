@@ -16,9 +16,9 @@ public class OrderCache {
 
 	private Map<Integer, OrderTemplateDetail> templateByProduct = new Hashtable<Integer, OrderTemplateDetail>();
 	private Map<Integer, List<PromoThresholdDetail>> promoThresholdsByProduct = new Hashtable<Integer, List<PromoThresholdDetail>>();
-	
-	public OrderCache(){
-	
+
+	public OrderCache() {
+
 	}
 
 	public OrderCache(OrderTemplate orderTemplate,
@@ -32,10 +32,20 @@ public class OrderCache {
 		this.orderTemplateDetails = Arrays.asList(otDetails);
 
 		this.promoPayTermDetails = promoPayTermDetails;
-		this.orderTemplateThreshold = db
-				.getOrderTemplateThreshold(orderTemplate
+
+		if (orderTemplate.getOrderTemplateThreshold() != null
+				&& (orderTemplate.getOrderTemplateThreshold()
+						.getOrdersTemplateThresholdDetails() == null || orderTemplate
 						.getOrderTemplateThreshold()
-						.getOrdersTemplateThresholdId());
+						.getOrdersTemplateThresholdDetails().size() == 0)) {
+			this.orderTemplateThreshold = db
+					.getOrderTemplateThreshold(orderTemplate
+							.getOrderTemplateThreshold()
+							.getOrdersTemplateThresholdId());
+		} else {
+			this.orderTemplateThreshold = orderTemplate
+					.getOrderTemplateThreshold();
+		}
 
 		if (orderTemplateThreshold != null) {
 			OrderTemplateThresholdDetail[] thresholdDetails = orderTemplateThreshold
@@ -43,6 +53,10 @@ public class OrderCache {
 							new OrderTemplateThresholdDetail[] {});
 			this.orderTemplateThresholdDetails = Arrays
 					.asList(thresholdDetails);
+
+			// sort desc by total value
+			Collections.sort(this.orderTemplateThresholdDetails,
+					new OrderTemplateThresholdDetailComparator());
 		}
 
 		if (orderTemplate.getPromoThreshold() != null) {
@@ -145,7 +159,17 @@ public class OrderCache {
 
 	public OrderTemplateThresholdDetail getOrderTemplateThresholdDetailForOrder(
 			double orderTotal) {
+
 		OrderTemplateThresholdDetail result = null;
+		if (this.orderTemplateThresholdDetails != null) {
+			// sorted desc, so first threshold below detail will be the one we look for
+			for (OrderTemplateThresholdDetail detail : this.orderTemplateThresholdDetails) {
+				if(detail.getOrderTotal() < orderTotal){
+					result = detail;
+					break;
+				}
+			}
+		}
 
 		return result;
 	}

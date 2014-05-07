@@ -20,10 +20,11 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 		}
 		result.setFullValue(fullValue);
 
-		// get threshold for total order value
-		double orderTemplateThresholdDiscount = 0;
+		// get threshold for full total order value
+		double orderTemplateThresholdDiscount = order
+				.getDiscountHeaderThreshold();
 		OrderTemplateThresholdDetail thresholdDetail = cache
-				.getOrderTemplateThresholdDetailForOrder(result.getOrderTotal());
+				.getOrderTemplateThresholdDetailForOrder(fullValue);
 		if (thresholdDetail != null) {
 			orderTemplateThresholdDiscount = thresholdDetail.getDiscount();
 			result.setOrderTemplateThresholdDiscount(orderTemplateThresholdDiscount);
@@ -31,7 +32,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 
 		// get template discount
 		double templateDiscount = 0;
-		if (calculationRequest.getOrder().getOrderTemplate() != null) {
+		if (order.getOrderTemplate() != null) {
 			templateDiscount = calculationRequest.getOrder().getOrderTemplate()
 					.getDiscount();
 		}
@@ -58,19 +59,28 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 					.getOrderTemplateDetailForOrderDetail(detail);
 
 			// check flag no promo
-			if (templateDetail != null && !templateDetail.isFlagNoPromo()) {
+			boolean applyDiscounts = true;
+			if (templateDetail != null) {
+				applyDiscounts = !templateDetail.isFlagNoPromo();
+			}
 
-				// check if max qty is provided and if extended
-				if (templateDetail.getQtyMax() != 0) {
+			if (applyDiscounts) {
 
-					detailCalculationResult
-							.setAboweMaxValue(qty > templateDetail.getQtyMax());
-				}
+				if (templateDetail != null) {
+					// check if max qty is provided and if extended
+					if (templateDetail.getQtyMax() != 0) {
 
-				// check if min qty is provided and if abowe
-				if (templateDetail.getQtyMin() != 0) {
-					detailCalculationResult
-							.setBelowMinValue(qty < templateDetail.getQtyMin());
+						detailCalculationResult
+								.setAboweMaxValue(qty > templateDetail
+										.getQtyMax());
+					}
+
+					// check if min qty is provided and if abowe
+					if (templateDetail.getQtyMin() != 0) {
+						detailCalculationResult
+								.setBelowMinValue(qty < templateDetail
+										.getQtyMin());
+					}
 				}
 
 				// get free qty and discount
@@ -97,7 +107,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 				if (templateDiscount != 0) {
 					double discountMultiplier = 1 - templateDiscount;
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							- discountMultiplier;
+							* discountMultiplier;
 				}
 
 				// try to apply template threshold discount

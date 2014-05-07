@@ -54,7 +54,7 @@ public class OrderProcessingTest {
 		testProduct3.setProductDescription("Unit Test Product 3");
 		testProduct3.setCode("P3");
 		testProduct3.setPrice(30);
-		
+
 		orderCache = new OrderCache();
 		orderCache.setPromoPayTermDetails(promoPayTermDetails);
 
@@ -74,13 +74,11 @@ public class OrderProcessingTest {
 	}
 
 	@Test
-	public void simple_PromoPayTermDetail_discount_Test() throws SQLException {
+	public void simple_ordertemplateThresholdDiscount_Test()
+			throws SQLException {
 
 		// create order
 		Order order = new Order();
-		
-		// 5% discount from payment terms
-		order.setDiscountHeaderPayterms(5);
 
 		// add order row
 		OrderDetail orderDetail = new OrderDetail();
@@ -91,14 +89,41 @@ public class OrderProcessingTest {
 		ForeignCollection<OrderDetail> details = new TestForeignCollection<OrderDetail>();
 		details.add(orderDetail);
 		order.OrdersDetail = details;
-		
+
 		// create order template
 		orderTemplate = new OrderTemplate();
-		orderTemplate.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
+
+		orderTemplate
+				.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
 		OrderTemplateDetail orderTemplateDetail = new OrderTemplateDetail();
 		orderTemplateDetail.setProduct(testProduct1);
 		orderTemplate.getOrdersTemplateDetails().add(orderTemplateDetail);
-		
+
+		// add template order
+		order.setOrderTemplate(orderTemplate);
+
+		// create order template threshold
+		OrderTemplateThreshold otThreshold = new OrderTemplateThreshold();
+		TestForeignCollection<OrderTemplateThresholdDetail> thDetails = new TestForeignCollection<OrderTemplateThresholdDetail>();
+		otThreshold.setOrdersTemplateThresholdDetails(thDetails);
+		// add 5% discount for 100 value
+		OrderTemplateThresholdDetail otd = new OrderTemplateThresholdDetail();
+		otd.setDiscount(0.05);
+		otd.setOrderTotal(1000);
+		thDetails.add(otd);
+
+		// add 10% discount for 1000 value
+		OrderTemplateThresholdDetail otd2 = new OrderTemplateThresholdDetail();
+		otd2.setDiscount(0.1);
+		otd2.setOrderTotal(10000);
+		thDetails.add(otd2);
+
+		// set threshold for templates
+		orderTemplate.setOrderTemplateThreshold(otThreshold);
+
+		// create order cashe
+		orderCache = new OrderCache(orderTemplate, promoPayTermDetails, db);
+
 		OrderCalculationRequest request = new OrderCalculationRequest(order,
 				orderCache);
 
@@ -108,7 +133,115 @@ public class OrderProcessingTest {
 		// check result
 		assertNotNull(result);
 		assertTrue(result.getFullValue() == 100);// 10 products times 10 = 100
-		assertTrue(result.getTotalDiscountsValue() == 0.5);
+		assertTrue(result.getTotalDiscountsValue() == 0);
+
+		// increase qty to 200
+		orderDetail.setQty(200);
+
+		// call process
+		result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 2000);
+		assertTrue(result.getTotalDiscountsValue() == 100);// 5% disc should be applied
+		
+		// increase qty to 2000
+		orderDetail.setQty(2000);
+
+		// call process
+		result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 20000);
+		assertTrue(result.getTotalDiscountsValue() == 2000);// 10% disc should be applied
+
+	}
+
+	@Test
+	public void simple_orderTemplateDiscount_Test() throws SQLException {
+
+		// create order
+		Order order = new Order();
+
+		// add order row
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setProduct(testProduct1);// add P1 product
+
+		// set qty
+		orderDetail.setQty(10);
+		ForeignCollection<OrderDetail> details = new TestForeignCollection<OrderDetail>();
+		details.add(orderDetail);
+		order.OrdersDetail = details;
+
+		// create order template
+		orderTemplate = new OrderTemplate();
+
+		// 5% discount from template
+		orderTemplate.setDiscount(0.05);
+		orderTemplate
+				.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
+		OrderTemplateDetail orderTemplateDetail = new OrderTemplateDetail();
+		orderTemplateDetail.setProduct(testProduct1);
+		orderTemplate.getOrdersTemplateDetails().add(orderTemplateDetail);
+
+		// create order cashe
+		orderCache = new OrderCache(orderTemplate, promoPayTermDetails, db);
+
+		// add template order
+		order.setOrderTemplate(orderTemplate);
+
+		OrderCalculationRequest request = new OrderCalculationRequest(order,
+				orderCache);
+
+		// call process
+		OrderCalculationResult result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 100);// 10 products times 10 = 100
+		assertTrue(result.getTotalDiscountsValue() == 5);
+
+	}
+
+	@Test
+	public void simple_PromoPayTermDetail_discount_Test() throws SQLException {
+
+		// create order
+		Order order = new Order();
+
+		// 5% discount from payment terms
+		order.setDiscountHeaderPayterms(0.05);
+
+		// add order row
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setProduct(testProduct1);// add P1 product
+
+		// set qty
+		orderDetail.setQty(10);
+		ForeignCollection<OrderDetail> details = new TestForeignCollection<OrderDetail>();
+		details.add(orderDetail);
+		order.OrdersDetail = details;
+
+		// create order template
+		orderTemplate = new OrderTemplate();
+		orderTemplate
+				.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
+		OrderTemplateDetail orderTemplateDetail = new OrderTemplateDetail();
+		orderTemplateDetail.setProduct(testProduct1);
+		orderTemplate.getOrdersTemplateDetails().add(orderTemplateDetail);
+
+		OrderCalculationRequest request = new OrderCalculationRequest(order,
+				orderCache);
+
+		// call process
+		OrderCalculationResult result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 100);// 10 products times 10 = 100
+		assertTrue(result.getTotalDiscountsValue() == 5);
 
 	}
 

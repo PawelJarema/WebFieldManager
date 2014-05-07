@@ -1,9 +1,8 @@
 package web.field.model.entity;
 
-
 import com.j256.ormlite.field.DatabaseField;
 
-public class OrderTemplateDetail{
+public class OrderTemplateDetail {
 
 	@DatabaseField(id = true, generatedId = false)
 	private int OrdersTemplateDetailId;
@@ -121,6 +120,11 @@ public class OrderTemplateDetail{
 
 	public void setProduct(Product product) {
 		this.product = product;
+		if (product != null) {
+			setProductId(product.getProductId());
+		} else {
+			setProductId(0);
+		}
 	}
 
 	public OrderTemplate getOrdersTemplate() {
