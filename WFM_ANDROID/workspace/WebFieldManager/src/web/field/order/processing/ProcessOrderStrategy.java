@@ -46,10 +46,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 			double value = detail.getProduct().getPrice() * qty;
 			// apply all discounts
 			double lineValueAfterDiscounts = value;
-			double lineDiscount = detail.getDiscount();
-
-			// if we got here, we can apply promo stuff
-
+			
 			OrderCalculationDetaiResult detailCalculationResult = new OrderCalculationDetaiResult();
 			detailCalculationResult.setProductId(detail.getProduct()
 					.getProductId());
@@ -65,7 +62,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 			}
 
 			if (applyDiscounts) {
-
+				// if we got here, we can apply promo stuff
 				if (templateDetail != null) {
 					// check if max qty is provided and if extended
 					if (templateDetail.getQtyMax() != 0) {
@@ -94,24 +91,27 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 					double discount = promoThresholdDetail
 							.getThresholdDiscount() * value;
 					detail.setDiscount(discount);
-				}
 
-				// try to apply line discount
-				if (lineDiscount != 0) {
-					double discountMultiplier = 1 - lineDiscount;
+					// apply discount
+					double discountMultiplier = 1 - promoThresholdDetail
+							.getThresholdDiscount();
 					lineValueAfterDiscounts = lineValueAfterDiscounts
 							* discountMultiplier;
 				}
 
-				// try to apply template discount
-				if (templateDiscount != 0) {
+				// try to apply template discount, but only if product is in
+				// template
+				if (templateDiscount != 0
+						&& cache.isOrderDetailInTemplate(detail)) {
 					double discountMultiplier = 1 - templateDiscount;
 					lineValueAfterDiscounts = lineValueAfterDiscounts
 							* discountMultiplier;
 				}
 
-				// try to apply template threshold discount
-				if (orderTemplateThresholdDiscount != 0) {
+				// try to apply template threshold discount, but only if product
+				// is in template
+				if (orderTemplateThresholdDiscount != 0
+						&& cache.isOrderDetailInTemplate(detail)) {
 					double discountMultiplier = 1 - orderTemplateThresholdDiscount;
 					lineValueAfterDiscounts = lineValueAfterDiscounts
 							* discountMultiplier;

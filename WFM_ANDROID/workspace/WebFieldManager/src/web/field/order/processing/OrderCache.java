@@ -59,7 +59,9 @@ public class OrderCache {
 					new OrderTemplateThresholdDetailComparator());
 		}
 
-		if (orderTemplate.getPromoThreshold() != null) {
+		if (orderTemplate.getPromoThreshold() != null
+				&& (orderTemplate.getPromoThreshold().getPromoThresholdDetail() == null || orderTemplate
+						.getPromoThreshold().getPromoThresholdDetail().size() == 0)) {
 			this.promoThreshold = db.getPromoThreshold(orderTemplate
 					.getPromoThreshold().getPromoThresholdId());
 
@@ -71,7 +73,16 @@ public class OrderCache {
 				this.promoThresholdDetails = Arrays
 						.asList(promoThresholdDetails);
 			}
+		} else {
+			this.promoThreshold = orderTemplate.getPromoThreshold();
+			this.promoThresholdDetails = Arrays.asList(this.promoThreshold
+					.getPromoThresholdDetail().toArray(
+							new PromoThresholdDetail[] {}));
 		}
+	}
+
+	public boolean isOrderDetailInTemplate(OrderDetail od) {
+		return getOrderTemplateDetailForOrderDetail(od) != null;
 	}
 
 	public OrderTemplate getOrderTemplate() {
@@ -162,9 +173,10 @@ public class OrderCache {
 
 		OrderTemplateThresholdDetail result = null;
 		if (this.orderTemplateThresholdDetails != null) {
-			// sorted desc, so first threshold below detail will be the one we look for
+			// sorted desc, so first threshold below detail will be the one we
+			// look for
 			for (OrderTemplateThresholdDetail detail : this.orderTemplateThresholdDetails) {
-				if(detail.getOrderTotal() < orderTotal){
+				if (detail.getOrderTotal() < orderTotal) {
 					result = detail;
 					break;
 				}
@@ -200,7 +212,7 @@ public class OrderCache {
 		for (PromoThresholdDetail thresholdDetail : promoThresholdDetails) {
 			int minValue = thresholdDetail.getThresholdMinValue();
 			int maxValue = thresholdDetail.getThresholdMaxValue();
-			if (detailValue > minValue && detailValue < maxValue) {
+			if (detailValue >= minValue && detailValue <= maxValue) {
 				result = thresholdDetail;
 				return result;
 			}

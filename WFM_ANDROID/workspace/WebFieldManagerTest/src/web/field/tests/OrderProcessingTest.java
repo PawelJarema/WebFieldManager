@@ -74,6 +74,94 @@ public class OrderProcessingTest {
 	}
 
 	@Test
+	public void simple_PromoThresholdDetail_Test() throws SQLException {
+
+		// create order
+		Order order = new Order();
+
+		// add order row
+		OrderDetail orderDetail = new OrderDetail();
+		orderDetail.setProduct(testProduct1);// add P1 product
+
+		// set qty
+		orderDetail.setQty(10);
+		ForeignCollection<OrderDetail> details = new TestForeignCollection<OrderDetail>();
+		details.add(orderDetail);
+		order.OrdersDetail = details;
+
+		// create order template
+		orderTemplate = new OrderTemplate();
+
+		orderTemplate
+				.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
+		OrderTemplateDetail orderTemplateDetail = new OrderTemplateDetail();
+		orderTemplateDetail.setProduct(testProduct1);
+		orderTemplate.getOrdersTemplateDetails().add(orderTemplateDetail);
+
+		// add template order
+		order.setOrderTemplate(orderTemplate);
+
+		// create order promo threshold
+		PromoThreshold threshold = new PromoThreshold();
+		TestForeignCollection<PromoThresholdDetail> thDetails = new TestForeignCollection<PromoThresholdDetail>();
+		threshold.setPromoThresholdDetail(thDetails);
+		PromoThresholdDetail thDet1 = new PromoThresholdDetail();
+		thDet1.setThresholdMinValue(200);
+		thDet1.setThresholdMaxValue(1000);
+		thDet1.setThresholdDiscount(0.05);
+		thDet1.setProduct(testProduct1);
+		thDetails.add(thDet1);
+
+		PromoThresholdDetail thDet2 = new PromoThresholdDetail();
+		thDet2.setThresholdMinValue(1001);
+		thDet2.setThresholdMaxValue(2000);
+		thDet2.setThresholdDiscount(0.1);
+		thDet2.setProduct(testProduct1);
+		thDetails.add(thDet2);
+		
+		orderTemplate.setPromoThreshold(threshold);
+
+		// create order cashe
+		orderCache = new OrderCache(orderTemplate, promoPayTermDetails, db);
+
+		OrderCalculationRequest request = new OrderCalculationRequest(order,
+				orderCache);
+
+		// call process
+		OrderCalculationResult result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 100);
+		assertTrue(result.getTotalDiscountsValue() == 0);
+
+		// increase qty to 200
+		orderDetail.setQty(60);
+
+		// call process
+		result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 600);
+		assertTrue(result.getTotalDiscountsValue() == 30);// 5% disc should be
+															// applied
+
+		// increase qty to 2000
+		orderDetail.setQty(150);
+
+		// call process
+		result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 1500);
+		assertTrue(result.getTotalDiscountsValue() == 150);// 10% disc should
+															// be applied
+
+	}
+
+	@Test
 	public void simple_ordertemplateThresholdDiscount_Test()
 			throws SQLException {
 
@@ -144,8 +232,9 @@ public class OrderProcessingTest {
 		// check result
 		assertNotNull(result);
 		assertTrue(result.getFullValue() == 2000);
-		assertTrue(result.getTotalDiscountsValue() == 100);// 5% disc should be applied
-		
+		assertTrue(result.getTotalDiscountsValue() == 100);// 5% disc should be
+															// applied
+
 		// increase qty to 2000
 		orderDetail.setQty(2000);
 
@@ -155,7 +244,8 @@ public class OrderProcessingTest {
 		// check result
 		assertNotNull(result);
 		assertTrue(result.getFullValue() == 20000);
-		assertTrue(result.getTotalDiscountsValue() == 2000);// 10% disc should be applied
+		assertTrue(result.getTotalDiscountsValue() == 2000);// 10% disc should
+															// be applied
 
 	}
 
