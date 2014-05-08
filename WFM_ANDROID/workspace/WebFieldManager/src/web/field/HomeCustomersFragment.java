@@ -133,6 +133,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 		return true;
 	}
 
+	
 	@Override
 	public Loader<Void> onCreateLoader(int arg0, Bundle arg1) {
 		AsyncTaskLoader<Void> loader = new AsyncTaskLoader<Void>(getActivity()) {
