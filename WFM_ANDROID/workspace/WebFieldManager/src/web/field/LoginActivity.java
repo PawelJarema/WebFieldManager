@@ -11,6 +11,7 @@ import web.field.model.LogOnModel;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -47,7 +48,8 @@ public class LoginActivity extends FragmentActivity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-
+	private ProgressDialog dialog;
+	
 	// Ui element refs
 	Button login_button;
 	EditText etUsername;
@@ -55,6 +57,17 @@ public class LoginActivity extends FragmentActivity {
 	String username;
 	String password;
 
+	private void showProgressBar() {
+		dialog = new ProgressDialog(this); 
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
+		dialog.setMessage(getResources().getString(R.string.logging_in)); 
+		dialog.show();
+	}
+	
+	private void hideProgressBar() {
+		dialog.dismiss();
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -160,7 +173,7 @@ public class LoginActivity extends FragmentActivity {
 		if (mAuthTask != null) {
 			return;
 		}
-
+		showProgressBar();
 		// Reset errors.
 //		mEmailView.setError(null);
 //		mPasswordView.setError(null);
@@ -233,6 +246,13 @@ public class LoginActivity extends FragmentActivity {
 					e.printStackTrace();
 				}
 				mAuthTask = new LongRunningHttpRequest(json, post) {
+					
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						showProgressBar();
+					}
+
 					@Override
 					protected void onPostExecute(String results) {
 						if (results != null && !"false".equals(results)) {
@@ -244,7 +264,7 @@ public class LoginActivity extends FragmentActivity {
 							} catch (JsonSyntaxException e) {
 								Toast.makeText(getApplicationContext(),
 										results, Toast.LENGTH_SHORT).show();
-								showProgress(false);
+								hideProgressBar();
 								mAuthTask = null;
 								return;
 							}
