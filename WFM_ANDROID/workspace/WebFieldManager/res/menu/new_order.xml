@@ -6,12 +6,5 @@
         android:showAsAction="always"
         android:icon="@drawable/ic_action_save"
         android:title="@string/save"/>
-    
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_logout"
-        android:icon="@drawable/ic_action_logout"/> 
 
 </menu>

@@ -20,6 +20,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -46,8 +48,16 @@ public class SettingsFragment extends PreferenceFragment {
 	private ActionBar action_bar;
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		menu.clear();
+		inflater.inflate(R.menu.logout, menu);	
+	}
+	
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         action_bar = getActivity().getActionBar();
         ((HomeActivity)getActivity()).getDrawerToggle().setDrawerIndicatorEnabled(false);
     }
