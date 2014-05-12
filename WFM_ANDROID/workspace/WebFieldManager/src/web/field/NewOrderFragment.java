@@ -254,6 +254,7 @@ public class NewOrderFragment extends WebFieldFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
 		inflater.inflate(R.menu.new_order, menu);
 	}
 

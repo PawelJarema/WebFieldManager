@@ -117,6 +117,7 @@ public class AddProductsActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.clear();
 		getMenuInflater().inflate(R.menu.addproducts, menu);
 		return true;
 	}

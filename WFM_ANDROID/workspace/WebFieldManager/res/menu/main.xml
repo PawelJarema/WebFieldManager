@@ -1,9 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
     <item
         android:id="@+id/action_customers"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_customers"/>
+    
     <item
         android:id="@+id/action_orders"
         android:orderInCategory="150"
@@ -34,31 +36,5 @@
         android:showAsAction="never"
         android:title="@string/action_logout"/>
 
-<!--  <item android:id="@+id/action_home"
-          android:icon="@drawable/ic_action_home"
-          android:title="@string/action_home"
-          android:showAsAction="always"  /> -->
-    <item android:id="@+id/action_orders"
-          android:icon="@drawable/ic_action_orders"
-          android:title="@string/action_orders"
-          android:showAsAction="always"  />
-    <item android:id="@+id/action_customers"
-          android:icon="@drawable/ic_action_customers"
-          android:title="@string/action_customers"
-          android:showAsAction="always"  />
-    <item android:id="@+id/action_products"
-          android:icon="@drawable/ic_action_products"
-          android:title="@string/action_products"
-          android:showAsAction="always"  />
-    <item android:id="@+id/action_settings"
-          android:icon="@drawable/ic_action_settings"
-          android:title="@string/action_settings"
-          android:showAsAction="always"  />
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_logout"
-        android:icon="@drawable/ic_action_logout"/> 
-
+    
 </menu>
