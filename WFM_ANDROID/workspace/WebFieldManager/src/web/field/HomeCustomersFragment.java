@@ -85,7 +85,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 				fragment.setArguments(bundle);
 				fragmentManager.beginTransaction()
 						.replace(R.id.home_content_frame, fragment)
-						.addToBackStack("subLevel1")
+						.addToBackStack("displayUIMsgOnBack")
 						.commit();
 			}
 

@@ -13,11 +13,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class HomeActivity extends WebFieldFragmentActivity {
 	// Nav drawer handling
@@ -115,7 +117,6 @@ public class HomeActivity extends WebFieldFragmentActivity {
 			settingsScreen.show(settingsScreen);
 		}
 		
-
 		drawer_layout.closeDrawers();
 	}
 
@@ -132,28 +133,45 @@ public class HomeActivity extends WebFieldFragmentActivity {
 			case android.R.id.home:
 				drawer_toggle.setDrawerIndicatorEnabled(true);
 				FragmentManager sfm = getSupportFragmentManager();
-				if (sfm.getBackStackEntryCount() > 0){	
+				
+				if (sfm.getBackStackEntryCount() > 0 && displayFragmentUIMessages(sfm)){	
 				    sfm.popBackStackImmediate();
 				    if (settingsScreen != null && settingsScreen._isVisible()) {
 				    	getFragmentManager().popBackStack();
 				    	settingsScreen.hide(settingsScreen);
 				    }
 				}
+				
 				return true;
 			case R.id.action_orders:
 				// startIntent(".Orders");
 				return true;
 			case R.id.action_logout:
 				//AlertDialog
-				AlertDialog.Builder builder = new Builder(this);
+				showYesNoDialog(getResources().getString(R.string.do_you_want_to_log_out),
+						dialogClickListener);
+				/*AlertDialog.Builder builder = new Builder(this);
 				builder.setMessage(getResources().getString(R.string.do_you_want_to_log_out));
 				builder.setPositiveButton(getResources().getString(R.string.yes), dialogClickListener);
-				builder.setNegativeButton(getResources().getString(R.string.no), dialogClickListener).show();
+				builder.setNegativeButton(getResources().getString(R.string.no), dialogClickListener).show();*/
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
+	// displays messages for users on attempt to leave important fragments
+	private boolean displayFragmentUIMessages(FragmentManager sfm) {
+		FragmentManager.BackStackEntry backstackEntry = sfm.getBackStackEntryAt(
+				sfm.getBackStackEntryCount() - 1);
+		if (backstackEntry.toString().contains("displayUIMsgOnBack")) {
+			showYesNoDialog(getResources().getString(R.string.do_you_want_to_leave_order),
+					null);
+			return false;
+		}
+		else
+			return true;
+	}
+
 	@Override
 	public void setTitle(CharSequence t) {
 		action_bar.setTitle(title);
@@ -161,11 +179,13 @@ public class HomeActivity extends WebFieldFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (settingsScreen != null && settingsScreen._isVisible()) {
-			settingsScreen.hide(settingsScreen);
-			getFragmentManager().popBackStack();
+		if (displayFragmentUIMessages(getSupportFragmentManager())) {
+			if (settingsScreen != null && settingsScreen._isVisible()) {
+				settingsScreen.hide(settingsScreen);
+				getFragmentManager().popBackStack();
+			}
+			super.onBackPressed();
 		}
-		super.onBackPressed();
 	}
 	
 	@Override

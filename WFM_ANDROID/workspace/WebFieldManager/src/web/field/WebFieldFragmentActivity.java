@@ -2,7 +2,10 @@ package web.field;
 
 import java.util.concurrent.TimeUnit;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +14,7 @@ import android.support.v4.app.FragmentActivity;
 public class WebFieldFragmentActivity extends FragmentActivity {
 	
 	private ProgressDialog progressDialog = null; 
-	
+
 	protected void showProgressDialog() {
 		this.progressDialog = ProgressDialog.show(this, 
 				getResources().getString(R.string.network), 
@@ -22,6 +25,28 @@ public class WebFieldFragmentActivity extends FragmentActivity {
 	protected void dismissProgressDialog() {
 		if (this.progressDialog != null)
 			this.progressDialog.dismiss();
+	}
+	
+	protected void showYesNoDialog(String message, DialogInterface.OnClickListener listener) {
+		if (listener == null)
+			listener = new DialogInterface.OnClickListener() {
+			    @Override
+			    public void onClick(DialogInterface dialog, int which) {
+			        switch (which){
+				        case DialogInterface.BUTTON_POSITIVE:
+				        	getSupportFragmentManager().popBackStackImmediate();
+							dialog.dismiss();
+				            break;
+				        case DialogInterface.BUTTON_NEGATIVE:
+				            dialog.dismiss();
+				            break;
+			        }
+			    }
+			}; // default listener closes fragments
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setMessage(message);
+		builder.setPositiveButton(getResources().getString(R.string.yes), listener);
+		builder.setNegativeButton(getResources().getString(R.string.no), listener).show();
 	}
 	
 	@Override

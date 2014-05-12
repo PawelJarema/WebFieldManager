@@ -21,6 +21,8 @@ import web.field.order.processing.ProcessOrderTask;
 import web.field.sync.ISendOrderCallback;
 import web.field.sync.ISendOrderStrategy;
 import web.field.sync.SendOrderStrategy;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -230,6 +232,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		int id = item.getItemId();
 		switch (id) {
 		case android.R.id.home:
+			showYesNoDialog(getResources().getString(R.string.do_you_want_to_leave_order),
+					dialogClickListener);
 			this.finish();
 			return true;
 		case R.id.action_save_draft:
@@ -334,4 +338,21 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 			adapter.notifyDataSetChanged();
 		}
 	}
+	
+
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which){
+				case DialogInterface.BUTTON_POSITIVE:
+					getSupportFragmentManager().popBackStackImmediate();
+					finish();
+					dialog.dismiss();
+			    break;
+			    case DialogInterface.BUTTON_NEGATIVE:
+			        dialog.dismiss();
+			        break;
+		    }
+		}
+	};
 }
