@@ -37,7 +37,7 @@ import com.google.gson.JsonSyntaxException;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends WebfieldFragmentActivityInner {
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -48,7 +48,6 @@ public class LoginActivity extends FragmentActivity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
-	private ProgressDialog dialog;
 	
 	// Ui element refs
 	Button login_button;
@@ -56,16 +55,10 @@ public class LoginActivity extends FragmentActivity {
 	EditText etPassword;
 	String username;
 	String password;
-
-	private void showProgressBar() {
-		dialog = new ProgressDialog(this); 
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
-		dialog.setMessage(getResources().getString(R.string.logging_in)); 
-		dialog.show();
-	}
 	
-	private void hideProgressBar() {
-		dialog.dismiss();
+	protected void onStart() {
+		super.onStart();
+		dismissProgressDialog();
 	}
 	
 	@Override
@@ -173,7 +166,7 @@ public class LoginActivity extends FragmentActivity {
 		if (mAuthTask != null) {
 			return;
 		}
-		showProgressBar();
+		showProgressDialog();
 		// Reset errors.
 //		mEmailView.setError(null);
 //		mPasswordView.setError(null);
@@ -250,7 +243,7 @@ public class LoginActivity extends FragmentActivity {
 					@Override
 					protected void onPreExecute() {
 						super.onPreExecute();
-						showProgressBar();
+						showProgressDialog();
 					}
 
 					@Override
@@ -264,7 +257,7 @@ public class LoginActivity extends FragmentActivity {
 							} catch (JsonSyntaxException e) {
 								Toast.makeText(getApplicationContext(),
 										results, Toast.LENGTH_SHORT).show();
-								hideProgressBar();
+								dismissProgressDialog();
 								mAuthTask = null;
 								return;
 							}

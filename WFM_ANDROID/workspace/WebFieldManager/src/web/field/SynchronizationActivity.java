@@ -14,23 +14,24 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 		implements Observer {
 
-	private ProgressDialog dialog;
+	private ProgressDialog progressDialog;
 	
-	private void showProgressBar() {
-		dialog = new ProgressDialog(this); 
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); 
-		dialog.setMessage(getResources().getString(R.string.synchronization_in_progress)); 
-		dialog.show();
+	private void showProgressDialog() {
+		this.progressDialog = ProgressDialog.show(this, 
+				getResources().getString(R.string.network), 
+				getResources().getString(R.string.synchronization_in_progress),
+				true, false);
 	}
 	
-	private void hideProgressBar() {
-		dialog.dismiss();
+	private void dismissProgressDialog() {
+		if (this.progressDialog != null)
+			this.progressDialog.dismiss();
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		showProgressBar();
+		showProgressDialog();
 		setContentView(R.layout.activity_synchronization);
 
 		SharedPreferences preferences = WebFieldApplication
@@ -51,7 +52,7 @@ public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 	@Override
 	public void update(Object obj) {
 		SynchronizationResult syncResult = (SynchronizationResult) obj;
-		hideProgressBar();
+		dismissProgressDialog();
 		if (syncResult != null) {
 			if (syncResult.isSucceed()) {
 				SharedPreferences preferences = WebFieldApplication

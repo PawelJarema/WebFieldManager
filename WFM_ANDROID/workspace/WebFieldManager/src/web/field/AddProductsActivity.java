@@ -39,7 +39,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-public class AddProductsActivity extends FragmentActivity implements
+public class AddProductsActivity extends WebfieldFragmentActivityInner implements
 		ISendOrderCallback, OnCompleteListener {
 
 	// Ui and TextViews
@@ -282,6 +282,7 @@ public class AddProductsActivity extends FragmentActivity implements
 	@Override
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
+		dismissProgressDialog();
 		if (qty > 0) {
 			adapter.setOrderItemQty(position, qty);
 

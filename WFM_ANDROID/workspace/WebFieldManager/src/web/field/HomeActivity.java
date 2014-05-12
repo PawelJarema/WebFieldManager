@@ -32,7 +32,6 @@ public class HomeActivity extends WebFieldFragmentActivity {
             "web.field.ProductsFragment",
             "web.field.SettingsFragment"};
 	
-
 	// Ui elements, tab swipes fragment
 	// private ViewPager view_pager;
 	// private HomeTabsAdapter tabs_adapter;
@@ -57,6 +56,11 @@ public class HomeActivity extends WebFieldFragmentActivity {
 		selectItem(0);
 	}
 
+	protected void onStart() {
+		super.onStart();
+		dismissProgressDialog();
+	}
+	
 	protected void onResume() {
 		super.onResume();
 		drawer_toggle.setDrawerIndicatorEnabled(true);
