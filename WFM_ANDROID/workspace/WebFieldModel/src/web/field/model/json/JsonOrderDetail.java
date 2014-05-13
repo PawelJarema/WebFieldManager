@@ -1,5 +1,7 @@
 package web.field.model.json;
 
+import web.field.model.entity.OrderDetail;
+
 
 public class JsonOrderDetail {
 	private int OrderDetailId;
@@ -16,6 +18,27 @@ public class JsonOrderDetail {
 	private long ModifiedDate;
 	private String OrderTempId;
 	private String OrderDetailTempId;
+	
+	public JsonOrderDetail(){
+	
+	}
+	
+	public JsonOrderDetail(OrderDetail orderDetail){
+		OrderDetailId = orderDetail.getOrderDetailId();
+		TenantId = orderDetail.getTenantId();
+		OrderId = orderDetail.getOrderId();
+		ProductId = orderDetail.getProduct().getProductId();
+		Qty = orderDetail.getQty();
+		FreeQty = orderDetail.getFreeQty();
+		Discount = orderDetail.getDiscount();
+		Price = orderDetail.getPrice();
+		CreateUserId = orderDetail.getCreateUserId();
+		CreateDate = orderDetail.getCreateDate();
+		ModifiedUserId = orderDetail.getModifiedUserId();
+		ModifiedDate = orderDetail.getModifiedDate();
+		OrderTempId = orderDetail.getOrder().getOrderTempId();
+		OrderDetailTempId = orderDetail.getOrderDetailTempId();
+	}
 
 	public int getOrderDetailId() {
 		return OrderDetailId;

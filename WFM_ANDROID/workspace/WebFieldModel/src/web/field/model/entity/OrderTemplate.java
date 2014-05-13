@@ -1,6 +1,5 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
 
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;

@@ -28,6 +28,7 @@ public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 			this.progressDialog.dismiss();
 	}
 	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -5,45 +5,66 @@ import java.io.UnsupportedEncodingException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import web.field.SharedPreferencesKeys;
+import web.field.WebFieldApplication;
 import web.field.helpers.LongRunningHttpRequest;
 import web.field.model.entity.Order;
+import web.field.model.json.JsonOrder;
+import web.field.model.json.JsonSaveOrderRequest;
 
 public class SendOrderStrategy implements ISendOrderStrategy {
 
 	private String serviceAddress;
+	private String userToken;
 	private ISendOrderCallback callback;
 
 	public SendOrderStrategy(ISendOrderCallback callback) {
 		this.callback = callback;
+		SharedPreferences preferences = WebFieldApplication
+				.getSharedPreferences();
+		serviceAddress = preferences.getString(
+				SharedPreferencesKeys.connection_service, null);
+		
+		userToken = preferences.getString(
+				SharedPreferencesKeys.user_token, null);
 	}
 
 	@Override
 	public void sendOrder(Order order) {
 
-		String json = new Gson().toJson(order);
+		// map to JsonOrder
+		JsonOrder jsonOrder = new JsonOrder(order);
+		
+		JsonSaveOrderRequest request = new JsonSaveOrderRequest();
+		request.setOrder(jsonOrder);
+		request.setUserToken(userToken);
+
+		// serialize json order
+		String json = new Gson().toJson(request);
 
 		// load customers
-		HttpPost customersRequest = new HttpPost(serviceAddress + "SaveOrder/");
+		HttpPost saveOrderRequest = new HttpPost(serviceAddress + "/SaveOrder/");
 
-		customersRequest.setHeader("Accept", "application/json");
-		customersRequest.setHeader("Content-type", "application/json");
+		saveOrderRequest.setHeader("Accept", "application/json");
+		saveOrderRequest.setHeader("Content-type", "application/json");
 		try {
-			customersRequest.setEntity(new StringEntity(json));
+			saveOrderRequest.setEntity(new StringEntity(json));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
 		LongRunningHttpRequest getCustomers = new LongRunningHttpRequest(json,
-				customersRequest) {
+				saveOrderRequest) {
 			@Override
 			protected void onPostExecute(String results) {
 				if (results != null && "true".equals(results)) {
 					callback.orderSend(true);
 				} else {
-					callback.orderSend(true);
+					callback.orderSend(false);
 				}
 			}
 		};

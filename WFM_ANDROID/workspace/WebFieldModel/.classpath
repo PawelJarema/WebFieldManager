@@ -5,6 +5,7 @@
 	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/gson-2.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/ormlite-android-4.43.jar"/>
 	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/ormlite-core-4.43.jar"/>
+	<classpathentry kind="lib" path="/WebFieldManager/libs/modelmapper-0.6.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
 

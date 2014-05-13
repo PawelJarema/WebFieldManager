@@ -56,31 +56,6 @@
         android:id="@+id/login_button"
         android:text="@string/login_button"
         style="@style/white_text" />
-        
-    <LinearLayout android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="center_horizontal"
-        	android:orientation="horizontal"
-        	android:layout_marginTop="60dip"
-        	>
-        	
-	    <TextView
-	        android:id="@+id/login_url_left"
-	        android:layout_gravity="right"
-	        android:layout_marginRight="5dip"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/login_url_left" />
-	    
-	    <TextView
-	        android:id="@+id/login_url_right"
-	        android:layout_gravity="left"
-	        android:layout_marginLeft="5dip"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/login_url_right" />
-	    
-    </LinearLayout>
 
 </LinearLayout>
 

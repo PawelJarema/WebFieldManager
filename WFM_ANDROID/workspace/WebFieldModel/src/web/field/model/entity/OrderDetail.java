@@ -1,17 +1,15 @@
 package web.field.model.entity;
 
-import java.math.BigDecimal;
-
 import web.field.logic.IVisited;
 import web.field.logic.IVisitor;
 
 import com.j256.ormlite.field.DatabaseField;
 
-public class OrderDetail implements IVisited{
+public class OrderDetail implements IVisited {
 
 	@DatabaseField(id = true, generatedId = false)
 	private String OrderDetailTempId;
-	
+
 	@DatabaseField
 	private int OrderDetailId;
 
@@ -32,6 +30,18 @@ public class OrderDetail implements IVisited{
 
 	@DatabaseField
 	private double Price;
+	
+	@DatabaseField
+	private long CreateDate;
+	
+	@DatabaseField
+	private long ModifiedDate;
+	
+	@DatabaseField
+	private int CreateUserId;
+	
+	@DatabaseField
+	private int ModifiedUserId;
 
 	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private Order Order;
@@ -43,7 +53,7 @@ public class OrderDetail implements IVisited{
 		// all persisted classes must define a no-arg constructor
 		// with at least package visibility
 	}
-	
+
 	public int getOrderDetailId() {
 		return OrderDetailId;
 	}
@@ -127,5 +137,37 @@ public class OrderDetail implements IVisited{
 	@Override
 	public void accept(IVisitor visitor) {
 		visitor.visit(this);
+	}
+
+	public long getCreateDate() {
+		return CreateDate;
+	}
+
+	public void setCreateDate(long createDate) {
+		CreateDate = createDate;
+	}
+
+	public long getModifiedDate() {
+		return ModifiedDate;
+	}
+
+	public void setModifiedDate(long modifiedDate) {
+		ModifiedDate = modifiedDate;
+	}
+
+	public int getCreateUserId() {
+		return CreateUserId;
+	}
+
+	public void setCreateUserId(int createUserId) {
+		CreateUserId = createUserId;
+	}
+
+	public int getModifiedUserId() {
+		return ModifiedUserId;
+	}
+
+	public void setModifiedUserId(int modifiedUserId) {
+		ModifiedUserId = modifiedUserId;
 	}
 }

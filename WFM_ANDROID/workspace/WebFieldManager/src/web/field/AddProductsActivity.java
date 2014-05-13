@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.db.DBAdapter;
@@ -49,7 +50,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	private Button bFilterByCategory;
 	private Button bFilterByProducer;
 	private Button bFilterByFamiliy;
-	
+
 	private TextView tvOrderTemplateDiscount;
 	private TextView tvTemplateThresholdDiscount;
 	private TextView tvPayTemrsDiscount;
@@ -115,6 +116,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 
 		prepareUiElements();
 		restoreQtyData(savedInstanceState, adapter);
+		
+		dismissProgressDialog();
 	}
 
 	@Override
@@ -138,14 +141,15 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//TODO a lot of code to service expanding list row layout (new meth refactor?)
+				// TODO a lot of code to service expanding list row layout (new
+				// meth refactor?)
 				if (product_data_popup != null)
 					product_data_popup.setVisibility(View.GONE);
 				product_data_popup = (LinearLayout) view
 						.findViewById(R.id.order_popup_layout);
 				product_data_popup.setVisibility(View.VISIBLE);
 				adapter.notifyRowIsActive(position);
-				
+
 				// TODO showMoreProductData();
 				QtyPickerFragment frag = new QtyPickerFragment();
 				Bundle bundle = new Bundle();
@@ -164,40 +168,44 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 			}
 		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		tvOrderTemplateDiscount.setText(
-				getResources().getString(R.string.order_template_discount) + ": " +
-				Double.toString(orderTemplate.getDiscount()));
+		tvOrderTemplateDiscount.setText(getResources().getString(
+				R.string.order_template_discount)
+				+ ": " + Double.toString(orderTemplate.getDiscount()));
 
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
 		if (orderTemplate.getOrderTemplateThreshold() != null) {
 			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
 					.getOrderTemplateThreshold();
-			/*tvTemplateTresholdDiscount.setText(
-					getResources().getString(R.string.order_template_threshold_discount) + ": " +
-							orderTemplateThreshold.getDiscount(?)); */
+			/*
+			 * tvTemplateTresholdDiscount.setText(
+			 * getResources().getString(R.string
+			 * .order_template_threshold_discount) + ": " +
+			 * orderTemplateThreshold.getDiscount(?));
+			 */
 		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
-		tvPayTemrsDiscount.setText(
-				getResources().getString(R.string.order_payterms_discount) + ": " +
-				"TODO");
+		tvPayTemrsDiscount.setText(getResources().getString(
+				R.string.order_payterms_discount)
+				+ ": " + "TODO");
 
 		tvOrderValueBeforeDiscounts = (TextView) findViewById(R.id.order_total_before_discount);
-		tvOrderValueBeforeDiscounts.setText(
-				getResources().getString(R.string.order_total_before_discount) + ": " +
-				"TODO");
+		tvOrderValueBeforeDiscounts.setText(getResources().getString(
+				R.string.order_total_before_discount)
+				+ ": " + "TODO");
 		tvTotalDisountValue = (TextView) findViewById(R.id.order_total_discount);
-		tvTotalDisountValue.setText(
-				getResources().getString(R.string.order_total_discount) + ": " +
-				"TODO");
+		tvTotalDisountValue.setText(getResources().getString(
+				R.string.order_total_discount)
+				+ ": " + "TODO");
 		tvValueOfFreeProducts = (TextView) findViewById(R.id.order_total_free_qty_value);
-		tvValueOfFreeProducts.setText(
-				getResources().getString(R.string.order_total_free_qty_value) + ": " +
-				"TODO");
+		tvValueOfFreeProducts.setText(getResources().getString(
+				R.string.order_total_free_qty_value)
+				+ ": " + "TODO");
 		tvOrderValue = (TextView) findViewById(R.id.order_total_value);
-		/* tvOrderValue.setText(
-				getResources().getString(R.string.) + ": " +
-				"TODO"); */
+		/*
+		 * tvOrderValue.setText( getResources().getString(R.string.) + ": " +
+		 * "TODO");
+		 */
 	}
 
 	private OrderDetail rewriteOrderQty(int position) {
@@ -209,7 +217,41 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	}
 
 	private boolean saveDraft() {
-		// TODO
+
+	
+		// try copy data to order
+		for (OrderDetail od : this.orderDetails) {
+			boolean detailExists = false;
+			for (OrderDetail savedDetail : this.order.getOrderDetails()) {
+				if (od.getOrderDetailTempId().compareToIgnoreCase(
+						savedDetail.getOrderDetailTempId()) == 0) {
+					detailExists = true;
+					// order detail found, copy qty, value etc
+					savedDetail.setDiscount(od.getDiscount());
+					savedDetail.setFreeQty(od.getFreeQty());
+					savedDetail.setPrice(od.getPrice());
+					savedDetail.setQty(od.getQty());
+				}
+				
+				if(!detailExists){
+					// not exists, need to add one
+					OrderDetail newDetail = new OrderDetail();
+					newDetail.setOrderDetailTempId(UUID.randomUUID().toString());
+					// order detail found, copy qty, value etc
+					newDetail.setDiscount(od.getDiscount());
+					newDetail.setFreeQty(od.getFreeQty());
+					newDetail.setPrice(od.getPrice());
+					newDetail.setQty(od.getQty());
+					
+					// add to order
+					order.OrdersDetail.add(newDetail);
+				}
+			}
+			
+			// save order to local db
+			db.saveOrder(order);
+		}
+
 		return true;
 	}
 
@@ -222,6 +264,10 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 			int qty = adapter.getQtyForOrder(position);
 			orderDetails.set(position, rewriteOrderQty(position));
 		}
+		
+		// save order do local db
+		db.saveOrder(order);
+		
 		this.sendOrderStrategy.sendOrder(order);
 		return true;
 	}
@@ -279,10 +325,6 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 
-	private void message(String text) {
-		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-	}
-	
 	@Override
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
@@ -320,7 +362,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	public OrderDetailsAdapter getProductListAdapter() {
 		return adapter;
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

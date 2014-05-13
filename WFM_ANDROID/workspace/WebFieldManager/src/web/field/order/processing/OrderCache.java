@@ -73,7 +73,7 @@ public class OrderCache {
 				this.promoThresholdDetails = Arrays
 						.asList(promoThresholdDetails);
 			}
-		} else {
+		} else if (orderTemplate.getPromoThreshold() != null) {
 			this.promoThreshold = orderTemplate.getPromoThreshold();
 			this.promoThresholdDetails = Arrays.asList(this.promoThreshold
 					.getPromoThresholdDetail().toArray(

@@ -1,14 +1,14 @@
 package web.field.model.json;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import web.field.model.entity.*;
 
 public class JsonOrder {
 	private int OrderId;
 	private int TenantId;
 	private int CustomerId;
-	private int UserId;
 	private long OrderDate;
 	private long DeliveryDate;
 	private int BillToId;
@@ -22,11 +22,45 @@ public class JsonOrder {
 	private String Comment;
 	private String OrderTempId;
 	private Integer OrderTemplateId;
+	private int Status;
 	private List<JsonOrderDetail> OrdersDetail = new ArrayList<JsonOrderDetail>();
 	
 	private double DiscountHeaderTemplate;
 	private double DiscountHeaderThreshold;
 	private double DiscountHeaderPayterms;
+	
+	public JsonOrder(){}
+	
+	public JsonOrder(Order order){
+		
+		OrderId = order.getOrderId();
+		TenantId = order.getTenantId();
+		CustomerId = order.getCustomer().getCustomerId();
+		OrderDate = order.getOrderDate();
+		DeliveryDate = order.getDeliveryDate();
+		BillToId = order.getBillTo().getCustomerAddressId();
+		ShipToId = order.getShipTo().getCustomerAddressId();
+		CreateUserId = order.getCreateUserId();
+		CreateDate = order.getCreateDate();
+		ModifiedUserId = order.getModifiedUserId();
+		ModifiedDate = order.getModifiedDate();
+		FlagValid = order.isFlagValid();
+		FlagError = order.isFlagError();
+		Comment = order.getComment();
+		OrderTempId = order.getOrderTempId();
+		OrderTemplateId = order.getOrderTemplate().getOrdersTemplateId();
+		Status = order.getStatus();
+		DiscountHeaderTemplate = order.getDiscountHeaderTemplate();
+		DiscountHeaderThreshold = order.getDiscountHeaderThreshold();
+		DiscountHeaderPayterms = order.getDiscountHeaderPayterms();
+		
+		for(OrderDetail od : order.OrdersDetail){
+			OrdersDetail.add(new JsonOrderDetail(od));
+		}
+		
+		
+	}
+	
 
 	public int getOrderId() {
 		return OrderId;
@@ -53,11 +87,11 @@ public class JsonOrder {
 	}
 
 	public int getUserId() {
-		return UserId;
+		return CreateUserId;
 	}
 
 	public void setUserId(int userId) {
-		UserId = userId;
+		CreateUserId = userId;
 	}
 
 	public long getOrderDate() {
@@ -194,6 +228,14 @@ public class JsonOrder {
 
 	public void setDiscountHeaderPayterms(double discountHeaderPayterms) {
 		DiscountHeaderPayterms = discountHeaderPayterms;
+	}
+	
+	public int getStatus() {
+		return Status;
+	}
+
+	public void setStatus(int status) {
+		Status = status;
 	}
 	
 	

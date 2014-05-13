@@ -51,17 +51,9 @@ public class SynchronizationService implements Subject {
 		}
 
 		// create chain
-		// 1. customers
-		// 2. products
-		// 3. promo group
-		// 4. promo pay term
-		// 5. promo threshold
-		// 6. order template threshold
-		// 7. order templates
-		// 8. orders
 
-		chainChandler = new CustomersSyncChainHandler(
-				new UsersSyncChainHandler(
+		chainChandler = new UsersSyncChainHandler(
+				new CustomersSyncChainHandler(
 						new ProductsSyncChainHandler(
 								new PromoGroupSyncChainHandler(
 										new PromoPayTermSyncChainHanler(

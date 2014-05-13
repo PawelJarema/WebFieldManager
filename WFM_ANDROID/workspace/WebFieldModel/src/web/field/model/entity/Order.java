@@ -20,12 +20,24 @@ public class Order {
 
 	@DatabaseField
 	private int UserId;
-
+	
 	@DatabaseField
 	private long OrderDate;
 
 	@DatabaseField
 	private long DeliveryDate;
+	
+	@DatabaseField
+	private long CreateDate;
+	
+	@DatabaseField
+	private int CreateUserId;
+	
+	@DatabaseField
+	private int ModifiedUserId;
+	
+	@DatabaseField
+	private long ModifiedDate;
 
 	@DatabaseField
 	private boolean FlagValid;
@@ -209,6 +221,37 @@ public class Order {
 		DiscountHeaderPayterms = discountHeaderPayterms;
 	}
 	
-	
+	public long getCreateDate() {
+		return CreateDate;
+	}
+
+	public void setCreateDate(long createDate) {
+		CreateDate = createDate;
+	}
+
+	public int getCreateUserId() {
+		return CreateUserId;
+	}
+
+	public void setCreateUserId(int createUserId) {
+		CreateUserId = createUserId;
+	}
+
+	public long getModifiedDate() {
+		return ModifiedDate;
+	}
+
+	public void setModifiedDate(long modifiedDate) {
+		ModifiedDate = modifiedDate;
+	}
+
+	public int getModifiedUserId() {
+		return ModifiedUserId;
+	}
+
+	public void setModifiedUserId(int modifiedUserId) {
+		ModifiedUserId = modifiedUserId;
+	}
+
 
 }

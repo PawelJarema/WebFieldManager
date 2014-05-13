@@ -5,23 +5,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.content.SharedPreferences;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 
+import web.field.SharedPreferencesKeys;
+import web.field.WebFieldApplication;
 import web.field.helpers.Converter;
+import web.field.helpers.ITenantProvider;
 import web.field.model.entity.*;
 import web.field.model.json.*;
 import web.field.model.simple.*;
 
-public class DBAdapter implements IDBAdapter {
+public class DBAdapter implements IDBAdapter, ITenantProvider {
 
 	static final String TAG = "DBAdapter";
 	static final String DATABASE_NAME = "WebFieldManagerDB";
 	static final int DATABASE_VERSION = 1;
 	private IDaoProvider daoProvider;
+	private ITenantProvider tenantProvider;
+	
+	public DBAdapter(IDaoProvider dbHelper, ITenantProvider tenantProvider) {
+		this.daoProvider = dbHelper;
+		this.tenantProvider = tenantProvider;
+	}
 
 	public DBAdapter(IDaoProvider dbHelper) {
 		this.daoProvider = dbHelper;
+		this.tenantProvider = this;
 	}
 
 	@Override
@@ -42,7 +54,12 @@ public class DBAdapter implements IDBAdapter {
 
 		try {
 			Dao<Customer, Integer> customerDao = daoProvider.getCustomerDao();
-			for (Customer customer : customerDao) {
+
+			// get by tenant
+			List<Customer> queryResult = customerDao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (Customer customer : queryResult) {
 				CustomerSimple info = new CustomerSimple();
 				info.setCustomerId(customer.getCustomerId());
 				info.setCustomerName(customer.getCustomerName());
@@ -310,7 +327,12 @@ public class DBAdapter implements IDBAdapter {
 
 		try {
 			Dao<Product, Integer> productDao = daoProvider.getProductDao();
-			for (Product product : productDao) {
+
+			// get by tenant
+			List<Product> queryResult = productDao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (Product product : queryResult) {
 				ProductSimple info = new ProductSimple();
 				info.setProductId(product.getProductId());
 				info.setProductCode(product.getCode());
@@ -332,7 +354,13 @@ public class DBAdapter implements IDBAdapter {
 		try {
 			Dao<OrderTemplate, Integer> templateDao = daoProvider
 					.getOrderTemplateDao();
-			for (OrderTemplate template : templateDao) {
+
+			// get by tenant
+			List<OrderTemplate> queryResult = templateDao.queryBuilder()
+					.where().eq("TenantId", this.tenantProvider.getTenant())
+					.query();
+
+			for (OrderTemplate template : queryResult) {
 				OrderTemplateSimple info = new OrderTemplateSimple();
 				info.setTemplateId(template.getOrdersTemplateId());
 				info.setActive(template.isFlagActive());
@@ -361,6 +389,7 @@ public class DBAdapter implements IDBAdapter {
 				Order order = new Order();
 				order.setOrderTempId(jsonor.getOrderTempId());
 				order.setComment(jsonor.getComment());
+				order.setCreateDate(jsonor.getCreateDate());
 				order.setDeliveryDate(jsonor.getDeliveryDate());
 				order.setFlagError(jsonor.isFlagError());
 				order.setFlagValid(jsonor.isFlagValid());
@@ -427,12 +456,19 @@ public class DBAdapter implements IDBAdapter {
 			Dao<CustomerAddress, Integer> customerAddressDao = daoProvider
 					.getCustomerAddressDao();
 			List<Order> queryResult = null;
+
 			if (customerId == null || customerId == 0) {
-				queryResult = orderDao.queryForAll();
+				// get by tenant
+				queryResult = orderDao.queryBuilder().where()
+						.eq("TenantId", this.tenantProvider.getTenant())
+						.query();
 
 			} else {
+				// get by tenant and customer
 				queryResult = orderDao.queryBuilder().where()
-						.eq("customer_id", customerId).query();
+						.eq("customer_id", customerId).and()
+						.eq("TenantId", this.tenantProvider.getTenant())
+						.query();
 			}
 			for (Order order : queryResult) {
 				OrderSimple simple = new OrderSimple();
@@ -467,7 +503,9 @@ public class DBAdapter implements IDBAdapter {
 					.getPromoGroupDao();
 			List<PromoGroup> queryResult = null;
 
-			queryResult = promoGroupDao.queryForAll();
+			// get by tenant
+			queryResult = promoGroupDao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
 
 			for (PromoGroup entity : queryResult) {
 				PromoGroupSimple simple = new PromoGroupSimple();
@@ -491,7 +529,9 @@ public class DBAdapter implements IDBAdapter {
 			Dao<PromoPayTerm, Integer> dao = daoProvider.getPromoPayTermDao();
 			List<PromoPayTerm> queryResult = null;
 
-			queryResult = dao.queryForAll();
+			// get by tenant
+			queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
 
 			for (PromoPayTerm entity : queryResult) {
 				PromoPayTermSimple simple = new PromoPayTermSimple();
@@ -517,7 +557,9 @@ public class DBAdapter implements IDBAdapter {
 					.getPromoThresholdDao();
 			List<PromoThreshold> queryResult = null;
 
-			queryResult = dao.queryForAll();
+			// get by tenant
+			queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
 
 			for (PromoThreshold entity : queryResult) {
 				PromoThresholdSimple simple = new PromoThresholdSimple();
@@ -542,7 +584,9 @@ public class DBAdapter implements IDBAdapter {
 					.getOrderTemplateThresholdDao();
 			List<OrderTemplateThreshold> queryResult = null;
 
-			queryResult = dao.queryForAll();
+			// get by tenant
+			queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
 
 			for (OrderTemplateThreshold entity : queryResult) {
 				OrdersTemplateThresholdSimple simple = new OrdersTemplateThresholdSimple();
@@ -1006,13 +1050,36 @@ public class DBAdapter implements IDBAdapter {
 	@Override
 	public List<PromoPayTermDetail> getPromoPayTermDetails() {
 		try {
-			Dao<PromoPayTermDetail, Integer> dao = daoProvider.getPromoPayTermsDetailDao();
+			Dao<PromoPayTermDetail, Integer> dao = daoProvider
+					.getPromoPayTermsDetailDao();
 			return dao.queryForAll();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	@Override
+	public int getTenant() {
+		SharedPreferences preferences = WebFieldApplication
+				.getSharedPreferences();
+		String token = preferences.getString(SharedPreferencesKeys.user_token,
+				null);
+
+		if (token != null) {
+			User user = getUser(token);
+			if (user != null) {
+				return user.getTenantId();
+			} else {
+				throw new IllegalStateException("Can't find user for token "
+						+ token);
+			}
+		} else {
+			throw new IllegalStateException(
+					"Can't find user token in shared preferences");
+		}
+
 	}
 
 }
