@@ -11,14 +11,13 @@ import web.field.model.LogOnModel;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +42,8 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private LongRunningHttpRequest mAuthTask = null;
-
+	private Context context;
+	
 	// UI references.
 	private View mLoginFormView;
 	private View mLoginStatusView;
@@ -64,6 +64,8 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		context = this;
+		
 		if (this.getIntent().hasExtra("logout"))
 			logOut();
 		
@@ -159,7 +161,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 		editor.putString(SharedPreferencesKeys.user_name, null);
 		editor.putString(SharedPreferencesKeys.user_token, null);
 		editor.commit();
-		Toast.makeText(this, getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
+		message(R.string.logged_out);
 	}
 
 	public void attemptLogin() {
@@ -255,8 +257,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 								answer = new Gson().fromJson(results,
 										LogOnAnswer.class);
 							} catch (JsonSyntaxException e) {
-								Toast.makeText(getApplicationContext(),
-										results, Toast.LENGTH_SHORT).show();
+								message(results);
 								dismissProgressDialog();
 								mAuthTask = null;
 								return;
@@ -272,13 +273,20 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 							editor.putString(SharedPreferencesKeys.user_token,
 									answer.getToken());
 							editor.commit();
-							Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-							startActivity(i);
+							
+							// see if pin is set
+							String user_token = SharedPreferencesKeys.user_token;
+							SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
+							if (preferences.getString("pin_" + user_token, null) == null) {
+								Intent settings = new Intent("web.field.SettingsAct");
+								message(R.string.set_pin_welcome);
+								startActivity(settings);
+							}
+							Intent home = new Intent(getApplicationContext(), HomeActivity.class);
+							startActivity(home);
 
 						} else {
-							Toast.makeText(getApplicationContext(),
-									R.string.error_login_failed,
-									Toast.LENGTH_SHORT).show();
+							message(R.string.error_login_failed);
 							mAuthTask = null;
 							login_button.setBackgroundResource(R.color.app_orange);
 						}
@@ -336,5 +344,4 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
 	}
-
 }

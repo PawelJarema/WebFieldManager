@@ -6,10 +6,22 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 public class WebfieldFragmentActivityInner extends FragmentActivity {
 
 	private ProgressDialog progressDialog = null; 
+	
+	public void message(int resourceId) {
+		Toast.makeText(this, 
+				getResources().getString(resourceId), 
+				Toast.LENGTH_LONG).show();
+	}
+	public void message(String message) {
+		Toast.makeText(this, 
+				message, 
+				Toast.LENGTH_LONG).show();
+	}
 	
 	@Override
 	protected void onCreate(Bundle arg0) {

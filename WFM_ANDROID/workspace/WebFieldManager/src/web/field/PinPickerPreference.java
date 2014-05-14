@@ -31,7 +31,6 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 	private EditText etOldPin;
 	private EditText etNewPin;
 	private EditText etRepeatPin;
-	private Button btnOk;
 	
 	public PinPickerPreference(Context context, AttributeSet attributes) {
 		super(context, attributes);
@@ -57,6 +56,12 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 			//TODO dismiss dialog 
 		}
 		
+		if (oldPin == null) {
+			etNewPin.setVisibility(View.VISIBLE);
+			etRepeatPin.setVisibility(View.VISIBLE);
+			etOldPin.setVisibility(View.GONE);
+		}
+			
 		etOldPin.addTextChangedListener(this);	
 		etNewPin.addTextChangedListener(this);
 		etRepeatPin.addTextChangedListener(this);
@@ -93,9 +98,10 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 	@Override
 	public void afterTextChanged(Editable s) {
 		String pin = etOldPin.getText().toString();
-		if (this.oldPin.equals(pin)) {
+		if (oldPin == null || oldPin.equals(pin)) {
 			etNewPin.setVisibility(View.VISIBLE);
 			etRepeatPin.setVisibility(View.VISIBLE);
+			
 			newPin = etNewPin.getText().toString();
 			repeatedPin = etRepeatPin.getText().toString();
 			setPositiveButtonText(context.getResources().getString(R.string.ok));
