@@ -57,15 +57,27 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        
+        
+        
         <activity
             android:name="web.field.LauncherActivity"
             android:label="@string/title_activity_launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="web.field.SettingsAct"
+            android:label="@string/title_activity_addproducts" >
+            <intent-filter>
+                 <action android:name="web.field.SettingsAct" />  
+        	     <category android:name="android.intent.category.DEFAULT" />
+   			</intent-filter>
+        </activity>
+            
         <activity
             android:name="web.field.SynchronizationActivity"
             android:label="@string/title_activity_synchronization" >

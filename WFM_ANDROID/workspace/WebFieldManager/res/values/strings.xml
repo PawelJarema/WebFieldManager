@@ -50,11 +50,15 @@
     <string name="set_pin">Set PIN</string>
     <string name="enter_pin">Enter PIN</string>
     <string name="confirm_pin">Confirm PIN</string>
+    <string name="old_pin">Old PIN</string>
+    <string name="new_pin">New PIN</string>
+    <string name="repeat_pin">Repeat PIN</string>
+    <string name="pin_saved">PIN Saved</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="sure">Are you sure?</string>
-    <string name="cancel">Cancel</string>
     <string name="search">Search</string>
     <string name="synchronization_in_progress">Synchronization in progress.</string>
     <string name="edit">Edit</string>
@@ -73,6 +77,7 @@
     <string name="action_orders">Orders</string>
     <string name="VAT">#VAT</string>
     <!-- Errors -->
+    <string name="no_user_token">No user token. Please login before setting PIN</string>
     <string name="error_missing_service_address">Service address is not specified. Please check settings.</string>
     <string name="error_login_failed">Login failed. Please check email and password.</string>
     <string name="error_pins_dont_match">Provided PINs do not match.</string>
@@ -108,6 +113,13 @@
     <string name="delivery_date_error">Please add proper delivery date\n</string>
     <string name="delivery_time_error">Please enter proper delivery time\n</string>
     <string name="save">Save</string>
+    
+    <string name="pref_default_connection_service">http://zzt2013.no-ip.biz/wfm_webapi/Json</string>
+	<string name="pref_category_user">User</string>
+	<string name="pref_category_connection">Connection</string>
+    <string name="pref_category_security">Security</string>
+    <string name="pref_title_service_address">Service address</string>
+    
     <string-array name="nav_titles">
         <item>Home</item>
         <item>Orders</item>

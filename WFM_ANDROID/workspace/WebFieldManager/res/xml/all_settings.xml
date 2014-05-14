@@ -1,0 +1,38 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <PreferenceCategory 
+        android:title="@string/pref_category_user">
+	    <EditTextPreference
+	        android:icon="@drawable/ic_user"
+	        android:paddingLeft="10dp"
+	        android:key="user_name"
+	        android:inputType="textCapWords"
+	        android:maxLines="1"
+	        android:selectAllOnFocus="true"
+	        android:singleLine="true"
+	        android:title="@string/pref_title_user_name" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="@string/pref_category_connection">
+	    <EditTextPreference
+	        android:icon="@drawable/ic_service"
+	        android:paddingLeft="10dp"
+	        android:key="connection_service"
+	        android:defaultValue="@string/pref_default_connection_service"
+	        android:inputType="textCapWords"
+	        android:maxLines="1"
+	        android:selectAllOnFocus="true"
+	        android:singleLine="true"
+	        android:title="@string/pref_title_service_address" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="@string/pref_category_security">
+	    <web.field.PinPickerPreference
+	        android:icon="@drawable/ic_pass"
+	        android:paddingLeft="10dp"
+	        android:key="change_pin_button"
+	        android:title="@string/pref_security_change_pin" />
+	</PreferenceCategory>
+</PreferenceScreen>
