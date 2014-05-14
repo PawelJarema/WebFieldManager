@@ -40,7 +40,7 @@ public class SynchronizationActivity extends OrmLiteBaseActivity<OrmDbHelper>
 		String serviceAddress = preferences.getString(
 				SharedPreferencesKeys.connection_service, null);
 		if (serviceAddress != null) {
-			SynchronizationService service = new SynchronizationService();
+			SynchronizationService service = new SynchronizationService(this);
 
 			// register for notification
 			service.register(this);

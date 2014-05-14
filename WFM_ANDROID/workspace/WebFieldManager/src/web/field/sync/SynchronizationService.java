@@ -13,16 +13,23 @@ import web.field.helpers.Subject;
 import web.field.helpers.SyncCommand;
 import web.field.helpers.SynchronizationResult;
 import web.field.model.json.JsonRequest;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.location.LocationManager;
 
 import com.google.gson.Gson;
 
 public class SynchronizationService implements Subject {
 
+	private Context context;
 	private List<Observer> observers = new ArrayList<Observer>();
 	private ISyncChainHandler chainChandler;
 
+	
+	public SynchronizationService(Context context) {
+		this.context = context;
+	}
+	
 	public void doSync(final OrmDbHelper dbHelper) {
 
 	}
@@ -37,10 +44,16 @@ public class SynchronizationService implements Subject {
 				null);
 		JsonRequest jsonRequest = new JsonRequest();
 
-		// TODO: use localization service!!
-		Random r = new Random();
-		jsonRequest.setLatitude(r.nextDouble() * 1000000000);
-		jsonRequest.setLongitude(r.nextDouble() * 1000000000);
+		// check for Network/GPS localization
+		GPS gps = new GPS(context);
+		if (gps.getLocation() != null) {
+			jsonRequest.setLatitude(gps.getLatitude());
+			jsonRequest.setLongitude(gps.getLongitude());
+		} else {
+			Random r = new Random();
+			jsonRequest.setLatitude(r.nextDouble() * 1000000000);
+			jsonRequest.setLongitude(r.nextDouble() * 1000000000);
+		}
 
 		jsonRequest.setUserToken(token);
 

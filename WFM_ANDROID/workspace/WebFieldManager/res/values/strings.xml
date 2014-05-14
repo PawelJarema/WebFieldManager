@@ -89,6 +89,7 @@
     <string name="title_activity_orders">Orders</string>
     <string name="title_activity_order_new">OrderNew</string>
     <string name="title_activity_order">Order</string>
+    <string name="title_localization_service">Localization Service</string>
     <string name="home">Home</string>
     <string name="drawer_title">All activities</string>
     <string name="drawer_open">Open drawer</string>
@@ -106,6 +107,8 @@
     <string name="order_send_error">Order send with errors. Please contatct Administrator.</string>
 
     <string name="set_quantity">Set Order Quantity</string>
+    <string name="no_gps_error">GPS is powered down. Go to settings to switch it on.</string>
+    <string name="no_network_error">Network is off or you are currently in airplane mode. Go to settings to turn network on again.</string>
     <string name="billing_error">Please pick billing address\n</string>
     <string name="shipping_error">Please pick shipping address\n</string>
     <string name="order_date_error">Please add proper order date\n</string>
