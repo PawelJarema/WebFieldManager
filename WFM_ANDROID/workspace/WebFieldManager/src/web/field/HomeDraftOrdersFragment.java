@@ -114,5 +114,6 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 	@Override
 	public void onLoaderReset(Loader<Void> arg0) {
 		Log.e("In Draft Order", "Resetting loader.");
+		arg0.reset();
 	}
 }

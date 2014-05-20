@@ -35,8 +35,8 @@ public class HomeFragment extends WebFieldFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (view != null)
-			setSwipeTabs(view);
+		view.clearFocus();
+		setSwipeTabs(view);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class HomeFragment extends WebFieldFragment implements
 	private void setSwipeTabs(View view) {
 		action_bar.removeAllTabs();
 		view_pager = (ViewPager) view.findViewById(R.id.home_pager);
-		tabs_adapter = new HomeTabsAdapter(getFragmentManager());
+		tabs_adapter = new HomeTabsAdapter(getActivity().getSupportFragmentManager());
 		view_pager.setAdapter(tabs_adapter);
 		view_pager
 			.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

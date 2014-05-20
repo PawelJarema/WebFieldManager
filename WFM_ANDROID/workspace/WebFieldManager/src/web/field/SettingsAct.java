@@ -1,7 +1,7 @@
 package web.field;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.view.MenuItem;
 
 public class SettingsAct extends WebfieldFragmentActivityInner {
@@ -16,6 +16,13 @@ public class SettingsAct extends WebfieldFragmentActivityInner {
 		
 		dismissProgressDialog();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		// just to display message that a new user needs his/her pin setup
+		SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
+		String userToken = preferences.getString("user_token", null);
+		String oldPin = preferences.getString("pin_" + userToken, null);
+		if (userToken != null && oldPin == null)
+			message(R.string.set_pin_welcome);
 	}
 
 	@Override

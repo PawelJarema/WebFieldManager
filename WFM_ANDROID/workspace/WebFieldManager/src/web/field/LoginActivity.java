@@ -139,7 +139,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			// settings
-			Intent i = new Intent("web.field.SettingsActivity");
+			Intent i = new Intent("web.field.SettingsAct");
 			startActivity(i);
 			return true;
 		default:
@@ -168,7 +168,8 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 		if (mAuthTask != null) {
 			return;
 		}
-		showProgressDialog();
+		//showProgressDialog();
+		
 		// Reset errors.
 //		mEmailView.setError(null);
 //		mPasswordView.setError(null);
@@ -221,6 +222,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 				Toast.makeText(getApplicationContext(),
 						R.string.error_missing_service_address,
 						Toast.LENGTH_SHORT).show();
+				//dismissProgressDialog();
 				//showProgress(false);
 			} else {
 				LogOnModel model = new LogOnModel();
@@ -258,7 +260,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 										LogOnAnswer.class);
 							} catch (JsonSyntaxException e) {
 								message(results);
-								dismissProgressDialog();
+								//dismissProgressDialog();
 								mAuthTask = null;
 								return;
 							}
@@ -279,7 +281,6 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 							SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
 							if (preferences.getString("pin_" + user_token, null) == null) {
 								Intent settings = new Intent("web.field.SettingsAct");
-								message(R.string.set_pin_welcome);
 								startActivity(settings);
 							}
 							Intent home = new Intent(getApplicationContext(), HomeActivity.class);
@@ -289,6 +290,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 							message(R.string.error_login_failed);
 							mAuthTask = null;
 							login_button.setBackgroundResource(R.color.app_orange);
+							//dismissProgressDialog();
 						}
 						//showProgress(false);
 					}

@@ -109,6 +109,7 @@ public class GPS implements LocationListener {
 	public void noSourceForLocalizationAlert(String message) {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 		dialog.setTitle(context.getResources().getString(web.field.R.string.title_localization_service));
+		dialog.setMessage(message);
 		dialog.setPositiveButton(context.getResources().getString(web.field.R.string.action_settings), new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

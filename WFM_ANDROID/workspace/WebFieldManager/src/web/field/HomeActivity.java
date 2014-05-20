@@ -38,7 +38,7 @@ public class HomeActivity extends WebFieldFragmentActivity {
 	// private ViewPager view_pager;
 	// private HomeTabsAdapter tabs_adapter;
 	private ActionBar action_bar;
-	private SettingsFragment settingsScreen;
+	private SettingsActFragment settingsScreen;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +111,12 @@ public class HomeActivity extends WebFieldFragmentActivity {
 			tx.commit();
 		} else {
 			//action_bar.setTitle(titles[position]);
-			Intent settings = new Intent("web.field.SettingsAct");
-			startActivity(settings);
-			/* settingsScreen = new SettingsFragment();
+			//Intent settings = new Intent("web.field.SettingsAct");
+			//startActivity(settings);
+			settingsScreen = new SettingsActFragment();
 			getSupportFragmentManager().beginTransaction().replace(R.id.home_content_frame, new Fragment()).addToBackStack(null).commit();
 			getFragmentManager().beginTransaction().add(R.id.home_content_frame, settingsScreen).addToBackStack("show_settings").commit();
-			settingsScreen.show(settingsScreen); */
+			//settingsScreen.show(settingsScreen); 
 		}
 		
 		drawer_layout.closeDrawers();
@@ -136,13 +136,8 @@ public class HomeActivity extends WebFieldFragmentActivity {
 				drawer_toggle.setDrawerIndicatorEnabled(true);
 				FragmentManager sfm = getSupportFragmentManager();
 				
-				if (sfm.getBackStackEntryCount() > 0 && displayFragmentUIMessages(sfm)){	
+				if (sfm.getBackStackEntryCount() > 0 && displayFragmentUIMessages(sfm))	
 				    sfm.popBackStackImmediate();
-				    if (settingsScreen != null && settingsScreen._isVisible()) {
-				    	getFragmentManager().popBackStack();
-				    	settingsScreen.hide(settingsScreen);
-				    }
-				}
 				
 				return true;
 			case R.id.action_orders:
@@ -163,6 +158,8 @@ public class HomeActivity extends WebFieldFragmentActivity {
 	
 	// displays messages for users on attempt to leave important fragments
 	private boolean displayFragmentUIMessages(FragmentManager sfm) {
+		if (sfm.getBackStackEntryCount() < 1)
+			return true;
 		FragmentManager.BackStackEntry backstackEntry = sfm.getBackStackEntryAt(
 				sfm.getBackStackEntryCount() - 1);
 		if (backstackEntry.toString().contains("displayUIMsgOnBack")) {
@@ -182,10 +179,7 @@ public class HomeActivity extends WebFieldFragmentActivity {
 	@Override
 	public void onBackPressed() {
 		if (displayFragmentUIMessages(getSupportFragmentManager())) {
-			if (settingsScreen != null && settingsScreen._isVisible()) {
-				settingsScreen.hide(settingsScreen);
-				getFragmentManager().popBackStack();
-			}
+			getFragmentManager().popBackStack();		
 			super.onBackPressed();
 		}
 	}

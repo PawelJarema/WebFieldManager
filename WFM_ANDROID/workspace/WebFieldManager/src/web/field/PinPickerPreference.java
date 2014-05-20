@@ -52,7 +52,7 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 		oldPin = ((SharedPreferences) preferences).getString("pin_" + userToken, null);
 		
 		if (userToken == null || userToken.equals("")) {
-			message(context.getResources().getString(R.string.no_user_token));
+			message(R.string.no_user_token);
 			//TODO dismiss dialog 
 		}
 		
@@ -77,20 +77,17 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 	protected void onDialogClosed(boolean positiveResult) {
 		if (positiveResult) {
 			if (newPin.equals(repeatedPin)) {
-				persistString(newPin);
-				message(context.getResources().getString(R.string.pin_saved));
+				//persistString(newPin);
+				preferences.edit().putString("pin_" + userToken, newPin).commit();
+				message(R.string.pin_saved);
 			} else {
-				message(context.getResources().getString(R.string.error_pins_dont_match));
+				message(R.string.error_pins_dont_match);
 			}
 		} else {
-			//TODO prevent dismiss
+			//TODO prevent dismiss?
 		}
 	}	
 	
-	private void message(String message) {
-		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-	}
-
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 	@Override
@@ -113,6 +110,10 @@ public class PinPickerPreference extends DialogPreference implements TextWatcher
 			etRepeatPin.setVisibility(View.GONE);
 			//setPositiveButtonText(null);
 		}
+	}
+	
+	private void message(int resourceId) {
+		Toast.makeText(context, context.getResources().getString(resourceId), Toast.LENGTH_LONG).show();
 	}
 }
 	
