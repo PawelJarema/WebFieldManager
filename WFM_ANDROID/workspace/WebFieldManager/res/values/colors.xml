@@ -15,4 +15,7 @@
     <color name="app_orange_clicked">#e06050</color>
     <color name="opaque_red">#ff7f66</color>
     
+    <color name="line_ok">#009944</color>
+    <color name="line_alert">#ad2e11</color>
+    
 </resources>
