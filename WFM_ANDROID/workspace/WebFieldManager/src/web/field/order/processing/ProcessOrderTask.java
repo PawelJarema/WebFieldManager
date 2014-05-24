@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 public class ProcessOrderTask extends
 		AsyncTask<OrderCalculationRequest, Void, OrderCalculationResult> {
 
-	private IProcessOrderStrategy processStrategy;
+	private IProcessOrderStrategy processStrategy = new ProcessOrderStrategy();
 
 	@Override
 	protected OrderCalculationResult doInBackground(

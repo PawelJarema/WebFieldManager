@@ -140,7 +140,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	private void prepareUiElements() {
 
 		adapter = new OrderDetailsModelArrayAdapter(this,
-				R.layout.list_row_addproducts, orderDetailModelAdapters);
+				R.layout.list_row_addproducts, orderDetailModelAdapters, this);
 
 		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
 		lvOrderLines.setAdapter(adapter);
@@ -195,22 +195,13 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
-		tvPayTemrsDiscount.setText(getResources().getString(
-				R.string.order_payterms_discount)
-				+ ": " + "TODO");
-
+		
 		tvOrderValueBeforeDiscounts = (TextView) findViewById(R.id.order_total_before_discount);
-		tvOrderValueBeforeDiscounts.setText(getResources().getString(
-				R.string.order_total_before_discount)
-				+ ": " + "TODO");
+		
 		tvTotalDisountValue = (TextView) findViewById(R.id.order_total_discount);
-		tvTotalDisountValue.setText(getResources().getString(
-				R.string.order_total_discount)
-				+ ": " + "TODO");
+		
 		tvValueOfFreeProducts = (TextView) findViewById(R.id.order_total_free_qty_value);
-		tvValueOfFreeProducts.setText(getResources().getString(
-				R.string.order_total_free_qty_value)
-				+ ": " + "TODO");
+		
 		tvOrderValue = (TextView) findViewById(R.id.order_total_value);
 		/*
 		 * tvOrderValue.setText( getResources().getString(R.string.) + ": " +
@@ -345,8 +336,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		// adapter stores order qty data
 		dismissProgressDialog();
 		if (qty > 0) {
-			adapter.setOrderItemQty(position, qty);
-
+			
 			// do order recalculation
 			ProcessOrderTask processTask = new ProcessOrderTask() {
 				@Override
@@ -360,7 +350,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 							.getFullValue()));
 					tvTotalDisountValue.setText(Double.toString(result
 							.getTotalDiscountsValue()));
-					tvValueOfFreeProducts.setText("TODO");
+					tvValueOfFreeProducts.setText(Double.toString(result.getFreeProducts()));
 					tvOrderValue
 							.setText(Double.toString(result.getOrderTotal()));
 				}

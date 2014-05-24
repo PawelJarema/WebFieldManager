@@ -51,6 +51,7 @@ public class QtyPickerFragment extends DialogFragment implements
 		try {
 			this.on_complete_listener = (OnCompleteListener) activity;
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

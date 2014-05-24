@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.Product;
 import web.field.model.entity.adapter.OrderDetailModelAdapter;
@@ -22,15 +23,17 @@ public class OrderDetailsModelArrayAdapter extends
 		ArrayAdapter<OrderDetailModelAdapter> implements OnClickListener {
 
 	private Context context;
+	private OnCompleteListener onCompleteListener;
 	int layoutResourceId;
 	List<OrderDetailModelAdapter> data = new ArrayList<OrderDetailModelAdapter>();
 
 	public OrderDetailsModelArrayAdapter(Context context, int layoutResourceId,
-			List<OrderDetailModelAdapter> data) {
+			List<OrderDetailModelAdapter> data, OnCompleteListener onCompleteListener) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
+		this.onCompleteListener = onCompleteListener;
 		this.itemsOrdered = new HashMap<Integer, Integer>();
 	}
 
@@ -88,13 +91,18 @@ public class OrderDetailsModelArrayAdapter extends
 		if (qty >= 0) {
 			itemsOrdered.put(position, qty);
 			// get multiplier
-			int multi = data.get(position).getQtyMultiples();
+			Integer multi = data.get(position).getQtyMultiples();
 
 			data.get(position).setQty(qty * multi);
 			
 			// validate line
 			checkLineConditions(position);
+			
+			// notify listener
+			this.onCompleteListener.onComplete(position, qty * multi);
 		}
+		
+		
 	}
 
 	public int getQtyForOrder(int position) {

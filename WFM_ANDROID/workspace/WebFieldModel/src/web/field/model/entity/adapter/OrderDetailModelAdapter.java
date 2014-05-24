@@ -137,11 +137,11 @@ public class OrderDetailModelAdapter {
 		return null;
 	}
 
-	public Integer getQtyMultiples() {
+	public int getQtyMultiples() {
 		if (orderTemplateDetail != null) {
 			return orderTemplateDetail.getQtyMultiples();
 		}
-		return null;
+		return 1;
 	}
 
 }
