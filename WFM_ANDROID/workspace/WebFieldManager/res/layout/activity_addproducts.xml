@@ -71,6 +71,12 @@
 	            android:orientation="vertical"
 	            android:layout_weight="50" >
 	            <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/order_template_discount"
+		            android:gravity="center"
+		            android:textSize="12sp" />
+	            <TextView
 		            android:id="@+id/order_template_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
@@ -80,6 +86,18 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_template_threshold_discount"
+		            android:gravity="center"
+		            android:textSize="12sp" />
+	            <TextView
+		            android:id="@+id/order_template_threshold_discount"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:gravity="center"
+		            android:textSize="12sp" />
+	              <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/order_payterms_discount"
 		            android:gravity="center"
 		            android:textSize="12sp" />
 	            <TextView

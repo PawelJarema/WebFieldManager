@@ -178,21 +178,18 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			}
 		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		tvOrderTemplateDiscount.setText(getResources().getString(
-				R.string.order_template_discount)
-				+ ": " + Double.toString(orderTemplate.getDiscount()));
-
+		
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
-		if (orderTemplate.getOrderTemplateThreshold() != null) {
-			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
-					.getOrderTemplateThreshold();
-			/*
-			 * tvTemplateTresholdDiscount.setText(
-			 * getResources().getString(R.string
-			 * .order_template_threshold_discount) + ": " +
-			 * orderTemplateThreshold.getDiscount(?));
-			 */
-		}
+//		if (orderTemplate.getOrderTemplateThreshold() != null) {
+//			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
+//					.getOrderTemplateThreshold();
+//			/*
+//			 * tvTemplateTresholdDiscount.setText(
+//			 * getResources().getString(R.string
+//			 * .order_template_threshold_discount) + ": " +
+//			 * orderTemplateThreshold.getDiscount(?));
+//			 */
+//		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
 		
