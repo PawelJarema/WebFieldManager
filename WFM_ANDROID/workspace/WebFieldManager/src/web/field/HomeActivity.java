@@ -110,12 +110,11 @@ public class HomeActivity extends WebFieldFragmentActivity {
 			tx.addToBackStack(null);
 			tx.commit();
 		} else {
-			//action_bar.setTitle(titles[position]);
-			//Intent settings = new Intent("web.field.SettingsAct");
-			//startActivity(settings);
-			settingsScreen = new SettingsActFragment();
-			getSupportFragmentManager().beginTransaction().replace(R.id.home_content_frame, new Fragment()).addToBackStack(null).commit();
-			getFragmentManager().beginTransaction().add(R.id.home_content_frame, settingsScreen).addToBackStack("show_settings").commit();
+			Intent settings = new Intent("web.field.SettingsAct");
+			startActivity(settings);
+			//settingsScreen = new SettingsActFragment();
+			//getSupportFragmentManager().beginTransaction().replace(R.id.home_content_frame, new Fragment()).addToBackStack(null).commit();
+			//getFragmentManager().beginTransaction().add(R.id.home_content_frame, settingsScreen).addToBackStack("show_settings").commit();
 			//settingsScreen.show(settingsScreen); 
 		}
 		

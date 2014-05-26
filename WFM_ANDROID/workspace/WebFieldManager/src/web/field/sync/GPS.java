@@ -30,7 +30,6 @@ public class GPS implements LocationListener {
 	
 	public GPS(Context context) {
 		this.context = context;
-		getLocation();
 	}
 	
 	public double getLatitude() {

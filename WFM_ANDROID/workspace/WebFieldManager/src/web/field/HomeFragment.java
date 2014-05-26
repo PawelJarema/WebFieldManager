@@ -72,7 +72,7 @@ public class HomeFragment extends WebFieldFragment implements
 	private void setSwipeTabs(View view) {
 		action_bar.removeAllTabs();
 		view_pager = (ViewPager) view.findViewById(R.id.home_pager);
-		tabs_adapter = new HomeTabsAdapter(getActivity().getSupportFragmentManager());
+		tabs_adapter = new HomeTabsAdapter(getChildFragmentManager()); //getActivity().getSupportFragmentManager());
 		view_pager.setAdapter(tabs_adapter);
 		view_pager
 			.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

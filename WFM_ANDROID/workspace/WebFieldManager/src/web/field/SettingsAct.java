@@ -16,6 +16,7 @@ public class SettingsAct extends WebfieldFragmentActivityInner {
 		
 		dismissProgressDialog();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle("Settings");
 		
 		// just to display message that a new user needs his/her pin setup
 		SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
