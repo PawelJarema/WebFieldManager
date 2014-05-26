@@ -13,6 +13,7 @@ import web.field.model.entity.CustomerAddress;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderTemplate;
 import web.field.model.entity.User;
+import web.field.model.simple.OrderSimple;
 import web.field.model.simple.OrderTemplateSimple;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,7 +60,7 @@ public class NewOrderFragment extends WebFieldFragment {
 
 	Button bBillTo;
 	Button bShipTo;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -73,6 +74,13 @@ public class NewOrderFragment extends WebFieldFragment {
 		return view;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		// check if by screen rotation, and otherwise:
+		getActivity().getSupportFragmentManager().popBackStackImmediate();
+	}
+	
 	// validation helpers
 	private boolean dateOk(String date) {
 		if (!date.matches("\\d{4}-[01]\\d-[0-3]\\d"))
@@ -146,10 +154,6 @@ public class NewOrderFragment extends WebFieldFragment {
 		order.setBillTo(addresses[0]);
 		order.setShipTo(addresses[0]);
 		templates = db.listOrderTemplates();
-	}
-
-	public void onResume() {
-		super.onResume();
 	}
 
 	// Date / Time pickers
@@ -356,7 +360,8 @@ public class NewOrderFragment extends WebFieldFragment {
 						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
-
+			OrderSimple o = new OrderSimple();
+			
 			String orderDateStr = etOrderDate.getText().toString().trim();
 			orderDateStr += " " + etOrderTime.getText().toString().trim();
 			try {

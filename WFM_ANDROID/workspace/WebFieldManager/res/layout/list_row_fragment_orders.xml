@@ -2,69 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:weightSum="100">
+    android:orientation="horizontal"
+    android:weightSum="100" >
     
-    <ImageView
-        android:id="@+id/order_image"
-        android:src="@drawable/ic_action_search"
-        android:layout_weight="5"
-        android:layout_gravity="left"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content" />
-    
-    <TextView
-        android:id="@+id/order_id"
-    	android:layout_weight="10"
-        android:layout_gravity="left|center_vertical"
-        android:layout_width="0dip"
+     <TextView
+        android:layout_marginRight="5dp"
+        android:id="@+id/listrow_order_id"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="17dip"
-        android:textSize="12sp" />
-    
-    <TextView
-        android:id="@+id/order_ship_to"
-    	android:layout_weight="45"
-        android:layout_gravity="left|center_vertical"
-        android:layout_width="0dip"
+        android:text="id todo"
+        android:focusable="false" />
+     
+     <TextView
+        android:layout_marginRight="5dp"
+        android:id="@+id/listrow_order_customer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
-    
-    <TextView
-        android:id="@+id/order_product_no"
-    	android:layout_weight="15"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_width="0dip"
+        android:text="customer todo"
+        android:focusable="false" />
+     
+     <TextView
+        android:layout_marginRight="5dp"
+        android:id="@+id/listrow_order_location"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:text="location(city) todo"
+        android:focusable="false" />
     
-    <LinearLayout
-	    android:layout_width="0dip"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="left"
-	    android:layout_weight="20"
-	    android:orientation="vertical">
-	    
-    	<TextView
-	        android:id="@+id/order_created_at"
-	        android:layout_gravity="left"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-    	
-    	<TextView
-	        android:id="@+id/order_delivery_date"
-	        android:layout_gravity="left"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-    	
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/order_link_to"
-    	android:layout_weight="5"
-        android:layout_gravity="right|center_vertical"
-        android:layout_width="0dip"
+     <TextView
+        android:layout_marginRight="5dp" 
+        android:id="@+id/listrow_order_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
-    
+        android:text="date todo"
+        android:focusable="false" />
+     
+     <TextView
+        android:layout_marginRight="5dp" 
+        android:id="@+id/listrow_order_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="user abr todo"
+        android:focusable="false" />
+     
+     <TextView
+        android:id="@+id/listrow_order_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="order status todo"
+        android:focusable="false" />
+ 
 </LinearLayout>

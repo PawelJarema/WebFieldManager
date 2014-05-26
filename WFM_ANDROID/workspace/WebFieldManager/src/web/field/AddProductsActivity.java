@@ -281,7 +281,6 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		switch (id) {
 		case 0:
 		case android.R.id.home:
-			boolean closeActivity = false;
 			showYesNoDialog(getResources().getString(R.string.do_you_want_to_leave_order),
 					new DialogInterface.OnClickListener() {
 						@Override
@@ -402,22 +401,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	}
 	
 	private void closeActivity() {
+		
 		this.finish();
 	}
-
-	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-			case DialogInterface.BUTTON_POSITIVE:
-				getSupportFragmentManager().popBackStackImmediate();
-				finish();
-				dialog.dismiss();
-				break;
-			case DialogInterface.BUTTON_NEGATIVE:
-				dialog.dismiss();
-				break;
-			}
-		}
-	};
 }

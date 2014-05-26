@@ -36,19 +36,15 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new OrderHolder();
-			holder.tvDate = (TextView) row.findViewById(R.id.order_delivery_date);
-			holder.tvId = (TextView) row.findViewById(R.id.order_id);
-			holder.tvSummary = (TextView) row.findViewById(R.id.order_ship_to);
-			holder.ivPicture = (ImageView) row.findViewById(R.id.order_image);
+			holder.tvDate = (TextView) row.findViewById(R.id.listrow_order_date);
+			holder.tvId = (TextView) row.findViewById(R.id.listrow_order_id);
 			row.setTag(holder);
 		} else {
 			holder = (OrderHolder) row.getTag();
 		}
 		OrderSimple order = data.get(position);
-		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_search));
-		holder.tvDate.setText(order.getOrderDate());
+		holder.tvDate.setText(order.getOrderDate().toString());
 		holder.tvId.setText(String.valueOf(order.getOrderId()));
-		holder.tvSummary.setText(order.getOrderSummary());
 		// holder.cbStatus.setChecked(customer.isActive());
 		
 		// style list depending on position
@@ -77,8 +73,12 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 	static class OrderHolder {
 		TextView tvId;
 		TextView tvDate;
-		TextView tvSummary;
-		ImageView ivPicture;
+		
+		// TODO not in OrderSimple
+		TextView tvCustomer;
+		TextView tvLocation;
+		TextView tvUser;
+		TextView tvStatus;
 	}
 
 }
