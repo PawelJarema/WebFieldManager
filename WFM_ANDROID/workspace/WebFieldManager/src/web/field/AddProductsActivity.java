@@ -360,11 +360,11 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 					tvTemplateThresholdDiscount.setText(getResources().getString(R.string.order_template_threshold_discount) + ": " + 
 					Double.toString(result.getOrderTemplateThresholdDiscount()));
 
-					tvOrderValueBeforeDiscounts.setText(getResources().getString(R.string.order_value_example) + ": " + 
+					tvOrderValueBeforeDiscounts.setText(getResources().getString(R.string.order_total_before_discount) + ": " + 
 							Double.toString(result.getFullValue()));
 					tvTotalDisountValue.setText(getResources().getString(R.string.order_total_discount) + ": " + 
 							Double.toString(result.getTotalDiscountsValue()));
-					tvValueOfFreeProducts.setText(getResources().getString(R.string.order_total_before_discount) + ": " + 
+					tvValueOfFreeProducts.setText(getResources().getString(R.string.order_total_free_qty_value) + ": " + 
 							Double.toString(result.getFreeProducts()));
 					tvOrderValue.setText(getResources().getString(R.string.order_total_value) + ": " + 
 							Double.toString(result.getOrderTotal()));
