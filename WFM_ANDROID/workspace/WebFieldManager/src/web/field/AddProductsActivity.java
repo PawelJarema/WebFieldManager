@@ -17,6 +17,8 @@ import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
 import web.field.model.entity.OrderTemplateThreshold;
 import web.field.model.entity.PromoPayTermDetail;
+import web.field.model.entity.adapter.OrderDetailModelAdapter;
+import web.field.model.entity.adapter.OrderModelAdapter;
 import web.field.order.processing.OrderCache;
 import web.field.order.processing.OrderCalculationRequest;
 import web.field.order.processing.OrderCalculationResult;
@@ -43,8 +45,8 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-public class AddProductsActivity extends WebfieldFragmentActivityInner implements
-		ISendOrderCallback, OnCompleteListener {
+public class AddProductsActivity extends WebfieldFragmentActivityInner
+		implements ISendOrderCallback, OnCompleteListener {
 
 	// Ui and TextViews
 	private Button bFilterByBrand;
@@ -64,8 +66,12 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	private OrderTemplate orderTemplate;
 	private PromoPayTermDetail payTermDetail;
 
+	// adapter
+	private OrderModelAdapter orderModelAdapter;
+	private List<OrderDetailModelAdapter> orderDetailModelAdapters;
+
 	// Product List
-	private OrderDetailsAdapter adapter;
+	private OrderDetailsModelArrayAdapter adapter;
 	private ListView lvOrderLines;
 	private LinearLayout product_data_popup;
 	private LinearLayout qty_picker_fragment_layout;
@@ -115,9 +121,13 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		calculatiorRequest = new OrderCalculationRequest(this.order,
 				this.orderCache);
 
+		// create adapters
+		orderModelAdapter = new OrderModelAdapter(order, orderTemplate);
+		orderDetailModelAdapters = orderModelAdapter.getOrderDetails();
+
 		prepareUiElements();
 		restoreQtyData(savedInstanceState, adapter);
-		
+
 		dismissProgressDialog();
 	}
 
@@ -130,8 +140,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 
 	private void prepareUiElements() {
 
-		adapter = new OrderDetailsAdapter(this, R.layout.list_row_addproducts,
-				orderDetails);
+		adapter = new OrderDetailsModelArrayAdapter(this,
+				R.layout.list_row_addproducts, orderDetailModelAdapters, this);
 
 		lvOrderLines = (ListView) findViewById(R.id.addproduct_list);
 		lvOrderLines.setAdapter(adapter);
@@ -169,39 +179,27 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 			}
 		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		tvOrderTemplateDiscount.setText(getResources().getString(
-				R.string.order_template_discount)
-				+ ": " + Double.toString(orderTemplate.getDiscount()));
-
+		
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
-		if (orderTemplate.getOrderTemplateThreshold() != null) {
-			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
-					.getOrderTemplateThreshold();
-			/*
-			 * tvTemplateTresholdDiscount.setText(
-			 * getResources().getString(R.string
-			 * .order_template_threshold_discount) + ": " +
-			 * orderTemplateThreshold.getDiscount(?));
-			 */
-		}
+//		if (orderTemplate.getOrderTemplateThreshold() != null) {
+//			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
+//					.getOrderTemplateThreshold();
+//			/*
+//			 * tvTemplateTresholdDiscount.setText(
+//			 * getResources().getString(R.string
+//			 * .order_template_threshold_discount) + ": " +
+//			 * orderTemplateThreshold.getDiscount(?));
+//			 */
+//		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
-		tvPayTemrsDiscount.setText(getResources().getString(
-				R.string.order_payterms_discount)
-				+ ": " + "TODO");
-
+		
 		tvOrderValueBeforeDiscounts = (TextView) findViewById(R.id.order_total_before_discount);
-		tvOrderValueBeforeDiscounts.setText(getResources().getString(
-				R.string.order_total_before_discount)
-				+ ": " + "TODO");
+		
 		tvTotalDisountValue = (TextView) findViewById(R.id.order_total_discount);
-		tvTotalDisountValue.setText(getResources().getString(
-				R.string.order_total_discount)
-				+ ": " + "TODO");
+		
 		tvValueOfFreeProducts = (TextView) findViewById(R.id.order_total_free_qty_value);
-		tvValueOfFreeProducts.setText(getResources().getString(
-				R.string.order_total_free_qty_value)
-				+ ": " + "TODO");
+		
 		tvOrderValue = (TextView) findViewById(R.id.order_total_value);
 		/*
 		 * tvOrderValue.setText( getResources().getString(R.string.) + ": " +
@@ -217,8 +215,19 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		return order_detail;
 	}
 
-	private boolean saveDraft() {
+	private void fillOrderData() {
+		// adapter stores order qty data
+		// adapter has methods to get ordered items with respective quantity
+		Set<Integer> ordered_items_by_list_position = adapter
+				.getOrderQtyDataHash().keySet();
+		for (int position : ordered_items_by_list_position) {
+			int qty = adapter.getQtyForOrder(position);
+			orderDetails.set(position, rewriteOrderQty(position));
+		}
+	}
 
+	private boolean saveDraft() {
+		fillOrderData();
 		// try copy data to order
 		for (OrderDetail od : this.orderDetails) {
 			boolean detailExists = false;
@@ -232,22 +241,23 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 					savedDetail.setPrice(od.getPrice());
 					savedDetail.setQty(od.getQty());
 				}
-				
-				if(!detailExists){
+
+				if (!detailExists) {
 					// not exists, need to add one
 					OrderDetail newDetail = new OrderDetail();
-					newDetail.setOrderDetailTempId(UUID.randomUUID().toString());
+					newDetail
+							.setOrderDetailTempId(UUID.randomUUID().toString());
 					// order detail found, copy qty, value etc
 					newDetail.setDiscount(od.getDiscount());
 					newDetail.setFreeQty(od.getFreeQty());
 					newDetail.setPrice(od.getPrice());
 					newDetail.setQty(od.getQty());
-					
+
 					// add to order
 					order.OrdersDetail.add(newDetail);
 				}
 			}
-			
+
 			// save order to local db
 			db.saveOrder(order);
 		}
@@ -256,18 +266,10 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	}
 
 	private boolean sendOrder() {
-		// adapter stores order qty data
-		// adapter has methods to get ordered items with respective quantity
-		Set<Integer> ordered_items_by_list_position = adapter
-				.getOrderQtyDataHash().keySet();
-		for (int position : ordered_items_by_list_position) {
-			int qty = adapter.getQtyForOrder(position);
-			orderDetails.set(position, rewriteOrderQty(position));
-		}
-		
+		fillOrderData();
 		// save order do local db
 		db.saveOrder(order);
-		
+
 		this.sendOrderStrategy.sendOrder(order);
 		return true;
 	}
@@ -295,7 +297,6 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 						    }
 						}
 					});
-			
 			return true;
 		case R.id.action_save_draft:
 			saveDraft();
@@ -349,8 +350,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
 		if (qty > 0) {
-			adapter.setOrderItemQty(position, qty);
-
+			
 			// do order recalculation
 			ProcessOrderTask processTask = new ProcessOrderTask() {
 				@Override
@@ -364,7 +364,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 							.getFullValue()));
 					tvTotalDisountValue.setText(Double.toString(result
 							.getTotalDiscountsValue()));
-					tvValueOfFreeProducts.setText("TODO");
+					tvValueOfFreeProducts.setText(Double.toString(result.getFreeProducts()));
 					tvOrderValue
 							.setText(Double.toString(result.getOrderTotal()));
 				}
@@ -378,7 +378,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 
 	// this comes in handy when communicating with QtyPickerFragment
 	// that has to have access to list row modification meths in adapter
-	public OrderDetailsAdapter getProductListAdapter() {
+	public OrderDetailsModelArrayAdapter getProductListAdapter() {
 		return adapter;
 	}
 
@@ -392,7 +392,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	}
 
 	private void restoreQtyData(Bundle savedInstanceState,
-			OrderDetailsAdapter adapter) {
+			OrderDetailsModelArrayAdapter adapter) {
 		if (savedInstanceState != null) {
 			adapter.setOrderQtyDataHash((HashMap<Integer, Integer>) savedInstanceState
 					.getSerializable("qty_values"));
@@ -403,4 +403,20 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	private void closeActivity() {
 		this.finish();
 	}
+
+	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case DialogInterface.BUTTON_POSITIVE:
+				getSupportFragmentManager().popBackStackImmediate();
+				finish();
+				dialog.dismiss();
+				break;
+			case DialogInterface.BUTTON_NEGATIVE:
+				dialog.dismiss();
+				break;
+			}
+		}
+	};
 }

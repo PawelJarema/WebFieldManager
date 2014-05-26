@@ -38,6 +38,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 		}
 
 		double discountsValue = 0;
+		double freeProducts = 0;
 		// process order details
 		for (OrderDetail detail : calculationRequest.getOrderDetails()) {
 

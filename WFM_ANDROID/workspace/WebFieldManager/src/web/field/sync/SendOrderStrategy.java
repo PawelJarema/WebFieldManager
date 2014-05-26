@@ -29,6 +29,10 @@ public class SendOrderStrategy implements ISendOrderStrategy {
 		serviceAddress = preferences.getString(
 				SharedPreferencesKeys.connection_service, null);
 		
+		if(!serviceAddress.endsWith("/")){
+			serviceAddress += "/";
+		}
+		
 		userToken = preferences.getString(
 				SharedPreferencesKeys.user_token, null);
 	}

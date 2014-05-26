@@ -62,7 +62,7 @@ public class GPS implements LocationListener {
 					UPDATE_IN_DISTANCE, 
 					UPDATE_IN_TIME, 
 					this);
-			location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+			location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			parseLocation();
 		}
 		if(location == null && !theresNetwork) {

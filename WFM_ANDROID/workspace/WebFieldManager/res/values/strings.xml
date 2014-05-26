@@ -161,5 +161,9 @@
     </string-array>
 
     <string name="title_activity_addproducts">AddproductsActivity</string>
-
+    
+    <!-- Order line errors  -->
+    <string name="order_line_min_error">&lt;%s</string>
+	<string name="order_line_max_error">&gt;%s</string>
+	<string name="order_line_ok">OK</string>
 </resources>

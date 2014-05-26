@@ -16,7 +16,7 @@ public class QtyPickerFragment extends DialogFragment implements
 
 	// list row and activity communication
 	private Activity activity;
-	private OrderDetailsAdapter list_row_adapter;
+	private OrderDetailsModelArrayAdapter list_row_adapter;
 	
 	// Ui keyboard
 	private Button btn1;
@@ -51,6 +51,7 @@ public class QtyPickerFragment extends DialogFragment implements
 		try {
 			this.on_complete_listener = (OnCompleteListener) activity;
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

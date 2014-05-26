@@ -15,7 +15,7 @@ public class OrderCalculationResult {
 	
 	private double orderTotal;
 
-	
+	private double freeProducts;
 
 	public double getSubTotal() {
 		return subTotal;
@@ -72,6 +72,14 @@ public class OrderCalculationResult {
 
 	public void setFullValue(double fullValue) {
 		this.fullValue = fullValue;
+	}
+
+	public double getFreeProducts() {
+		return freeProducts;
+	}
+
+	public void setFreeProducts(double freeProducts) {
+		this.freeProducts = freeProducts;
 	}
 
 

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.Product;
+import web.field.model.entity.adapter.OrderDetailModelAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,20 +19,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements OnClickListener {
+public class OrderDetailsModelArrayAdapter extends
+		ArrayAdapter<OrderDetailModelAdapter> implements OnClickListener {
+
+	private Context context;
+	private OnCompleteListener onCompleteListener;
+	int layoutResourceId;
+	List<OrderDetailModelAdapter> data = new ArrayList<OrderDetailModelAdapter>();
+
+	public OrderDetailsModelArrayAdapter(Context context, int layoutResourceId,
+			List<OrderDetailModelAdapter> data, OnCompleteListener onCompleteListener) {
+		super(context, layoutResourceId, data);
+		this.layoutResourceId = layoutResourceId;
+		this.context = context;
+		this.data = data;
+		this.onCompleteListener = onCompleteListener;
+		this.itemsOrdered = new HashMap<Integer, Integer>();
+	}
 
 	// HashMap with method
 	private int active_row_position = 0;
 	private static HashMap<Integer, Integer> itemsOrdered;
-	
+
 	public void notifyRowIsActive(int position) {
 		this.active_row_position = position;
 	}
-	
+
 	public int getNumberOfActiveRow() {
 		return active_row_position;
 	}
-	
+
 	public void increaseOrderItemQty(int position) {
 		int qty = 0;
 		if (itemsOrdered.containsKey(position)) {
@@ -38,7 +56,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 		}
 		setOrderItemQty(position, ++qty);
 	}
-	
+
 	public void decreaseOrderItemQty(int position) {
 		int qty = 0;
 		if (itemsOrdered.containsKey(position)) {
@@ -47,14 +65,46 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 		if (qty > 0)
 			setOrderItemQty(position, --qty);
 	}
-	
+
+	public void checkLineConditions(int position) {
+
+		OrderDetailModelAdapter activeLine = data.get(position);
+		activeLine.setLineError("");
+
+		int qty = activeLine.getQty();
+		Integer min = activeLine.getQtyMin();
+		Integer max = activeLine.getQtyMax();
+
+		if (min != null && qty < min) {
+			activeLine.setLineError(String.format(context.getResources()
+					.getString(R.string.order_line_min_error), min));
+		}
+		else if (max != null && qty > max) {
+			activeLine.setLineError(String.format(context.getResources()
+					.getString(R.string.order_line_max_error), max));
+		}
+		
+		
+	}
+
 	public void setOrderItemQty(int position, int qty) {
 		if (qty >= 0) {
 			itemsOrdered.put(position, qty);
-			data.get(position).setQty(qty);
+			// get multiplier
+			Integer multi = data.get(position).getQtyMultiples();
+
+			data.get(position).setQty(qty * multi);
+			
+			// validate line
+			checkLineConditions(position);
+			
+			// notify listener
+			this.onCompleteListener.onComplete(position, qty * multi);
 		}
+		
+		
 	}
-	
+
 	public int getQtyForOrder(int position) {
 		if (itemsOrdered.containsKey(position))
 			return itemsOrdered.get(position);
@@ -71,26 +121,11 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 			this.itemsOrdered = qty_data;
 	}
 
-	
-	
-	private Context context;
-	int layoutResourceId;
-	List<OrderDetail> data = new ArrayList<OrderDetail>();
-
-	public OrderDetailsAdapter(Context context, int layoutResourceId,
-			List<OrderDetail> data) {
-		super(context, layoutResourceId, data);
-		this.layoutResourceId = layoutResourceId;
-		this.context = context;
-		this.data = data;
-		this.itemsOrdered = new HashMap<Integer, Integer>();
-	}
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		OrderDetailsHolder holder = null;
-
+		checkLineConditions(position);
 		if (row == null) {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
@@ -107,11 +142,14 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 			holder.bPlus = (Button) row.findViewById(R.id.order_plus_one);
 			holder.bMinus = (Button) row.findViewById(R.id.order_minus_one);
 			
+			// validation msg
+			holder.tvLineAlert = (TextView) row.findViewById(R.id.order_line_alert);
+
 			row.setTag(holder);
 		} else {
 			holder = (OrderDetailsHolder) row.getTag();
 		}
-		OrderDetail orderDetail = data.get(position);
+		OrderDetailModelAdapter orderDetail = data.get(position);
 		Product product = orderDetail.getProduct();
 		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(
 				R.drawable.ic_action_search));
@@ -125,6 +163,19 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 		else
 			holder.tvQty.setText("");
 		// holder.cbStatus.setChecked(customer.isActive());
+		
+		// set validation msg and mark as read if any error
+		if(orderDetail.getLineError() != null && !orderDetail.getLineError().equals("")){
+			holder.tvLineAlert.setText(orderDetail.getLineError());
+			holder.tvLineAlert.setBackground(context.getResources().getDrawable(
+					R.drawable.rounded_corners_red));
+		}
+		else{
+			// maybe some msg here?
+			holder.tvLineAlert.setText("");
+			holder.tvLineAlert.setBackground(context.getResources().getDrawable(
+					R.drawable.rounded_corners_green));
+		}
 
 		// style list depending on position
 		if (position % 2 == 0)
@@ -143,7 +194,7 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 	}
 
 	@Override
-	public OrderDetail getItem(int index) {
+	public OrderDetailModelAdapter getItem(int index) {
 		return data.get(index);
 	}
 
@@ -159,22 +210,26 @@ public class OrderDetailsAdapter extends ArrayAdapter<OrderDetail> implements On
 		TextView tvId;
 		TextView tvCode;
 		TextView tvDescription;
-		
+
 		// Product Detail Popup -> +/- buttons
 		Button bPlus;
 		Button bMinus;
+
+		// line error
+		TextView tvLineAlert;
 	}
 
-	// Row Expanding Product Detali contains buttons. This is the listener meth for them
+	// Row Expanding Product Detali contains buttons. This is the listener meth
+	// for them
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()) {
-			case R.id.order_plus_one:
-				increaseOrderItemQty(active_row_position);
-				break;
-			case R.id.order_minus_one:
-				decreaseOrderItemQty(active_row_position);
-				break;
+		switch (v.getId()) {
+		case R.id.order_plus_one:
+			increaseOrderItemQty(active_row_position);
+			break;
+		case R.id.order_minus_one:
+			decreaseOrderItemQty(active_row_position);
+			break;
 		}
 		this.notifyDataSetChanged();
 	}
