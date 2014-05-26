@@ -277,6 +277,8 @@ public class NewOrderFragment extends WebFieldFragment {
 		OnMenuItemClickListener listener = new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
+				getActivity().closeContextMenu();
+				//((WebFieldFragmentActivity) getActivity()).showProgressDialog();
 				onContextItemSelected(item);
 				return true;
 			}

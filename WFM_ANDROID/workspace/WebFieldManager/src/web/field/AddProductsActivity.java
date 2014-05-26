@@ -1,5 +1,7 @@
 package web.field;
 
+import gueei.binding.menu.MenuItemBridge;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,15 +25,14 @@ import web.field.sync.ISendOrderCallback;
 import web.field.sync.ISendOrderStrategy;
 import web.field.sync.SendOrderStrategy;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -85,7 +86,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		sendOrderStrategy = new SendOrderStrategy(this);
 
 		setContentView(R.layout.activity_addproducts);
@@ -275,12 +276,27 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	// this listener is for action bar menu items and back button
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
+		int id = item == null ? 0 : item.getItemId();
 		switch (id) {
+		case 0:
 		case android.R.id.home:
+			boolean closeActivity = false;
 			showYesNoDialog(getResources().getString(R.string.do_you_want_to_leave_order),
-					dialogClickListener);
-			this.finish();
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							switch (which){
+								case DialogInterface.BUTTON_POSITIVE:
+									closeActivity();
+									dialog.dismiss();
+							    break;
+							    case DialogInterface.BUTTON_NEGATIVE:
+							        dialog.dismiss();
+							        break;
+						    }
+						}
+					});
+			
 			return true;
 		case R.id.action_save_draft:
 			saveDraft();
@@ -295,6 +311,11 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void onBackPressed() {
+		onOptionsItemSelected(null);
+	}
+	
 	private OrmDbHelper databaseHelper = null;
 
 	protected OrmDbHelper getHelper() {
@@ -381,20 +402,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		}
 	}
 	
-
-	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which){
-				case DialogInterface.BUTTON_POSITIVE:
-					getSupportFragmentManager().popBackStackImmediate();
-					finish();
-					dialog.dismiss();
-			    break;
-			    case DialogInterface.BUTTON_NEGATIVE:
-			        dialog.dismiss();
-			        break;
-		    }
-		}
-	};
+	private void closeActivity() {
+		this.finish();
+	}
 }
