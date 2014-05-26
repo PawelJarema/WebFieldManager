@@ -78,7 +78,7 @@ public class NewOrderFragment extends WebFieldFragment {
 	public void onResume() {
 		super.onResume();
 		// check if by screen rotation, and otherwise:
-		getActivity().getSupportFragmentManager().popBackStackImmediate();
+		// TODO getActivity().getSupportFragmentManager().popBackStackImmediate();
 	}
 	
 	// validation helpers

@@ -8,6 +8,7 @@
     <string name="logging_in">Logging in. Please wait...</string>
     <string name="downloading">Downloading data. Please wait...</string>
     <string name="network">Network</string>
+    <string name="promotions">Promotions:</string>
     <string name="orders_add">Add</string>
     <string name="order_customer">Customer name:</string>
     <string name="order_date">Order date:</string>

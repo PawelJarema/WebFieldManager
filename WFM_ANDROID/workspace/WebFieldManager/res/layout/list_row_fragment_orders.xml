@@ -10,7 +10,7 @@
         android:id="@+id/listrow_order_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="id todo"
+        android:text="TODO id"
         android:focusable="false" />
      
      <TextView
@@ -18,7 +18,7 @@
         android:id="@+id/listrow_order_customer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="customer todo"
+        android:text="TODO customer"
         android:focusable="false" />
      
      <TextView
@@ -26,7 +26,7 @@
         android:id="@+id/listrow_order_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="location(city) todo"
+        android:text="TODO location(city)"
         android:focusable="false" />
     
      <TextView
@@ -34,7 +34,7 @@
         android:id="@+id/listrow_order_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="date todo"
+        android:text="TODO date"
         android:focusable="false" />
      
      <TextView
@@ -49,7 +49,7 @@
         android:id="@+id/listrow_order_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="order status todo"
+        android:text="TODO order status"
         android:focusable="false" />
  
 </LinearLayout>

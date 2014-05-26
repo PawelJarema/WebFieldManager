@@ -36,9 +36,15 @@ public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new ProductsHolder();
 			holder.tvCode = (TextView) row.findViewById(R.id.order_product_code);
-			holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
+			holder.tvPrice = (TextView) row.findViewById(R.id.listrow_product_price);
+			//holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
 			holder.tvDescription = (TextView) row.findViewById(R.id.order_product_description);
 			holder.ivPicture = (ImageView) row.findViewById(R.id.order_product_image);
+			
+			holder.tvManufacturer = (TextView) row.findViewById(R.id.listrow_product_manufacturer);
+			holder.tvBrand = (TextView) row.findViewById(R.id.listrow_product_brand);
+			holder.tvFamily = (TextView) row.findViewById(R.id.listrow_product_family);
+			holder.tvCategory = (TextView) row.findViewById(R.id.listrow_product_category);
 			row.setTag(holder);
 		} else {
 			holder = (ProductsHolder) row.getTag();
@@ -46,7 +52,7 @@ public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
 		ProductSimple product = data.get(position);
 		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_search));
 		holder.tvCode.setText(product.getProductCode());
-		holder.tvId.setText(String.valueOf(product.getProductId()));
+		//holder.tvId.setText(String.valueOf(product.getProductId()));
 		holder.tvDescription.setText(product.getProductDescription());
 		// holder.cbStatus.setChecked(customer.isActive());
 		
@@ -75,8 +81,16 @@ public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
 
 	static class ProductsHolder {
 		ImageView ivPicture;
-		TextView tvId;
+		//TextView tvId;
 		TextView tvCode;
 		TextView tvDescription;
+		
+		//TODO not in productSimple
+		TextView tvManufacturer;
+		TextView tvBrand;
+		TextView tvFamily;
+		TextView tvCategory;
+		
+		TextView tvPrice;
 	}
 }
