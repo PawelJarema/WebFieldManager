@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -87,5 +88,23 @@ public class WebFieldFragmentActivity extends FragmentActivity {
 		}
 
 		return needsSync;
+	}
+	
+	public void startActivityAsync(Intent i) {
+		final Intent intent = i;
+		AsyncTask loadActivity = new AsyncTask() {
+			@Override 
+			protected void onPreExecute() {
+				showProgressDialog();
+			}
+			
+			@Override
+			protected Object doInBackground(Object... params) {
+				startActivity(intent);
+				dismissProgressDialog();
+				return null;
+			}
+		};
+		loadActivity.execute();
 	}
 }

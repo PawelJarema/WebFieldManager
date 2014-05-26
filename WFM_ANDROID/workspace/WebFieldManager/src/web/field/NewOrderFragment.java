@@ -386,7 +386,7 @@ public class NewOrderFragment extends WebFieldFragment {
 			Intent i = new Intent(getActivity(), AddProductsActivity.class);
 			i.putExtra("templateId", template.getOrdersTemplateId());
 			i.putExtra("orderTempId", order.getOrderTempId());
-			startActivity(i);
+			((WebFieldFragmentActivity) getActivity()).startActivityAsync(i);
 		}
 
 		return true;

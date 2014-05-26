@@ -95,7 +95,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBAdapter(getHelper());
 
-		getActionBar().setTitle("Compose Order");
+		getActionBar().setTitle("New Order");
 
 		// get order
 		String orderTempId = getIntent().getStringExtra("orderTempId");
@@ -219,7 +219,6 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 
 	private boolean saveDraft() {
 
-	
 		// try copy data to order
 		for (OrderDetail od : this.orderDetails) {
 			boolean detailExists = false;
@@ -349,7 +348,6 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner implement
 	@Override
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
-		dismissProgressDialog();
 		if (qty > 0) {
 			adapter.setOrderItemQty(position, qty);
 

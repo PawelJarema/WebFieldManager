@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -46,5 +48,23 @@ public class WebfieldFragmentActivityInner extends FragmentActivity {
 		builder.setMessage(message);
 		builder.setPositiveButton(getResources().getString(R.string.yes), listener);
 		builder.setNegativeButton(getResources().getString(R.string.no), listener).show();
+	}
+	
+	public void startActivityAsync(Intent i) {
+		final Intent intent = i;
+		AsyncTask loadActivity = new AsyncTask() {
+			@Override 
+			protected void onPreExecute() {
+				showProgressDialog();
+			}
+			
+			@Override
+			protected Object doInBackground(Object... params) {
+				startActivity(intent);
+				dismissProgressDialog();
+				return null;
+			}
+		};
+		loadActivity.execute();
 	}
 }
