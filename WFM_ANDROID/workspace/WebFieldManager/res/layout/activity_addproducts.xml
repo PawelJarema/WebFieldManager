@@ -74,76 +74,87 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_template_discount"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
 		            android:id="@+id/order_template_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_template_threshold_discount"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
 		            android:id="@+id/order_template_threshold_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
-	              <TextView
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
+	            <TextView
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_payterms_discount"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
 		            android:id="@+id/order_payterms_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
 		            android:id="@+id/order_total_before_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center" 
-		            android:textSize="12sp"/>
+		            android:gravity="left" 
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
-	                 android:id="@+id/order_total_discount"
+	                android:id="@+id/order_total_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center" 
-		            android:textSize="12sp"/>
+		            android:gravity="left" 
+		            android:textSize="12sp"
+		            android:paddingRight="0dp" />
 	            <TextView
-	                 android:id="@+id/order_total_free_qty_value"
+	                android:id="@+id/order_total_free_qty_value"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp" 
+		            android:paddingRight="0dp"/>
 	            <TextView
 	                android:id="@+id/order_total_value"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_total_value"
-		            android:gravity="center"
+		            android:gravity="left"
 		            android:textSize="12sp" 
-		             />
+		            android:paddingRight="0dp" />
 	            <TextView
-	                 android:id="@+id/order_total_value"
+	                android:id="@+id/order_total_value"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp" 
+		            android:paddingRight="0dp"/>
 	            <TextView
-	                 android:id="@+id/order_validation_status"
+	                android:id="@+id/order_validation_status"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:gravity="center"
-		            android:textSize="12sp" />
+		            android:gravity="left"
+		            android:textSize="12sp" 
+		            android:paddingRight="0dp" />
 	        </LinearLayout>
 	        <LinearLayout 
 	            android:layout_width="match_parent"

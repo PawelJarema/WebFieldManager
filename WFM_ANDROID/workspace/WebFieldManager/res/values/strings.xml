@@ -99,7 +99,7 @@
     
     <string name="order_total_free_qty_value">Value of free products</string>
     <string name="order_total_discount">Total discount value</string>
-    <string name="order_total_before_discount">Order value before discounts</string>
+    <string name="order_total_before_discount">Value before discounts</string>
     <string name="order_payterms_discount">Pay terms discount</string>
     <string name="order_template_threshold_discount">Template threshold discount</string>
     <string name="order_template_discount">Template discount</string>

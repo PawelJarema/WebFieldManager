@@ -356,17 +356,18 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 				@Override
 				protected void onPostExecute(OrderCalculationResult result) {
 					super.onPostExecute(result);
+					
+					tvTemplateThresholdDiscount.setText(getResources().getString(R.string.order_template_threshold_discount) + ": " + 
+					Double.toString(result.getOrderTemplateThresholdDiscount()));
 
-					tvTemplateThresholdDiscount.setText(Double.toString(result
-							.getOrderTemplateThresholdDiscount()));
-
-					tvOrderValueBeforeDiscounts.setText(Double.toString(result
-							.getFullValue()));
-					tvTotalDisountValue.setText(Double.toString(result
-							.getTotalDiscountsValue()));
-					tvValueOfFreeProducts.setText(Double.toString(result.getFreeProducts()));
-					tvOrderValue
-							.setText(Double.toString(result.getOrderTotal()));
+					tvOrderValueBeforeDiscounts.setText(getResources().getString(R.string.order_value_example) + ": " + 
+							Double.toString(result.getFullValue()));
+					tvTotalDisountValue.setText(getResources().getString(R.string.order_total_discount) + ": " + 
+							Double.toString(result.getTotalDiscountsValue()));
+					tvValueOfFreeProducts.setText(getResources().getString(R.string.order_total_before_discount) + ": " + 
+							Double.toString(result.getFreeProducts()));
+					tvOrderValue.setText(getResources().getString(R.string.order_total_value) + ": " + 
+							Double.toString(result.getOrderTotal()));
 				}
 			};
 			processTask.execute(calculatiorRequest);
