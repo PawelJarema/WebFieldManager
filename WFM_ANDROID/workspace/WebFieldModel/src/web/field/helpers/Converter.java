@@ -18,17 +18,30 @@ public class Converter {
 
 		return formattedDate;
 	}
-	
-	public static long dateToSeconds(Date date){
+
+	public static long dateToSeconds(Date date) {
 		return date.getTime() / 1000;
 	}
-	
-	public static long stringDateToSeconds(String date) throws ParseException{
+
+	public static long stringDateToSeconds(String date) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm",
 				Locale.ENGLISH);
 		Date parsed = sdf.parse(date);
-		
+
 		return dateToSeconds(parsed);
 	}
-	
+
+	public static String formatDecimal(double number) {
+		float epsilon = 0.004f; // 4 tenths of a cent
+		if (Math.abs(Math.round(number) - number) < epsilon) {
+			return String.format("%10.0f", number);
+		} else {
+			return String.format("%10.2f", number);
+		}
+	}
+
+	public static double percentToDouble(double percent) {
+		return percent / 100;
+	}
+
 }

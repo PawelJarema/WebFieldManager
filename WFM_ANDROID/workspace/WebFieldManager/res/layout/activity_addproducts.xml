@@ -71,6 +71,7 @@
 	            android:orientation="vertical"
 	            android:layout_weight="50" >
 	            <TextView
+	                android:id="@+id/order_template_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_template_discount"
@@ -78,13 +79,7 @@
 		            android:textSize="12sp"
 		            android:paddingRight="0dp" />
 	            <TextView
-		            android:id="@+id/order_template_discount"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:gravity="left"
-		            android:textSize="12sp"
-		            android:paddingRight="0dp" />
-	            <TextView
+	                android:id="@+id/order_template_threshold_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_template_threshold_discount"
@@ -92,23 +87,10 @@
 		            android:textSize="12sp"
 		            android:paddingRight="0dp" />
 	            <TextView
-		            android:id="@+id/order_template_threshold_discount"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:gravity="left"
-		            android:textSize="12sp"
-		            android:paddingRight="0dp" />
-	            <TextView
+	                android:id="@+id/order_payterms_discount"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:text="@string/order_payterms_discount"
-		            android:gravity="left"
-		            android:textSize="12sp"
-		            android:paddingRight="0dp" />
-	            <TextView
-		            android:id="@+id/order_payterms_discount"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
 		            android:gravity="left"
 		            android:textSize="12sp"
 		            android:paddingRight="0dp" />

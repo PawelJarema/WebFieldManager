@@ -12,6 +12,7 @@ import java.util.UUID;
 import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
+import web.field.helpers.Converter;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
@@ -92,7 +93,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		sendOrderStrategy = new SendOrderStrategy(this);
 
 		setContentView(R.layout.activity_addproducts);
@@ -126,9 +127,21 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		orderDetailModelAdapters = orderModelAdapter.getOrderDetails();
 
 		prepareUiElements();
+
+		// set template discount
+		if (orderTemplate != null) {
+			tvOrderTemplateDiscount.setText(getResources().getString(
+					R.string.order_template_discount)
+					+ ":"
+					+ Converter.formatDecimal(orderTemplate.getDiscount()) + "%");
+		}
+
 		restoreQtyData(savedInstanceState, adapter);
 
 		dismissProgressDialog();
+
+		// run initial callculation
+		calculateOrder();
 	}
 
 	@Override
@@ -179,32 +192,40 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			}
 		});
 		tvOrderTemplateDiscount = (TextView) findViewById(R.id.order_template_discount);
-		
+
 		tvTemplateThresholdDiscount = (TextView) findViewById(R.id.order_template_threshold_discount);
-//		if (orderTemplate.getOrderTemplateThreshold() != null) {
-//			OrderTemplateThreshold orderTemplateThreshold = orderTemplate
-//					.getOrderTemplateThreshold();
-//			/*
-//			 * tvTemplateTresholdDiscount.setText(
-//			 * getResources().getString(R.string
-//			 * .order_template_threshold_discount) + ": " +
-//			 * orderTemplateThreshold.getDiscount(?));
-//			 */
-//		}
 
 		tvPayTemrsDiscount = (TextView) findViewById(R.id.order_payterms_discount);
-		
+
 		tvOrderValueBeforeDiscounts = (TextView) findViewById(R.id.order_total_before_discount);
-		
+
 		tvTotalDisountValue = (TextView) findViewById(R.id.order_total_discount);
-		
+
 		tvValueOfFreeProducts = (TextView) findViewById(R.id.order_total_free_qty_value);
-		
+
 		tvOrderValue = (TextView) findViewById(R.id.order_total_value);
-		/*
-		 * tvOrderValue.setText( getResources().getString(R.string.) + ": " +
-		 * "TODO");
-		 */
+
+		// set strings
+		tvTemplateThresholdDiscount.setText(getResources().getString(
+				R.string.order_template_threshold_discount)
+				+ ": ");
+
+		tvOrderValueBeforeDiscounts.setText(getResources().getString(
+				R.string.order_total_before_discount)
+				+ ": ");
+		tvTotalDisountValue.setText(getResources().getString(
+				R.string.order_total_discount)
+				+ ": ");
+		tvValueOfFreeProducts.setText(getResources().getString(
+				R.string.order_total_free_qty_value)
+				+ ": ");
+		tvOrderValue.setText(getResources().getString(
+				R.string.order_total_value)
+				+ ": ");
+
+		tvPayTemrsDiscount.setText(getResources().getString(
+				R.string.order_payterms_discount)
+				+ ": ");
 	}
 
 	private OrderDetail rewriteOrderQty(int position) {
@@ -281,19 +302,21 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		switch (id) {
 		case 0:
 		case android.R.id.home:
-			showYesNoDialog(getResources().getString(R.string.do_you_want_to_leave_order),
+			showYesNoDialog(
+					getResources().getString(
+							R.string.do_you_want_to_leave_order),
 					new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							switch (which){
-								case DialogInterface.BUTTON_POSITIVE:
-									closeActivity();
-									dialog.dismiss();
-							    break;
-							    case DialogInterface.BUTTON_NEGATIVE:
-							        dialog.dismiss();
-							        break;
-						    }
+							switch (which) {
+							case DialogInterface.BUTTON_POSITIVE:
+								closeActivity();
+								dialog.dismiss();
+								break;
+							case DialogInterface.BUTTON_NEGATIVE:
+								dialog.dismiss();
+								break;
+							}
 						}
 					});
 			return true;
@@ -314,7 +337,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	public void onBackPressed() {
 		onOptionsItemSelected(null);
 	}
-	
+
 	private OrmDbHelper databaseHelper = null;
 
 	protected OrmDbHelper getHelper() {
@@ -349,31 +372,43 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	public void onComplete(int position, int qty) {
 		// adapter stores order qty data
 		if (qty > 0) {
-			
-			// do order recalculation
-			ProcessOrderTask processTask = new ProcessOrderTask() {
-				@Override
-				protected void onPostExecute(OrderCalculationResult result) {
-					super.onPostExecute(result);
-					
-					tvTemplateThresholdDiscount.setText(getResources().getString(R.string.order_template_threshold_discount) + ": " + 
-					Double.toString(result.getOrderTemplateThresholdDiscount()));
 
-					tvOrderValueBeforeDiscounts.setText(getResources().getString(R.string.order_total_before_discount) + ": " + 
-							Double.toString(result.getFullValue()));
-					tvTotalDisountValue.setText(getResources().getString(R.string.order_total_discount) + ": " + 
-							Double.toString(result.getTotalDiscountsValue()));
-					tvValueOfFreeProducts.setText(getResources().getString(R.string.order_total_free_qty_value) + ": " + 
-							Double.toString(result.getFreeProducts()));
-					tvOrderValue.setText(getResources().getString(R.string.order_total_value) + ": " + 
-							Double.toString(result.getOrderTotal()));
-				}
-			};
-			processTask.execute(calculatiorRequest);
-
-			// refresh adapter
-			adapter.notifyDataSetChanged();
+			calculateOrder();
 		}
+	}
+
+	public void calculateOrder() {
+		// do order recalculation
+		ProcessOrderTask processTask = new ProcessOrderTask() {
+			@Override
+			protected void onPostExecute(OrderCalculationResult result) {
+				super.onPostExecute(result);
+
+				
+				tvOrderValueBeforeDiscounts
+						.setText(getResources().getString(
+								R.string.order_total_before_discount)
+								+ ": "
+								+ Converter.formatDecimal(result.getFullValue()));
+				tvTotalDisountValue.setText(getResources().getString(
+						R.string.order_total_discount)
+						+ ": "
+						+ Converter.formatDecimal(result
+								.getTotalDiscountsValue()));
+				tvValueOfFreeProducts.setText(getResources().getString(
+						R.string.order_total_free_qty_value)
+						+ ": "
+						+ Converter.formatDecimal(result.getFreeProducts()));
+				tvOrderValue.setText(getResources().getString(
+						R.string.order_total_value)
+						+ ": "
+						+ Converter.formatDecimal(result.getOrderTotal()));
+			}
+		};
+		processTask.execute(calculatiorRequest);
+
+		// refresh adapter
+		adapter.notifyDataSetChanged();
 	}
 
 	// this comes in handy when communicating with QtyPickerFragment
@@ -399,9 +434,9 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			adapter.notifyDataSetChanged();
 		}
 	}
-	
+
 	private void closeActivity() {
-		
+
 		this.finish();
 	}
 }

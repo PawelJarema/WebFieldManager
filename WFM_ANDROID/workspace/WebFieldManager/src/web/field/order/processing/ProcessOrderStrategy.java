@@ -1,5 +1,6 @@
 package web.field.order.processing;
 
+import web.field.helpers.Converter;
 import web.field.model.entity.*;
 
 public class ProcessOrderStrategy implements IProcessOrderStrategy {
@@ -28,6 +29,8 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 		if (thresholdDetail != null) {
 			orderTemplateThresholdDiscount = thresholdDetail.getDiscount();
 			result.setOrderTemplateThresholdDiscount(orderTemplateThresholdDiscount);
+		} else {
+			result.setOrderTemplateThresholdDiscount(0);
 		}
 
 		// get template discount
@@ -39,6 +42,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 
 		double discountsValue = 0;
 		double freeProducts = 0;
+		double totalValue = 0;
 		// process order details
 		for (OrderDetail detail : calculationRequest.getOrderDetails()) {
 
@@ -47,7 +51,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 			double value = detail.getProduct().getPrice() * qty;
 			// apply all discounts
 			double lineValueAfterDiscounts = value;
-			
+
 			OrderCalculationDetaiResult detailCalculationResult = new OrderCalculationDetaiResult();
 			detailCalculationResult.setProductId(detail.getProduct()
 					.getProductId());
@@ -89,44 +93,61 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 							* qty;
 					detail.setFreeQty((int) freeQty);
 
-					double discount = promoThresholdDetail
-							.getThresholdDiscount() * value;
+					double discount = Converter
+							.percentToDouble(promoThresholdDetail
+									.getThresholdDiscount())
+							* value;
 					detail.setDiscount(discount);
 
 					// apply discount
-					double discountMultiplier = 1 - promoThresholdDetail
-							.getThresholdDiscount();
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							* discountMultiplier;
+							*  Converter
+							.percentToDouble(promoThresholdDetail
+									.getThresholdDiscount());
+
+					// free products
+					freeProducts = 0;
+					if (promoThresholdDetail.getThresholdFixedFreeQty() != 0) {
+						freeProducts += promoThresholdDetail
+								.getThresholdFixedFreeQty();
+					} else {
+						freeProducts += promoThresholdDetail
+								.getThresholdFreeQty();
+					}
 				}
 
 				// try to apply template discount, but only if product is in
 				// template
 				if (templateDiscount != 0
 						&& cache.isOrderDetailInTemplate(detail)) {
-					double discountMultiplier = 1 - templateDiscount;
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							* discountMultiplier;
+							* Converter.percentToDouble(templateDiscount);
 				}
 
 				// try to apply template threshold discount, but only if product
 				// is in template
 				if (orderTemplateThresholdDiscount != 0
 						&& cache.isOrderDetailInTemplate(detail)) {
-					double discountMultiplier = 1 - orderTemplateThresholdDiscount;
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							* discountMultiplier;
+							* Converter
+									.percentToDouble(orderTemplateThresholdDiscount);
 				}
 
 				// try to apply pay term discount
 				if (order.getDiscountHeaderPayterms() != 0) {
-					double discountMultiplier = 1 - order
-							.getDiscountHeaderPayterms();
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							* discountMultiplier;
+							* Converter.percentToDouble(order
+									.getDiscountHeaderPayterms());
+					;
 				}
 			}
 
+			// round calculation
+			lineValueAfterDiscounts = Math
+					.round(lineValueAfterDiscounts * 100.0) / 100.0;
+			value = Math.round(value * 100.0) / 100.0;
+
+			totalValue += lineValueAfterDiscounts;
 			detailCalculationResult
 					.setValueAfterDiscounts(lineValueAfterDiscounts);
 			detailCalculationResult.setValueBeforeDiscounts(value);
@@ -136,6 +157,8 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 		}
 
 		result.setTotalDiscountsValue(discountsValue);
+		result.setOrderTotal(totalValue);
+		result.setFreeProducts(freeProducts);
 
 		return result;
 	}

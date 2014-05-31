@@ -74,6 +74,45 @@ public class OrderProcessingTest {
 	}
 
 	@Test
+	public void getFullOrderValue_Test() {
+		// create order
+		Order order = new Order();
+
+		// add order row
+		OrderDetail orderDetail = new OrderDetail();
+		testProduct1.setPrice(3.11);
+		orderDetail.setProduct(testProduct1);// add P1 product
+
+		// set qty
+		orderDetail.setQty(1);
+		ForeignCollection<OrderDetail> details = new TestForeignCollection<OrderDetail>();
+		details.add(orderDetail);
+		order.OrdersDetail = details;
+
+		// create order template
+		orderTemplate = new OrderTemplate();
+
+		orderTemplate
+				.setOrdersTemplateDetails(new TestForeignCollection<OrderTemplateDetail>());
+		OrderTemplateDetail orderTemplateDetail = new OrderTemplateDetail();
+		orderTemplateDetail.setProduct(testProduct1);
+		orderTemplate.getOrdersTemplateDetails().add(orderTemplateDetail);
+
+		// create order cashe
+		orderCache = new OrderCache(orderTemplate, promoPayTermDetails, db);
+
+		OrderCalculationRequest request = new OrderCalculationRequest(order,
+				orderCache);
+
+		// call process
+		OrderCalculationResult result = processOrderStrategy.process(request);
+
+		// check result
+		assertNotNull(result);
+		assertTrue(result.getFullValue() == 3.11);
+	}
+
+	@Test
 	public void simple_PromoThresholdDetail_Test() throws SQLException {
 
 		// create order
@@ -118,7 +157,7 @@ public class OrderProcessingTest {
 		thDet2.setThresholdDiscount(0.1);
 		thDet2.setProduct(testProduct1);
 		thDetails.add(thDet2);
-		
+
 		orderTemplate.setPromoThreshold(threshold);
 
 		// create order cashe
@@ -157,8 +196,6 @@ public class OrderProcessingTest {
 		assertNotNull(result);
 		assertTrue(result.getFullValue() == 1500);
 		assertTrue(result.getTotalDiscountsValue() == 150);// 10% disc should
-															// be applied
-
 	}
 
 	@Test

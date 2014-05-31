@@ -28,13 +28,19 @@ public class OrderDetailsModelArrayAdapter extends
 	List<OrderDetailModelAdapter> data = new ArrayList<OrderDetailModelAdapter>();
 
 	public OrderDetailsModelArrayAdapter(Context context, int layoutResourceId,
-			List<OrderDetailModelAdapter> data, OnCompleteListener onCompleteListener) {
+			List<OrderDetailModelAdapter> data,
+			OnCompleteListener onCompleteListener) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
 		this.onCompleteListener = onCompleteListener;
-		this.itemsOrdered = new HashMap<Integer, Integer>();
+		itemsOrdered = new HashMap<Integer, Integer>();
+
+		// set items order values
+		for (int i = 0; i < data.size(); i++) {
+			setOrderItemQty(i, data.get(i).getQty(), false, false);
+		}
 	}
 
 	// HashMap with method
@@ -78,31 +84,38 @@ public class OrderDetailsModelArrayAdapter extends
 		if (min != null && qty < min) {
 			activeLine.setLineError(String.format(context.getResources()
 					.getString(R.string.order_line_min_error), min));
-		}
-		else if (max != null && qty > max) {
+		} else if (max != null && qty > max) {
 			activeLine.setLineError(String.format(context.getResources()
 					.getString(R.string.order_line_max_error), max));
 		}
-		
-		
+
 	}
 
 	public void setOrderItemQty(int position, int qty) {
-		if (qty >= 0) {
-			itemsOrdered.put(position, qty);
-			// get multiplier
-			Integer multi = data.get(position).getQtyMultiples();
+		setOrderItemQty(position, qty, true, true);
+	}
 
-			data.get(position).setQty(qty * multi);
-			
+	public void setOrderItemQty(int position, int qty, boolean notify,
+			boolean multiply) {
+		if (qty >= 0) {
+			if (multiply) {
+				// get multiplier
+				Integer multi = data.get(position).getQtyMultiples();
+				qty = qty * multi;
+			}
+
+			itemsOrdered.put(position, qty);
+			data.get(position).setQty(qty);
+
 			// validate line
 			checkLineConditions(position);
-			
+
 			// notify listener
-			this.onCompleteListener.onComplete(position, qty * multi);
+			if (notify) {
+				this.onCompleteListener.onComplete(position, qty);
+			}
 		}
-		
-		
+
 	}
 
 	public int getQtyForOrder(int position) {
@@ -141,9 +154,10 @@ public class OrderDetailsModelArrayAdapter extends
 			holder.tvQty.setFocusable(false);
 			holder.bPlus = (Button) row.findViewById(R.id.order_plus_one);
 			holder.bMinus = (Button) row.findViewById(R.id.order_minus_one);
-			
+
 			// validation msg
-			holder.tvLineAlert = (TextView) row.findViewById(R.id.order_line_alert);
+			holder.tvLineAlert = (TextView) row
+					.findViewById(R.id.order_line_alert);
 
 			row.setTag(holder);
 		} else {
@@ -163,18 +177,18 @@ public class OrderDetailsModelArrayAdapter extends
 		else
 			holder.tvQty.setText("");
 		// holder.cbStatus.setChecked(customer.isActive());
-		
+
 		// set validation msg and mark as read if any error
-		if(orderDetail.getLineError() != null && !orderDetail.getLineError().equals("")){
+		if (orderDetail.getLineError() != null
+				&& !orderDetail.getLineError().equals("")) {
 			holder.tvLineAlert.setText(orderDetail.getLineError());
-			holder.tvLineAlert.setBackground(context.getResources().getDrawable(
-					R.drawable.rounded_corners_red));
-		}
-		else{
+			holder.tvLineAlert.setBackground(context.getResources()
+					.getDrawable(R.drawable.rounded_corners_red));
+		} else {
 			// maybe some msg here?
 			holder.tvLineAlert.setText("");
-			holder.tvLineAlert.setBackground(context.getResources().getDrawable(
-					R.drawable.rounded_corners_green));
+			holder.tvLineAlert.setBackground(context.getResources()
+					.getDrawable(R.drawable.rounded_corners_green));
 		}
 
 		// style list depending on position
