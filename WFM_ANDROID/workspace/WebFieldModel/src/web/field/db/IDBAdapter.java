@@ -79,6 +79,7 @@ public interface IDBAdapter {
 	 * @return
 	 */
 	public List<OrderSimple> listOrders(Integer customerId);
+	public List<OrderSimple> listDraftOrders(Integer customerId);
 	public Order getOrder(String tmpId);
 	public Order getOrder(int id);
 	

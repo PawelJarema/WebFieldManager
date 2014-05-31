@@ -101,8 +101,7 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 
 					// apply discount
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							*  Converter
-							.percentToDouble(promoThresholdDetail
+							* Converter.percentToDouble(promoThresholdDetail
 									.getThresholdDiscount());
 
 					// free products
@@ -121,23 +120,24 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 				if (templateDiscount != 0
 						&& cache.isOrderDetailInTemplate(detail)) {
 					lineValueAfterDiscounts = lineValueAfterDiscounts
-							* Converter.percentToDouble(templateDiscount);
+							- (lineValueAfterDiscounts * Converter
+									.percentToDouble(templateDiscount));
 				}
 
 				// try to apply template threshold discount, but only if product
 				// is in template
 				if (orderTemplateThresholdDiscount != 0
 						&& cache.isOrderDetailInTemplate(detail)) {
-					lineValueAfterDiscounts = lineValueAfterDiscounts
+					lineValueAfterDiscounts = lineValueAfterDiscounts - (lineValueAfterDiscounts
 							* Converter
-									.percentToDouble(orderTemplateThresholdDiscount);
+									.percentToDouble(orderTemplateThresholdDiscount));
 				}
 
 				// try to apply pay term discount
 				if (order.getDiscountHeaderPayterms() != 0) {
-					lineValueAfterDiscounts = lineValueAfterDiscounts
+					lineValueAfterDiscounts = lineValueAfterDiscounts - (lineValueAfterDiscounts
 							* Converter.percentToDouble(order
-									.getDiscountHeaderPayterms());
+									.getDiscountHeaderPayterms()));
 					;
 				}
 			}
@@ -162,5 +162,4 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 
 		return result;
 	}
-
 }

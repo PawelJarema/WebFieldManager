@@ -11,6 +11,7 @@ import web.field.helpers.Converter;
 import web.field.model.entity.Customer;
 import web.field.model.entity.CustomerAddress;
 import web.field.model.entity.Order;
+import web.field.model.entity.OrderStatus;
 import web.field.model.entity.OrderTemplate;
 import web.field.model.entity.User;
 import web.field.model.simple.OrderSimple;
@@ -136,6 +137,7 @@ public class NewOrderFragment extends WebFieldFragment {
 			order = db.getOrder(orderId);
 		} else {
 			order = new Order();
+			order.setStatus(OrderStatus.DRAFT);
 			order.setOrderTempId(UUID.randomUUID().toString());
 
 			// set order date
@@ -360,7 +362,6 @@ public class NewOrderFragment extends WebFieldFragment {
 						Toast.LENGTH_SHORT).show();
 				e.printStackTrace();
 			}
-			OrderSimple o = new OrderSimple();
 			
 			String orderDateStr = etOrderDate.getText().toString().trim();
 			orderDateStr += " " + etOrderTime.getText().toString().trim();

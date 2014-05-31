@@ -88,7 +88,7 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 				db = new DBAdapter(getHelper());
 				
 				// TODO:, only draft orders
-				data = db.listOrders(0);
+				data = db.listDraftOrders(0);
 				return null;
 			}
 		};

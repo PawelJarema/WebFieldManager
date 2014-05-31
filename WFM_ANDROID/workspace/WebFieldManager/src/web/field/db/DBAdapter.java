@@ -14,6 +14,7 @@ import web.field.SharedPreferencesKeys;
 import web.field.WebFieldApplication;
 import web.field.helpers.Converter;
 import web.field.helpers.ITenantProvider;
+import web.field.helpers.StatusTranslator;
 import web.field.model.entity.*;
 import web.field.model.json.*;
 import web.field.model.simple.*;
@@ -1080,6 +1081,57 @@ public class DBAdapter implements IDBAdapter, ITenantProvider {
 					"Can't find user token in shared preferences");
 		}
 
+	}
+
+	@Override
+	public List<OrderSimple> listDraftOrders(Integer customerId) {
+		List<OrderSimple> result = new ArrayList<OrderSimple>();
+		try {
+			Dao<Order, String> orderDao = daoProvider.getOrderDao();
+			Dao<CustomerAddress, Integer> customerAddressDao = daoProvider
+					.getCustomerAddressDao();
+			List<Order> queryResult = null;
+
+			if (customerId == null || customerId == 0) {
+				// get by tenant
+				queryResult = orderDao.queryBuilder().where()
+						.eq("TenantId", this.tenantProvider.getTenant()).and()
+						.eq("Status", OrderStatus.DRAFT)
+						.query();
+
+			} else {
+				// get by tenant and customer
+				queryResult = orderDao.queryBuilder().where()
+						.eq("customer_id", customerId).and()
+						.eq("TenantId", this.tenantProvider.getTenant()).and()
+						.eq("Status", OrderStatus.DRAFT)
+						.query();
+			}
+			for (Order order : queryResult) {
+				OrderSimple simple = new OrderSimple();
+				simple.setOrderId(order.getOrderId());
+				simple.setOrderTempId(order.getOrderTempId());
+				simple.setOrderDate(Converter.secondsToDateString(order
+						.getOrderDate()));
+				if (order.getShipTo() != null) {
+					CustomerAddress addr = customerAddressDao.queryForId(order
+							.getShipTo().getCustomerAddressId());
+					simple.setOrderSummary(addr.fullAddress());
+				} else if (order.getBillTo() != null) {
+					CustomerAddress addr = customerAddressDao.queryForId(order
+							.getBillTo().getCustomerAddressId());
+					simple.setOrderSummary(addr.fullAddress());
+				}
+				simple.setCustomer(order.getCustomer().getCustomerName());
+				simple.setStatus(order.getStatus());
+				result.add(simple);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 }

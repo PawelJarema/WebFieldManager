@@ -8,6 +8,11 @@ public class OrderSimple {
 	private String orderDate;
 
 	private String orderSummary;
+	
+	private String customer;
+	private String address;
+	private String user;
+	private int status;
 
 	public int getOrderId() {
 		return orderId;
@@ -40,5 +45,39 @@ public class OrderSimple {
 	public void setOrderTempId(String orderTempId) {
 		this.orderTempId = orderTempId;
 	}
+
+	public String getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	
 
 }

@@ -105,6 +105,17 @@
     <string name="order_template_threshold_discount">Template threshold discount</string>
     <string name="order_template_discount">Template discount</string>
     
+    <string name="order_status_draft">DRAFT</string>
+	<string name="order_status_outbox">OUTBOX</string>
+	<string name="order_status_sent">SENT</string>
+	<string name="order_status_approval">APPRIVAL</string>
+	<string name="order_status_approved">APPROVED</string>
+	<string name="order_status_edit">EDIT</string>
+	<string name="order_status_processed">PROCESSES</string>
+	<string name="order_status_canceled">CANCELED</string>
+    
+    
+    <string name="order_saved">Orde saved</string>
     <string name="order_send_ok">Order send</string>
     <string name="order_send_error">Order send with errors. Please contatct Administrator.</string>
 

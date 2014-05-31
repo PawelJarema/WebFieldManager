@@ -281,6 +281,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 
 			// save order to local db
 			db.saveOrder(order);
+			Toast.makeText(this, getResources().getString(
+								R.string.order_saved), Toast.LENGTH_LONG).show();
 		}
 
 		return true;

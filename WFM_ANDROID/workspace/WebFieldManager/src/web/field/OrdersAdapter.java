@@ -3,6 +3,7 @@ package web.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.field.helpers.StatusTranslator;
 import web.field.model.simple.OrderSimple;
 import android.app.Activity;
 import android.content.Context;
@@ -36,22 +37,38 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new OrderHolder();
-			holder.tvDate = (TextView) row.findViewById(R.id.listrow_order_date);
+			holder.tvDate = (TextView) row
+					.findViewById(R.id.listrow_order_date);
 			holder.tvId = (TextView) row.findViewById(R.id.listrow_order_id);
+			holder.tvCustomer = (TextView) row
+					.findViewById(R.id.listrow_order_customer);
+			holder.tvLocation = (TextView) row
+					.findViewById(R.id.listrow_order_location);
+			holder.tvUser = (TextView) row
+					.findViewById(R.id.listrow_order_user);
+			holder.tvStatus = (TextView) row
+					.findViewById(R.id.listrow_order_status);
 			row.setTag(holder);
 		} else {
 			holder = (OrderHolder) row.getTag();
 		}
 		OrderSimple order = data.get(position);
-		holder.tvDate.setText(order.getOrderDate().toString());
-		holder.tvId.setText(String.valueOf(order.getOrderId()));
+		holder.tvDate.setText(order.getOrderDate());
+		holder.tvId.setText(String.valueOf(order.getOrderTempId()));
+		holder.tvCustomer.setText(order.getCustomer());
+		holder.tvLocation.setText(order.getOrderSummary());
+		holder.tvUser.setText(order.getUser());
+		holder.tvStatus.setText(StatusTranslator.getOrderStatus(order.getStatus(), this.context));
+
 		// holder.cbStatus.setChecked(customer.isActive());
-		
+
 		// style list depending on position
 		if (position % 2 == 0)
-			row.setBackgroundColor(context.getResources().getColor(R.color.list_dark));
+			row.setBackgroundColor(context.getResources().getColor(
+					R.color.list_dark));
 		else
-			row.setBackgroundColor(context.getResources().getColor(R.color.list_light));
+			row.setBackgroundColor(context.getResources().getColor(
+					R.color.list_light));
 		return row;
 	}
 
@@ -73,7 +90,7 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 	static class OrderHolder {
 		TextView tvId;
 		TextView tvDate;
-		
+
 		// TODO not in OrderSimple
 		TextView tvCustomer;
 		TextView tvLocation;
