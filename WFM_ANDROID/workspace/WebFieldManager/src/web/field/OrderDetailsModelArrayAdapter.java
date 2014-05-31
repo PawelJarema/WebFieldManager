@@ -39,7 +39,7 @@ public class OrderDetailsModelArrayAdapter extends
 
 		// set items order values
 		for (int i = 0; i < data.size(); i++) {
-			setOrderItemQty(i, data.get(i).getQty(), false, false);
+			setOrderItemQty(i, data.get(i).getQty(), false);
 		}
 	}
 
@@ -60,7 +60,15 @@ public class OrderDetailsModelArrayAdapter extends
 		if (itemsOrdered.containsKey(position)) {
 			qty = itemsOrdered.get(position);
 		}
-		setOrderItemQty(position, ++qty);
+		// get multiplier
+		Integer multi = data.get(position).getQtyMultiples();
+		if (multi != null && multi != 0) {
+			qty += multi;
+		} else {
+			qty += 1;
+		}
+
+		setOrderItemQty(position, qty);
 	}
 
 	public void decreaseOrderItemQty(int position) {
@@ -68,8 +76,17 @@ public class OrderDetailsModelArrayAdapter extends
 		if (itemsOrdered.containsKey(position)) {
 			qty = itemsOrdered.get(position);
 		}
-		if (qty > 0)
-			setOrderItemQty(position, --qty);
+		if (qty > 0) {
+			// get multiplier
+			Integer multi = data.get(position).getQtyMultiples();
+			if (multi != null && multi != 0) {
+				qty -= multi;
+			} else {
+				qty -= 1;
+			}
+
+			setOrderItemQty(position, qty);
+		}
 	}
 
 	public void checkLineConditions(int position) {
@@ -92,17 +109,11 @@ public class OrderDetailsModelArrayAdapter extends
 	}
 
 	public void setOrderItemQty(int position, int qty) {
-		setOrderItemQty(position, qty, true, true);
+		setOrderItemQty(position, qty, true);
 	}
 
-	public void setOrderItemQty(int position, int qty, boolean notify,
-			boolean multiply) {
+	public void setOrderItemQty(int position, int qty, boolean notify) {
 		if (qty >= 0) {
-			if (multiply) {
-				// get multiplier
-				Integer multi = data.get(position).getQtyMultiples();
-				qty = qty * multi;
-			}
 
 			itemsOrdered.put(position, qty);
 			data.get(position).setQty(qty);
