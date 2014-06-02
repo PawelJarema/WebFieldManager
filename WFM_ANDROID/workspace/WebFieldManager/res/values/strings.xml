@@ -114,7 +114,8 @@
 	<string name="order_status_processed">PROCESSES</string>
 	<string name="order_status_canceled">CANCELED</string>
     
-    
+    <string name="pick_promo_pay_term_details">Pick promo pay term details</string>
+	
     <string name="order_saved">Orde saved</string>
     <string name="order_send_ok">Order send</string>
     <string name="order_send_error">Order send with errors. Please contatct Administrator.</string>

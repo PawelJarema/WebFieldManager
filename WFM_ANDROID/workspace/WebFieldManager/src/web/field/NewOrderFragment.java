@@ -13,6 +13,7 @@ import web.field.model.entity.CustomerAddress;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderStatus;
 import web.field.model.entity.OrderTemplate;
+import web.field.model.entity.PromoPayTermDetail;
 import web.field.model.entity.User;
 import web.field.model.simple.OrderSimple;
 import web.field.model.simple.OrderTemplateSimple;
@@ -43,6 +44,9 @@ public class NewOrderFragment extends WebFieldFragment {
 	private Customer customer;
 	private CustomerAddress[] addresses;
 	private List<OrderTemplateSimple> templates;
+	
+	// TODO here is the variable populated by the picker you asked for Adam
+	private PromoPayTermDetail promoPayDetails;  
 
 	private IDBAdapter db;
 	private int orderId;
@@ -61,6 +65,7 @@ public class NewOrderFragment extends WebFieldFragment {
 
 	Button bBillTo;
 	Button bShipTo;
+	Button bPickPromoPayTerm;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +84,7 @@ public class NewOrderFragment extends WebFieldFragment {
 	public void onResume() {
 		super.onResume();
 		// check if by screen rotation, and otherwise:
-		// TODO getActivity().getSupportFragmentManager().popBackStackImmediate();
+		// getActivity().getSupportFragmentManager().popBackStackImmediate();
 	}
 	
 	// validation helpers
@@ -95,7 +100,6 @@ public class NewOrderFragment extends WebFieldFragment {
 		return true;
 	}
 
-	// TODO make validation more sublime, save to db?
 	private boolean validateEntries() {
 		String errors = "";
 
@@ -109,11 +113,11 @@ public class NewOrderFragment extends WebFieldFragment {
 
 		String order_date = etOrderDate.getText().toString();
 		String order_time = etOrderTime.getText().toString();
-		;
+		
 		String delivery_date = etDeliveryDate.getText().toString();
-		;
+		
 		String delivery_time = etDeliveryTime.getText().toString();
-		;
+		
 		if (!dateOk(order_date))
 			errors += getResources().getString(R.string.order_date_error);
 		if (!dateOk(delivery_date))
@@ -158,7 +162,8 @@ public class NewOrderFragment extends WebFieldFragment {
 		templates = db.listOrderTemplates();
 	}
 
-	// Date / Time pickers
+	// Date / Time / PromoPayTerms pickers
+	
 	public void showTimePicker(EditText v) {
 		DialogFragment timePicker = new TimePickerFragment(v);
 		timePicker.show(getFragmentManager(), "timepicker");
@@ -168,9 +173,18 @@ public class NewOrderFragment extends WebFieldFragment {
 		DialogFragment datePicker = new DatePickerFragment(v);
 		datePicker.show(getFragmentManager(), "datepicker");
 	}
+	
+	public void showPromoPayTermPicker(PromoPayTermDetail promoPayDetails) {
+		List<PromoPayTermDetail> promoPayTermDetailList = db.getPromoPayTermDetails();
+	
+		DialogFragment promoPayTermPicker = new PromoPayTermPickerFragment(promoPayTermDetailList, promoPayDetails);
+		promoPayTermPicker.show(getFragmentManager(), "promotermpicker");
+	}
 
+	
 	private void populateTextViews(View view) {
 		getActivity().getActionBar().setTitle("New Order");
+		
 		product_list = (ListView) view.findViewById(R.id.order_product_list);
 
 		// set customer data
@@ -184,6 +198,7 @@ public class NewOrderFragment extends WebFieldFragment {
 				.findViewById(R.id.order_shipping_address);
 		bBillTo = (Button) view.findViewById(R.id.order_bill_to);
 		bShipTo = (Button) view.findViewById(R.id.order_ship_to);
+		
 		if (customer.getAddresses().size() < 2) {
 			bBillTo.setEnabled(false);
 			bShipTo.setEnabled(false);
@@ -208,7 +223,6 @@ public class NewOrderFragment extends WebFieldFragment {
 
 		// Time / Date picker listeners
 		OnFocusChangeListener pickListener = new OnFocusChangeListener() {
-
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (hasFocus) {
@@ -240,10 +254,12 @@ public class NewOrderFragment extends WebFieldFragment {
 		 * list_view.setAdapter(adapter);
 		 */
 
-		// TODO modify if necessary
 		OnClickListener click_listener = new OnClickListener() {
 			public void onClick(View v) {
 				switch (v.getId()) {
+				case R.id.order_pick_promoPayTermDetails:
+					showPromoPayTermPicker(promoPayDetails);
+					break;
 				case R.id.order_bill_to:
 				case R.id.order_ship_to:
 				default:
@@ -256,6 +272,10 @@ public class NewOrderFragment extends WebFieldFragment {
 		};
 		bBillTo.setOnClickListener(click_listener);
 		bShipTo.setOnClickListener(click_listener);
+		
+		// add promoPayTermDetails picker
+		bPickPromoPayTerm = (Button) view.findViewById(R.id.order_pick_promoPayTermDetails);
+		bPickPromoPayTerm.setOnClickListener(click_listener);
 	}
 
 	@Override
