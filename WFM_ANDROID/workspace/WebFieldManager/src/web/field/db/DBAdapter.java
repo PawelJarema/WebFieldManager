@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 
@@ -22,7 +21,7 @@ public class DBAdapter implements IDBAdapter {
 	static final int DATABASE_VERSION = 1;
 	private IDaoProvider daoProvider;
 	private ITenantProvider tenantProvider;
-	
+
 	public DBAdapter(IDaoProvider dbHelper, ITenantProvider tenantProvider) {
 		this.daoProvider = dbHelper;
 		this.tenantProvider = tenantProvider;
@@ -220,7 +219,7 @@ public class DBAdapter implements IDBAdapter {
 				product.setPrice(jsonprod.getPrice());
 				product.setTenantId(jsonprod.getTenantId());
 				product.setProductManufacturer(productManufacturer);
-				product.setProductBrands(productBrand);
+				product.setProductBrand(productBrand);
 				product.setProductCategory(productCategory);
 				product.setProductFamily(productFamiliy);
 				product.setProductDescription(jsonprod.getProductDescription());
@@ -314,7 +313,7 @@ public class DBAdapter implements IDBAdapter {
 	}
 
 	@Override
-	public List<ProductSimple> listProducts() {
+	public List<ProductSimple> listProductsSimple() {
 		List<ProductSimple> result = new ArrayList<ProductSimple>();
 
 		try {
@@ -1053,8 +1052,6 @@ public class DBAdapter implements IDBAdapter {
 		return null;
 	}
 
-	
-
 	@Override
 	public List<OrderSimple> listDraftOrders(Integer customerId) {
 		List<OrderSimple> result = new ArrayList<OrderSimple>();
@@ -1068,16 +1065,14 @@ public class DBAdapter implements IDBAdapter {
 				// get by tenant
 				queryResult = orderDao.queryBuilder().where()
 						.eq("TenantId", this.tenantProvider.getTenant()).and()
-						.eq("Status", OrderStatus.DRAFT)
-						.query();
+						.eq("Status", OrderStatus.DRAFT).query();
 
 			} else {
 				// get by tenant and customer
 				queryResult = orderDao.queryBuilder().where()
 						.eq("customer_id", customerId).and()
 						.eq("TenantId", this.tenantProvider.getTenant()).and()
-						.eq("Status", OrderStatus.DRAFT)
-						.query();
+						.eq("Status", OrderStatus.DRAFT).query();
 			}
 			for (Order order : queryResult) {
 				OrderSimple simple = new OrderSimple();
@@ -1136,7 +1131,8 @@ public class DBAdapter implements IDBAdapter {
 		List<ProductCategorySimple> result = new ArrayList<ProductCategorySimple>();
 
 		try {
-			Dao<ProductCategory, Integer> dao = daoProvider.getProductCategoryDao();
+			Dao<ProductCategory, Integer> dao = daoProvider
+					.getProductCategoryDao();
 
 			// get by tenant
 			List<ProductCategory> queryResult = dao.queryBuilder().where()
@@ -1161,7 +1157,8 @@ public class DBAdapter implements IDBAdapter {
 		List<ProductManufacturerSimple> result = new ArrayList<ProductManufacturerSimple>();
 
 		try {
-			Dao<ProductManufacturer, Integer> dao = daoProvider.getProductManufacturerDao();
+			Dao<ProductManufacturer, Integer> dao = daoProvider
+					.getProductManufacturerDao();
 
 			// get by tenant
 			List<ProductManufacturer> queryResult = dao.queryBuilder().where()
@@ -1204,6 +1201,25 @@ public class DBAdapter implements IDBAdapter {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<Product> listProductsFull() {
+
+		try {
+			Dao<Product, Integer> productDao = daoProvider.getProductDao();
+
+			// get by tenant
+			List<Product> queryResult = productDao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			return queryResult;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 }

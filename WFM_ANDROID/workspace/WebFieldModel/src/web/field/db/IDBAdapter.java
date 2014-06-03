@@ -29,7 +29,14 @@ public interface IDBAdapter {
 	 * 
 	 * @return Customers data
 	 */
-	public List<ProductSimple> listProducts();
+	public List<ProductSimple> listProductsSimple();
+	
+	/***
+	 * Lists full products data
+	 * 
+	 * @return Customers data
+	 */
+	public List<Product> listProductsFull();
 
 	/***
 	 * Lists basic order templates data

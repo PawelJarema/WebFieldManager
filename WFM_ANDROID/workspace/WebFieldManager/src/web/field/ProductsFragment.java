@@ -5,6 +5,7 @@ import java.util.List;
 
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
+import web.field.model.entity.Product;
 import web.field.model.simple.ProductSimple;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class ProductsFragment extends WebFieldListFragment {
 	
 	private ProductsAdapter adapter;
-	private List<ProductSimple> data;
+	private List<Product> data;
 	private IDBAdapter db;
 	
 	@Override
@@ -44,7 +45,7 @@ public class ProductsFragment extends WebFieldListFragment {
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest
 		if (adapter == null) {
-			data = new ArrayList<ProductSimple>();
+			data = new ArrayList<Product>();
 			adapter = new ProductsAdapter(getActivity(),
 					R.layout.list_row_fragment_order_product, data);
 		}
@@ -82,7 +83,7 @@ public class ProductsFragment extends WebFieldListFragment {
 			@Override
 			public Void loadInBackground() {
 				db = new DBAdapter(getHelper(), getTenantProvider());
-				data = db.listProducts();
+				data = db.listProductsFull();
 				return null;
 			}
 		};

@@ -71,7 +71,7 @@ public class OrderFragment extends WebFieldFragment {
 		order = db.getOrder(order_id);
 		// TODO get related customer and product data
 		// customer = order.getCustomer();
-		products = db.listProducts();
+		products = db.listProductsSimple();
 	}
 	
 	private void populateTextViews(View view) {

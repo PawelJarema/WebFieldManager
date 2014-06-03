@@ -3,6 +3,8 @@ package web.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.field.helpers.Converter;
+import web.field.model.entity.Product;
 import web.field.model.simple.ProductSimple;
 import android.app.Activity;
 import android.content.Context;
@@ -13,13 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
+public class ProductsAdapter extends ArrayAdapter<Product> {
 	Context context;
 	int layoutResourceId;
-	List<ProductSimple> data = new ArrayList<ProductSimple>();
+	List<Product> data = new ArrayList<Product>();
 
 	public ProductsAdapter(Context context, int layoutResourceId,
-			List<ProductSimple> data) {
+			List<Product> data) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
@@ -49,13 +51,16 @@ public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
 		} else {
 			holder = (ProductsHolder) row.getTag();
 		}
-		ProductSimple product = data.get(position);
+		Product product = data.get(position);
 		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_action_search));
-		holder.tvCode.setText(product.getProductCode());
-		//holder.tvId.setText(String.valueOf(product.getProductId()));
+		holder.tvCode.setText(product.getCode());
 		holder.tvDescription.setText(product.getProductDescription());
-		// holder.cbStatus.setChecked(customer.isActive());
+		holder.tvManufacturer.setText(product.getProductManufacturer().getManufacturerDescription());
+		holder.tvBrand.setText(product.getProductBrand().getBrandDescription());
+		holder.tvFamily.setText(product.getProductFamily().getFamilyDescription());
+		holder.tvCategory.setText(product.getProductCategory().getCategoryDescription());
 		
+		holder.tvPrice.setText(Converter.formatDecimal(product.getPrice()));		
 		// style list depending on position
 		if (position % 2 == 0)
 			row.setBackgroundColor(context.getResources().getColor(R.color.list_dark));
@@ -70,7 +75,7 @@ public class ProductsAdapter extends ArrayAdapter<ProductSimple> {
 	}
 
 	@Override
-	public ProductSimple getItem(int index) {
+	public Product getItem(int index) {
 		return data.get(index);
 	}
 

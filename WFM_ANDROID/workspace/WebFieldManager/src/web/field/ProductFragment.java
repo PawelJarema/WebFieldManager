@@ -36,7 +36,7 @@ public class ProductFragment extends WebFieldFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragmrent_product, container, false); 
+		View view = inflater.inflate(R.layout.fragment_product, container, false); 
 		product_id = getArguments().getInt("product_id");
 		
 		getDbData();

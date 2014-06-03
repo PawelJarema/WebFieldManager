@@ -4,6 +4,7 @@ import java.util.List;
 
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
+import web.field.model.entity.Product;
 import web.field.model.simple.ProductSimple;
 import android.os.Bundle;
 import android.view.View;
@@ -23,10 +24,10 @@ public class ProductsActivity extends WebFieldActivity {
 
 		ListView lvProducts = (ListView) findViewById(R.id.product_list);
 
-		List<ProductSimple> customers = db.listProducts();
+		List<Product> products = db.listProductsFull();
 
 		adapter = new ProductsAdapter(ProductsActivity.this,
-				R.layout.product_entry, customers);
+				R.layout.product_entry, products);
 
 		lvProducts.setAdapter(adapter);
 

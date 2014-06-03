@@ -22,16 +22,16 @@ public class Product {
 	@DatabaseField
 	private boolean FlagActive;
 
-	@DatabaseField(foreign = true)
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private ProductBrand ProductBrands;
 
-	@DatabaseField(foreign = true)
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private ProductCategory ProductCategory;
 
-	@DatabaseField(foreign = true)
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private ProductFamily ProductFamily;
 
-	@DatabaseField(foreign = true)
+	@DatabaseField(foreign = true, foreignAutoRefresh = true)
 	private ProductManufacturer ProductManufacturer;
 
 	public Product() {
@@ -39,11 +39,11 @@ public class Product {
 		// with at least package visibility
 	}
 
-	public ProductBrand getProductBrands() {
+	public ProductBrand getProductBrand() {
 		return ProductBrands;
 	}
 
-	public void setProductBrands(ProductBrand productBrands) {
+	public void setProductBrand(ProductBrand productBrands) {
 		ProductBrands = productBrands;
 	}
 
