@@ -153,6 +153,10 @@ public class ProcessOrderStrategy implements IProcessOrderStrategy {
 			detailCalculationResult.setValueBeforeDiscounts(value);
 
 			discountsValue += (value - lineValueAfterDiscounts);
+			
+			// count percent of dicount
+			double percent = (discountsValue  * 100) / value;
+			detail.setDiscount(percent);
 
 		}
 

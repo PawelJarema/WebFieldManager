@@ -160,8 +160,14 @@ public class OrderDetailsModelArrayAdapter extends
 			holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
 			holder.tvDescription = (TextView) row
 					.findViewById(R.id.order_product_description);
-			holder.tvPrice = (TextView) row.findViewById(R.id.order_product_price);
-			
+			holder.tvPrice = (TextView) row
+					.findViewById(R.id.order_product_price);
+
+			holder.tvFreeQty = (TextView) row
+					.findViewById(R.id.order_free_qty);
+			holder.tvDiscount = (TextView) row
+					.findViewById(R.id.order_percent_discount);
+
 			holder.ivPicture = (ImageView) row
 					.findViewById(R.id.order_product_image);
 			holder.tvQty = (TextView) row.findViewById(R.id.order_detail_qty);
@@ -185,6 +191,8 @@ public class OrderDetailsModelArrayAdapter extends
 		holder.tvId.setText(orderDetail.getOrderDetailTempId());
 		holder.tvDescription.setText(product.getProductDescription());
 		holder.tvPrice.setText(Converter.formatDecimal(product.getPrice()));
+		holder.tvFreeQty.setText(String.valueOf(orderDetail.getFreeQty()));
+		holder.tvDiscount.setText(Converter.formatDecimal(orderDetail.getDiscount()) + "%");
 		holder.bPlus.setOnClickListener(this);
 		holder.bMinus.setOnClickListener(this);
 		if (itemsOrdered.containsKey(Integer.valueOf(position)))
@@ -240,6 +248,8 @@ public class OrderDetailsModelArrayAdapter extends
 		TextView tvCode;
 		TextView tvDescription;
 		TextView tvPrice;
+		TextView tvFreeQty;
+		TextView tvDiscount;
 
 		// Product Detail Popup -> +/- buttons
 		Button bPlus;
