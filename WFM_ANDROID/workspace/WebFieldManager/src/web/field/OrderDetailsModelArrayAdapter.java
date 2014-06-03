@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import web.field.QtyPickerFragment.OnCompleteListener;
+import web.field.helpers.Converter;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.Product;
 import web.field.model.entity.adapter.OrderDetailModelAdapter;
@@ -159,6 +160,8 @@ public class OrderDetailsModelArrayAdapter extends
 			holder.tvId = (TextView) row.findViewById(R.id.order_product_id);
 			holder.tvDescription = (TextView) row
 					.findViewById(R.id.order_product_description);
+			holder.tvPrice = (TextView) row.findViewById(R.id.order_product_price);
+			
 			holder.ivPicture = (ImageView) row
 					.findViewById(R.id.order_product_image);
 			holder.tvQty = (TextView) row.findViewById(R.id.order_detail_qty);
@@ -181,6 +184,7 @@ public class OrderDetailsModelArrayAdapter extends
 		holder.tvCode.setText(product.getCode());
 		holder.tvId.setText(orderDetail.getOrderDetailTempId());
 		holder.tvDescription.setText(product.getProductDescription());
+		holder.tvPrice.setText(Converter.formatDecimal(product.getPrice()));
 		holder.bPlus.setOnClickListener(this);
 		holder.bMinus.setOnClickListener(this);
 		if (itemsOrdered.containsKey(Integer.valueOf(position)))
@@ -235,6 +239,7 @@ public class OrderDetailsModelArrayAdapter extends
 		TextView tvId;
 		TextView tvCode;
 		TextView tvDescription;
+		TextView tvPrice;
 
 		// Product Detail Popup -> +/- buttons
 		Button bPlus;
