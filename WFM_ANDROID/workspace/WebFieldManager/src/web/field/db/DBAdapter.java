@@ -681,6 +681,7 @@ public class DBAdapter implements IDBAdapter {
 					entityDetail.setModifiedUserId(jsonDetail
 							.getModifiedUserId());
 					entityDetail.setTenantId(jsonDetail.getTenantId());
+					entityDetail.setDescription(jsonDetail.getDescription());
 
 					entityDetail.setDiscount(jsonDetail.getDiscount());
 					entityDetail.setExternalId_1(jsonDetail.getExternalId_1());
