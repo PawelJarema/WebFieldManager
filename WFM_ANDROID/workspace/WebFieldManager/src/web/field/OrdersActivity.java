@@ -19,7 +19,7 @@ public class OrdersActivity extends WebFieldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_orders);
 
-		IDBAdapter db = new DBAdapter(getHelper());
+		IDBAdapter db = new DBAdapter(getHelper(), getTenantProvider());
 
 		ListView lvOrders = (ListView) findViewById(R.id.order_list);
 

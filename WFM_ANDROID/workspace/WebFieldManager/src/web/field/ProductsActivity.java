@@ -19,7 +19,7 @@ public class ProductsActivity extends WebFieldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_products);
 
-		IDBAdapter db = new DBAdapter(getHelper());
+		IDBAdapter db = new DBAdapter(getHelper(), getTenantProvider());
 
 		ListView lvProducts = (ListView) findViewById(R.id.product_list);
 

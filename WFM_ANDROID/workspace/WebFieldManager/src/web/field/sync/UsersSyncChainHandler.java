@@ -45,7 +45,7 @@ public class UsersSyncChainHandler implements ISyncChainHandler {
 			e.printStackTrace();
 		}
 
-		final IDBAdapter db = new DBAdapter(command.getDbHelper());
+		final IDBAdapter db = new DBAdapter(command.getDbHelper(), command.getTenantProvider());
 		LongRunningHttpRequest getCustomers = new LongRunningHttpRequest(
 				command.getJsonRequest(), usersRequest) {
 			@Override

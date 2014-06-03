@@ -1,5 +1,7 @@
 package web.field;
 
+import web.field.helpers.ITenantProvider;
+import web.field.helpers.TenantProvider;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -16,6 +18,10 @@ public abstract class WebFieldListFragment extends ListFragment implements
 					OrmDbHelper.class);
 		}
 		return databaseHelper;
+	}
+	
+	protected ITenantProvider getTenantProvider() {
+		return new TenantProvider(getHelper());
 	}
 
 	@Override

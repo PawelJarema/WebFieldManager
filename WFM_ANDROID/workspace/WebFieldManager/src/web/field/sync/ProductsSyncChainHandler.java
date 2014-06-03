@@ -44,7 +44,7 @@ public class ProductsSyncChainHandler implements ISyncChainHandler {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		final IDBAdapter db = new DBAdapter(command.getDbHelper());
+		final IDBAdapter db = new DBAdapter(command.getDbHelper(), command.getTenantProvider());
 		LongRunningHttpRequest getProducts = new LongRunningHttpRequest(
 				command.getJsonRequest(), productsRequest) {
 			@Override

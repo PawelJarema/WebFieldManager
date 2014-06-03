@@ -135,7 +135,7 @@ public class NewOrderFragment extends WebFieldFragment {
 	}
 
 	private void getRelatedDbData() {
-		db = new DBAdapter(getHelper());
+		db = new DBAdapter(getHelper(), getTenantProvider());
 		orderId = getArguments().getInt("order_id");
 		if (orderId != 0) {
 			order = db.getOrder(orderId);

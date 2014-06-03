@@ -85,7 +85,7 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 			@Override
 			public Void loadInBackground() {
 				Log.e("In Draft Order", "Async Task Started. Loading Orders data.");
-				db = new DBAdapter(getHelper());
+				db = new DBAdapter(getHelper(), getTenantProvider());
 				
 				// TODO:, only draft orders
 				data = db.listDraftOrders(0);

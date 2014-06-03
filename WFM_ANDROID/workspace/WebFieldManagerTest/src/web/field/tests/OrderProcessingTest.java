@@ -70,7 +70,7 @@ public class OrderProcessingTest {
 		daoProvider = new TestDaoProvider(connectionSource);
 
 		// create db adapter
-		db = new DBAdapter(daoProvider);
+		db = new DBAdapter(daoProvider, new TestTenantProvider());
 	}
 
 	@Test

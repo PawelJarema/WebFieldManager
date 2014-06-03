@@ -21,7 +21,7 @@ public class CustomerDetailsActivity extends WebFieldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customer_details);
 
-		IDBAdapter db = new DBAdapter(getHelper());
+		IDBAdapter db = new DBAdapter(getHelper(), getTenantProvider());
 		customerId = getIntent().getIntExtra("customerId", -1);
 		Customer customer = db.getCustomer(customerId);
 

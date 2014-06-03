@@ -54,7 +54,7 @@ public class ProductFragment extends WebFieldFragment {
 	}
 	
 	private void getDbData() {
-		db = new DBAdapter(getHelper());
+		db = new DBAdapter(getHelper(), getTenantProvider());
 		//TODO get product details and store in variable (image, name, price, breadcrumbs)...
 	}
 }

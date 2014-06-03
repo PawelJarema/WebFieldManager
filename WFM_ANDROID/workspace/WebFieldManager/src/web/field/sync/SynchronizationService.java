@@ -12,6 +12,7 @@ import web.field.helpers.Observer;
 import web.field.helpers.Subject;
 import web.field.helpers.SyncCommand;
 import web.field.helpers.SynchronizationResult;
+import web.field.helpers.TenantProvider;
 import web.field.model.json.JsonRequest;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -49,10 +50,6 @@ public class SynchronizationService implements Subject {
 		if (gps.getLocation() != null) {
 			jsonRequest.setLatitude(gps.getLatitude());
 			jsonRequest.setLongitude(gps.getLongitude());
-		} else {
-			Random r = new Random();
-			jsonRequest.setLatitude(r.nextDouble() * 1000000000);
-			jsonRequest.setLongitude(r.nextDouble() * 1000000000);
 		}
 
 		jsonRequest.setUserToken(token);
@@ -83,7 +80,7 @@ public class SynchronizationService implements Subject {
 																					}
 																				})))))))));
 		// create command
-		SyncCommand command = new SyncCommand(serviceAddress, json, dbHelper);
+		SyncCommand command = new SyncCommand(serviceAddress, json, dbHelper, new TenantProvider(dbHelper));
 		chainChandler.handle(command);
 	}
 

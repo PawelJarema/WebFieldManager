@@ -3,9 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/gson-2.2.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/ormlite-android-4.43.jar"/>
-	<classpathentry exported="true" kind="lib" path="/WebFieldManager/libs/ormlite-core-4.43.jar"/>
 	<classpathentry kind="lib" path="/WebFieldManager/libs/modelmapper-0.6.5.jar"/>
+	<classpathentry kind="lib" path="D:/dev/webfieldpl2/WFM_ANDROID/workspace/WebFieldManagerTest/lib/ormlite-core-4.48.jar"/>
+	<classpathentry kind="lib" path="D:/dev/webfieldpl2/WFM_ANDROID/workspace/WebFieldManagerTest/lib/ormlite-jdbc-4.48.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
-

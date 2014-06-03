@@ -106,4 +106,10 @@ public interface IDBAdapter {
 	public void loadUsers(List<JsonUser> users);
 	
 	public List<PromoPayTermDetail> getPromoPayTermDetails();
+	
+	public List<ProductFamilySimple> listProductFamilies();
+	public List<ProductCategorySimple> listProductCategories();
+	public List<ProductManufacturerSimple> listProductManufactures();
+	public List<ProductBrandSimple> listProductBrands();
+	
 }

@@ -24,7 +24,7 @@ public class CustomersActivity extends WebFieldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customers);
 
-		IDBAdapter db = new DBAdapter(getHelper());
+		IDBAdapter db = new DBAdapter(getHelper(), getTenantProvider());
 
 		ListView lvCustomers = (ListView) findViewById(R.id.customers_list);
 

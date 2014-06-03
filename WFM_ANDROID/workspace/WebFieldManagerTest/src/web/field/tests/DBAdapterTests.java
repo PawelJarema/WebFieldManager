@@ -12,8 +12,7 @@ import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.db.IDaoProvider;
 import web.field.model.entity.Order;
-import web.field.model.simple.CustomerSimple;
-import web.field.model.simple.OrderSimple;
+import web.field.model.simple.*;
 import web.field.tests.TestDaoProvider;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -31,6 +30,42 @@ public class DBAdapterTests {
 		
 		assertNotNull(customers);
 		assertTrue(customers.size() > 0);
+	}
+	
+	@Test
+	public void listProductFamilies_test(){
+		List<ProductFamilySimple> list = db.listProductFamilies();
+		
+		assertNotNull(list);
+		assertTrue(list.size() > 0);
+	
+	}
+	
+	@Test
+	public void listProductCategories_test(){
+		List<ProductCategorySimple> list = db.listProductCategories();
+		
+		assertNotNull(list);
+		assertTrue(list.size() > 0);
+	
+	}
+	
+	@Test
+	public void listProductManufactures_test(){
+		List<ProductManufacturerSimple> list = db.listProductManufactures();
+		
+		assertNotNull(list);
+		assertTrue(list.size() > 0);
+	
+	}
+	
+	@Test
+	public void listProductBrands_test(){
+		List<ProductBrandSimple> list = db.listProductBrands();
+		
+		assertNotNull(list);
+		assertTrue(list.size() > 0);
+	
 	}
 	
 	@Test
@@ -56,13 +91,13 @@ public class DBAdapterTests {
 		Class.forName("org.sqlite.JDBC");
 
 		// create a database connection
-		connectionSource = new JdbcConnectionSource("jdbc:sqlite:c:/Users/Bro/Downloads/webfield.db");
+		connectionSource = new JdbcConnectionSource("jdbc:sqlite:c:/Users/Adam/Downloads/5webfield.db");
 		
 		// create dao provider
 		daoProvider = new TestDaoProvider(connectionSource);
 		
 		// create db adapter
-		db = new DBAdapter(daoProvider);
+		db = new DBAdapter(daoProvider, new TestTenantProvider());
 
 	}
 

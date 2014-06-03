@@ -70,6 +70,30 @@ public class TestForeignCollection<T> extends ArrayList<T> implements ForeignCol
 		return 0;
 	}
 
+	@Override
+	public CloseableIterator<T> closeableIterator(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CloseableWrappedIterable<T> getWrappedIterable(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CloseableIterator<T> iterator(int arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CloseableIterator<T> iteratorThrow(int arg0) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 	

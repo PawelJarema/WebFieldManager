@@ -1,5 +1,7 @@
 package web.field;
 
+import web.field.helpers.ITenantProvider;
+import web.field.helpers.TenantProvider;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -21,6 +23,10 @@ public class WebFieldFragment extends Fragment {
         }
         return databaseHelper;
     }
+    
+    protected ITenantProvider getTenantProvider() {
+		return new TenantProvider(getHelper());
+	}
     
     @Override
     public void onCreate(Bundle savedInstanceState){

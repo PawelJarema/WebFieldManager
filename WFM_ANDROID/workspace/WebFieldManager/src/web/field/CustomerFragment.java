@@ -44,7 +44,7 @@ public class CustomerFragment extends WebFieldFragment {
 	}
 	
 	private void getDbData() {
-		db = new DBAdapter(getHelper());
+		db = new DBAdapter(getHelper(), getTenantProvider());
 		customer = db.getCustomer(customer_id);
 	}
 	

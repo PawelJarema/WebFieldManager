@@ -81,7 +81,7 @@ public class ProductsFragment extends WebFieldListFragment {
 		AsyncTaskLoader<Void> loader = new AsyncTaskLoader<Void>(getActivity()) {
 			@Override
 			public Void loadInBackground() {
-				db = new DBAdapter(getHelper());
+				db = new DBAdapter(getHelper(), getTenantProvider());
 				data = db.listProducts();
 				return null;
 			}

@@ -67,7 +67,7 @@ public class OrderFragment extends WebFieldFragment {
 	}	
 	
 	private void getRelatedDbData() {
-		db = new DBAdapter(getHelper());
+		db = new DBAdapter(getHelper(), getTenantProvider());
 		order = db.getOrder(order_id);
 		// TODO get related customer and product data
 		// customer = order.getCustomer();

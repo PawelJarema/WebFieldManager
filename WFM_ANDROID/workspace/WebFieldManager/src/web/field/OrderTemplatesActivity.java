@@ -19,7 +19,7 @@ public class OrderTemplatesActivity extends WebFieldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order_templates);
 
-		IDBAdapter db = new DBAdapter(getHelper());
+		IDBAdapter db = new DBAdapter(getHelper(), getTenantProvider());
 
 		ListView lvTemplates = (ListView) findViewById(R.id.templates_list);
 

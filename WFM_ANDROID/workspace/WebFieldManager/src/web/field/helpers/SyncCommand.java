@@ -6,13 +6,15 @@ public class SyncCommand {
 	private String serviceAddress;
 	private String jsonRequest;
 	private OrmDbHelper dbHelper;
+	private ITenantProvider tenantProvider;
 
 	public SyncCommand(String serviceAddress, String jsonRequest,
-			OrmDbHelper dbHelper) {
+			OrmDbHelper dbHelper, ITenantProvider tenantProvider) {
 		super();
 		this.serviceAddress = serviceAddress;
 		this.jsonRequest = jsonRequest;
 		this.dbHelper = dbHelper;
+		this.tenantProvider = tenantProvider;
 	}
 
 	public String getServiceAddress() {
@@ -37,6 +39,14 @@ public class SyncCommand {
 
 	public void setDbHelper(OrmDbHelper dbHelper) {
 		this.dbHelper = dbHelper;
+	}
+
+	public ITenantProvider getTenantProvider() {
+		return tenantProvider;
+	}
+
+	public void setTenantProvider(ITenantProvider tenantProvider) {
+		this.tenantProvider = tenantProvider;
 	}
 
 }

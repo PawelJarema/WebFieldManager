@@ -3,6 +3,10 @@ package web.field;
 import java.util.concurrent.TimeUnit;
 
 
+
+import web.field.helpers.ITenantProvider;
+import web.field.helpers.TenantProvider;
+
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import android.app.AlertDialog;
@@ -21,6 +25,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public abstract class WebFieldActivity extends OrmLiteBaseActivity<OrmDbHelper> {
+	
+	
+	protected ITenantProvider getTenantProvider() {
+		return new TenantProvider(getHelper());
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,6 +46,8 @@ public abstract class WebFieldActivity extends OrmLiteBaseActivity<OrmDbHelper> 
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

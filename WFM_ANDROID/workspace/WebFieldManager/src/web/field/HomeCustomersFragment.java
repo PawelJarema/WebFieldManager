@@ -158,7 +158,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 				double latitude = 0;
 				double longitude = 0;
 
-				db = new DBAdapter(getHelper());
+				db = new DBAdapter(getHelper(), getTenantProvider());
 				data = db.listCustomersNearMe(latitude, longitude);
 
 				return null;

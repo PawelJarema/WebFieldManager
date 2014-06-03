@@ -13,6 +13,8 @@ import web.field.QtyPickerFragment.OnCompleteListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.helpers.Converter;
+import web.field.helpers.ITenantProvider;
+import web.field.helpers.TenantProvider;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
@@ -100,7 +102,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		qty_picker_fragment_layout = (LinearLayout) this
 				.findViewById(R.id.addproducts_qty_fragment_container);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		db = new DBAdapter(getHelper());
+		db = new DBAdapter(getHelper(), getTenantProvider());
 
 		getActionBar().setTitle("New Order");
 
@@ -348,6 +350,10 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 					OrmDbHelper.class);
 		}
 		return databaseHelper;
+	}
+	
+	protected ITenantProvider getTenantProvider() {
+		return new TenantProvider(getHelper());
 	}
 
 	@Override

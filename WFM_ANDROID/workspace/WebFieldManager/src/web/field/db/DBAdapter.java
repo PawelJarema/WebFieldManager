@@ -5,21 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import android.content.SharedPreferences;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
 
-import web.field.SharedPreferencesKeys;
-import web.field.WebFieldApplication;
 import web.field.helpers.Converter;
 import web.field.helpers.ITenantProvider;
-import web.field.helpers.StatusTranslator;
 import web.field.model.entity.*;
 import web.field.model.json.*;
 import web.field.model.simple.*;
 
-public class DBAdapter implements IDBAdapter, ITenantProvider {
+public class DBAdapter implements IDBAdapter {
 
 	static final String TAG = "DBAdapter";
 	static final String DATABASE_NAME = "WebFieldManagerDB";
@@ -30,11 +26,6 @@ public class DBAdapter implements IDBAdapter, ITenantProvider {
 	public DBAdapter(IDaoProvider dbHelper, ITenantProvider tenantProvider) {
 		this.daoProvider = dbHelper;
 		this.tenantProvider = tenantProvider;
-	}
-
-	public DBAdapter(IDaoProvider dbHelper) {
-		this.daoProvider = dbHelper;
-		this.tenantProvider = this;
 	}
 
 	@Override
@@ -1061,27 +1052,7 @@ public class DBAdapter implements IDBAdapter, ITenantProvider {
 		return null;
 	}
 
-	@Override
-	public int getTenant() {
-		SharedPreferences preferences = WebFieldApplication
-				.getSharedPreferences();
-		String token = preferences.getString(SharedPreferencesKeys.user_token,
-				null);
-
-		if (token != null) {
-			User user = getUser(token);
-			if (user != null) {
-				return user.getTenantId();
-			} else {
-				throw new IllegalStateException("Can't find user for token "
-						+ token);
-			}
-		} else {
-			throw new IllegalStateException(
-					"Can't find user token in shared preferences");
-		}
-
-	}
+	
 
 	@Override
 	public List<OrderSimple> listDraftOrders(Integer customerId) {
@@ -1127,6 +1098,106 @@ public class DBAdapter implements IDBAdapter, ITenantProvider {
 				result.add(simple);
 			}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<ProductFamilySimple> listProductFamilies() {
+		List<ProductFamilySimple> result = new ArrayList<ProductFamilySimple>();
+
+		try {
+			Dao<ProductFamily, Integer> dao = daoProvider.getProductFamilyDao();
+
+			// get by tenant
+			List<ProductFamily> queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (ProductFamily entity : queryResult) {
+				ProductFamilySimple info = new ProductFamilySimple();
+				info.setId(entity.getProductFamilyId());
+				info.setName(entity.getFamilyDescription());
+				info.setTenantId(entity.getTenantId());
+				result.add(info);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<ProductCategorySimple> listProductCategories() {
+		List<ProductCategorySimple> result = new ArrayList<ProductCategorySimple>();
+
+		try {
+			Dao<ProductCategory, Integer> dao = daoProvider.getProductCategoryDao();
+
+			// get by tenant
+			List<ProductCategory> queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (ProductCategory entity : queryResult) {
+				ProductCategorySimple info = new ProductCategorySimple();
+				info.setId(entity.getProductCategoryId());
+				info.setName(entity.getCategoryDescription());
+				info.setTenantId(entity.getTenantId());
+				result.add(info);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<ProductManufacturerSimple> listProductManufactures() {
+		List<ProductManufacturerSimple> result = new ArrayList<ProductManufacturerSimple>();
+
+		try {
+			Dao<ProductManufacturer, Integer> dao = daoProvider.getProductManufacturerDao();
+
+			// get by tenant
+			List<ProductManufacturer> queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (ProductManufacturer entity : queryResult) {
+				ProductManufacturerSimple info = new ProductManufacturerSimple();
+				info.setId(entity.getProductManufacturerId());
+				info.setName(entity.getManufacturerDescription());
+				info.setTenantId(entity.getTenantId());
+				result.add(info);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<ProductBrandSimple> listProductBrands() {
+		List<ProductBrandSimple> result = new ArrayList<ProductBrandSimple>();
+
+		try {
+			Dao<ProductBrand, Integer> dao = daoProvider.getProductBrandDao();
+
+			// get by tenant
+			List<ProductBrand> queryResult = dao.queryBuilder().where()
+					.eq("TenantId", this.tenantProvider.getTenant()).query();
+
+			for (ProductBrand entity : queryResult) {
+				ProductBrandSimple info = new ProductBrandSimple();
+				info.setId(entity.getProductBrandId());
+				info.setName(entity.getBrandDescription());
+				info.setTenantId(entity.getTenantId());
+				result.add(info);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

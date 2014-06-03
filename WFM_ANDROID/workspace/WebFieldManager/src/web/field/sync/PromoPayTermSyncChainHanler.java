@@ -43,7 +43,7 @@ public class PromoPayTermSyncChainHanler implements ISyncChainHandler{
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		final IDBAdapter db = new DBAdapter(command.getDbHelper());
+		final IDBAdapter db = new DBAdapter(command.getDbHelper(), command.getTenantProvider());
 		LongRunningHttpRequest getTemplates = new LongRunningHttpRequest(
 				command.getJsonRequest(), templatesRequest) {
 			@Override
