@@ -31,14 +31,14 @@ public class WebfieldFragmentActivityInner extends FragmentActivity {
 		showProgressDialog();
 	}
 	
-	protected void showProgressDialog() {
+	public void showProgressDialog() {
 		this.progressDialog = ProgressDialog.show(this, 
 				getResources().getString(R.string.network), 
 				getResources().getString(R.string.downloading),
 				true, false);
 	}
 	
-	protected void dismissProgressDialog() {
+	public void dismissProgressDialog() {
 		if (this.progressDialog != null)
 			this.progressDialog.dismiss();
 	}

@@ -5,23 +5,23 @@ import java.io.UnsupportedEncodingException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
-import android.content.SharedPreferences;
-
-import com.google.gson.Gson;
-
 import web.field.SharedPreferencesKeys;
 import web.field.WebFieldApplication;
+import web.field.WebfieldFragmentActivityInner;
 import web.field.helpers.LongRunningHttpRequest;
 import web.field.model.entity.Order;
 import web.field.model.json.JsonOrder;
 import web.field.model.json.JsonSaveOrderRequest;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 public class SendOrderStrategy implements ISendOrderStrategy {
 
 	private String serviceAddress;
 	private String userToken;
 	private ISendOrderCallback callback;
-
+	
 	public SendOrderStrategy(ISendOrderCallback callback) {
 		this.callback = callback;
 		SharedPreferences preferences = WebFieldApplication
@@ -39,7 +39,6 @@ public class SendOrderStrategy implements ISendOrderStrategy {
 
 	@Override
 	public void sendOrder(Order order) {
-
 		// map to JsonOrder
 		JsonOrder jsonOrder = new JsonOrder(order);
 		

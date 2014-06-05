@@ -250,6 +250,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	}
 
 	private boolean saveDraft() {
+		showProgressDialog();
+		
 		fillOrderData();
 		// try copy data to order
 		for (OrderDetail od : this.orderDetails) {
@@ -285,12 +287,16 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			db.saveOrder(order);
 			Toast.makeText(this, getResources().getString(
 								R.string.order_saved), Toast.LENGTH_LONG).show();
+			
+			dismissProgressDialog();
 		}
 
 		return true;
 	}
 
 	private boolean sendOrder() {
+		showProgressDialog();
+		
 		fillOrderData();
 		// save order do local db
 		db.saveOrder(order);
@@ -374,6 +380,8 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			msg = getString(R.string.order_send_error);
 		}
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		
+		dismissProgressDialog();
 	}
 
 	@Override
