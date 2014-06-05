@@ -24,15 +24,15 @@ import android.widget.ListView;
 public class PromoPayTermPickerFragment extends DialogFragment implements OnItemClickListener {
 	
 	private List<PromoPayTermDetail> promoPayTermDetailList;
-	private PromoPayTermDetail promoPayTermDetail;
+	private Button btnPromoPayTermDetail;
 	private String logMessage;
 	
 	private ListView payTermList;
 	private Button bCancel;
 	
-	public PromoPayTermPickerFragment(List<PromoPayTermDetail> choices, PromoPayTermDetail callbackVariable) {
+	public PromoPayTermPickerFragment(List<PromoPayTermDetail> choices, Button callback) {
 		this.promoPayTermDetailList = choices;
-		this.promoPayTermDetail = callbackVariable;
+		this.btnPromoPayTermDetail = callback;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class PromoPayTermPickerFragment extends DialogFragment implements OnItem
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		promoPayTermDetail = promoPayTermDetailList.get(position); // set callback variable to picked value
+		btnPromoPayTermDetail.setText(promoPayTermDetailList.get(position).getDescription()); // set callback variable to picked value
 		this.dismiss();
 	}
 		

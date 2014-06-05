@@ -475,6 +475,12 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	// Sort Feature
 	@Override
 	public void onClick(View v) {
+		// Reset button colors
+		// bFilterByFamily.setBackgroundResource(android.R.drawable.btn_default);
+		// bFilterByCategory.setBackgroundResource(android.R.drawable.btn_default);
+		// bFilterByManufacturer.setBackgroundResource(android.R.drawable.btn_default);
+		// bFilterByBrand.setBackgroundResource(android.R.drawable.btn_default);
+		
 		List<String> sortByList = new ArrayList<String>();
 		String sortBy = null;
 		switch(v.getId()) {
@@ -529,6 +535,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 			lvSortPhrase = (ListView) view.findViewById(R.id.sortPhrasePicker_PhraseList);
 			lvSortPhrase.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
 					android.R.id.text1, sortPhraseList));
+			lvSortPhrase.setOnItemClickListener(this);
 			
 			cancelButton = (Button) view.findViewById(R.id.sortPhrasePicker_OkButton);
 			cancelButton.setOnClickListener(this);
@@ -545,12 +552,13 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			sortControl.setText(sortPhraseList.get(position));
-			sortControl.setBackgroundColor(R.color.app_orange);
+			// sortControl.setBackgroundColor(R.color.app_orange);
 			this.dismiss();
 		}
 	}
 	
 	private void sort(String name, String by) {
 		//TODO implement sort
+		
 	}
 }

@@ -129,6 +129,7 @@
     <string name="order_time_error">Please enter proper order time\n</string>
     <string name="delivery_date_error">Please add proper delivery date\n</string>
     <string name="delivery_time_error">Please enter proper delivery time\n</string>
+    <string name="no_promo_picked_error">Please pick pick promo pay term details\n</string>
     <string name="save">Save</string>
     
     <string name="pref_default_connection_service">http://zzt2013.no-ip.biz/wfm_webapi/Json</string>

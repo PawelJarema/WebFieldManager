@@ -100,6 +100,13 @@ public class NewOrderFragment extends WebFieldFragment {
 		return true;
 	}
 
+	private boolean promoPicked() {
+		if (bPickPromoPayTerm.getText().toString().equals(
+				getResources().getString(R.id.order_pick_promoPayTermDetails)))
+			return false;
+		return true;
+	}
+	
 	private boolean validateEntries() {
 		String errors = "";
 
@@ -126,7 +133,9 @@ public class NewOrderFragment extends WebFieldFragment {
 			errors += getResources().getString(R.string.order_time_error);
 		if (!timeOk(delivery_time))
 			errors += getResources().getString(R.string.order_date_error);
-
+		if (!promoPicked())
+			errors += getResources().getString(R.string.no_promo_picked_error);
+		
 		if (errors != "") {
 			Toast.makeText(getActivity(), errors, Toast.LENGTH_LONG).show();
 			return false;
@@ -177,7 +186,7 @@ public class NewOrderFragment extends WebFieldFragment {
 	public void showPromoPayTermPicker(PromoPayTermDetail promoPayDetails) {
 		List<PromoPayTermDetail> promoPayTermDetailList = db.getPromoPayTermDetails();
 	
-		DialogFragment promoPayTermPicker = new PromoPayTermPickerFragment(promoPayTermDetailList, promoPayDetails);
+		DialogFragment promoPayTermPicker = new PromoPayTermPickerFragment(promoPayTermDetailList, bPickPromoPayTerm);
 		promoPayTermPicker.show(getFragmentManager(), "promotermpicker");
 	}
 
