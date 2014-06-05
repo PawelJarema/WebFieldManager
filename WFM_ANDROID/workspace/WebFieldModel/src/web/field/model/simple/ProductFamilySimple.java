@@ -1,5 +1,7 @@
 package web.field.model.simple;
 
-public class ProductFamilySimple extends SimpleObject{
+import java.util.List;
 
+public class ProductFamilySimple extends SimpleObject {
+	
 }

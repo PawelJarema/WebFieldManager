@@ -1,7 +1,5 @@
 package web.field;
 
-import gueei.binding.menu.MenuItemBridge;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,10 +16,13 @@ import web.field.helpers.TenantProvider;
 import web.field.model.entity.Order;
 import web.field.model.entity.OrderDetail;
 import web.field.model.entity.OrderTemplate;
-import web.field.model.entity.OrderTemplateThreshold;
 import web.field.model.entity.PromoPayTermDetail;
 import web.field.model.entity.adapter.OrderDetailModelAdapter;
 import web.field.model.entity.adapter.OrderModelAdapter;
+import web.field.model.simple.ProductBrandSimple;
+import web.field.model.simple.ProductCategorySimple;
+import web.field.model.simple.ProductFamilySimple;
+import web.field.model.simple.ProductManufacturerSimple;
 import web.field.order.processing.OrderCache;
 import web.field.order.processing.OrderCalculationRequest;
 import web.field.order.processing.OrderCalculationResult;
@@ -30,17 +31,21 @@ import web.field.sync.ISendOrderCallback;
 import web.field.sync.ISendOrderStrategy;
 import web.field.sync.SendOrderStrategy;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,13 +54,13 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class AddProductsActivity extends WebfieldFragmentActivityInner
-		implements ISendOrderCallback, OnCompleteListener {
+		implements View.OnClickListener, ISendOrderCallback, OnCompleteListener {
 
 	// Ui and TextViews
-	private Button bFilterByBrand;
+	private Button bFilterByFamily;
 	private Button bFilterByCategory;
-	private Button bFilterByProducer;
-	private Button bFilterByFamiliy;
+	private Button bFilterByManufacturer;
+	private Button bFilterByBrand;
 
 	private TextView tvOrderTemplateDiscount;
 	private TextView tvTemplateThresholdDiscount;
@@ -142,7 +147,7 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 
 		dismissProgressDialog();
 
-		// run initial callculation
+		// run initial calculation
 		calculateOrder();
 	}
 
@@ -228,6 +233,17 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 		tvPayTemrsDiscount.setText(getResources().getString(
 				R.string.order_payterms_discount)
 				+ ": ");
+		
+		// Sort Buttons
+		bFilterByFamily = (Button) findViewById(R.id.sort_by_family);
+		bFilterByCategory = (Button) findViewById(R.id.sort_by_category);
+		bFilterByManufacturer = (Button) findViewById(R.id.sort_by_manufacturer);
+		bFilterByBrand = (Button) findViewById(R.id.sort_by_brand);
+		
+		bFilterByFamily.setOnClickListener(this);
+		bFilterByCategory.setOnClickListener(this);
+		bFilterByManufacturer.setOnClickListener(this);
+		bFilterByBrand.setOnClickListener(this);
 	}
 
 	private OrderDetail rewriteOrderQty(int position) {
@@ -454,5 +470,87 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 	private void closeActivity() {
 
 		this.finish();
+	}
+
+	// Sort Feature
+	@Override
+	public void onClick(View v) {
+		List<String> sortByList = new ArrayList<String>();
+		String sortBy = null;
+		switch(v.getId()) {
+			case R.id.sort_by_family:
+				sortBy = "family";
+				List<ProductFamilySimple> families = db.listProductFamilies();
+				for(ProductFamilySimple entry : families)
+					sortByList.add(entry.getName());
+				break;
+			case R.id.sort_by_category:
+				sortBy = "category";
+				List<ProductCategorySimple> categories = db.listProductCategories();
+				for(ProductCategorySimple entry : categories)
+					sortByList.add(entry.getName());
+				break;
+			case R.id.sort_by_manufacturer:
+				sortBy = "manufacturer";
+				List<ProductManufacturerSimple> manufacturers = db.listProductManufactures();
+				for(ProductManufacturerSimple entry : manufacturers)
+					sortByList.add(entry.getName());
+				break;
+			case R.id.sort_by_brand:
+				sortBy = "brand";
+				List<ProductBrandSimple> brands = db.listProductBrands();
+				for(ProductBrandSimple entry : brands)
+					sortByList.add(entry.getName());
+				break;	
+		}	
+		sortPhrasePickerFragment sortDialog = new sortPhrasePickerFragment((Button) v, sortByList);
+		sortDialog.show(getSupportFragmentManager(), null);
+		sort(((Button) v).getText().toString(), sortBy);
+	}
+	
+	private class sortPhrasePickerFragment extends DialogFragment implements OnClickListener, OnItemClickListener {
+		
+		private Button cancelButton;
+		private ListView lvSortPhrase;
+		private List<String> sortPhraseList;
+		
+		private Button sortControl;
+		
+		public sortPhrasePickerFragment(Button control, List<String> sortPhraseList) {
+			this.sortControl = control;
+			this.sortPhraseList = sortPhraseList;
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View view = inflater.inflate(R.layout.sort_phrase_picker_fragment, container, false);
+			
+			lvSortPhrase = (ListView) view.findViewById(R.id.sortPhrasePicker_PhraseList);
+			lvSortPhrase.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
+					android.R.id.text1, sortPhraseList));
+			
+			cancelButton = (Button) view.findViewById(R.id.sortPhrasePicker_OkButton);
+			cancelButton.setOnClickListener(this);
+			
+			return view;
+		}
+
+		@Override
+		public void onClick(View v) {
+			this.dismiss();
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			sortControl.setText(sortPhraseList.get(position));
+			sortControl.setBackgroundColor(R.color.app_orange);
+			this.dismiss();
+		}
+	}
+	
+	private void sort(String name, String by) {
+		//TODO implement sort
 	}
 }

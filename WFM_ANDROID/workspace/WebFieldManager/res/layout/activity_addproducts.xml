@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:orientation="horizontal"
-    	android:layout_marginBottom="7dip">
+    	android:layout_marginBottom="7dip"
+    	android:weightSum="6">
     	<Button
     	    android:id="@+id/sort_by_family"
     	    android:layout_width="0dp"
@@ -43,6 +44,7 @@
     	    style="@drawable/basic_button"
     	    android:text="@string/brand"
     	    android:textSize="12sp" />
+ 	
     </LinearLayout>
  
     <LinearLayout
