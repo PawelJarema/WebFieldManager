@@ -54,7 +54,7 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 		}
 		OrderSimple order = data.get(position);
 		holder.tvDate.setText(order.getOrderDate());
-		holder.tvId.setText(String.valueOf(order.getOrderTempId()));
+		holder.tvId.setText(takeFirst8CharsFrom(String.valueOf(order.getOrderTempId())));
 		holder.tvCustomer.setText(order.getCustomer());
 		holder.tvLocation.setText(order.getOrderSummary());
 		holder.tvUser.setText(order.getUser());
@@ -70,6 +70,12 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 			row.setBackgroundColor(context.getResources().getColor(
 					R.color.list_light));
 		return row;
+	}
+
+	private String takeFirst8CharsFrom(String user) {
+		if (user != null && user.length() > 8)
+			return user.substring(0, 8);
+		return user;
 	}
 
 	@Override

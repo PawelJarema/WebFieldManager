@@ -30,6 +30,13 @@
     <string name="orders_ship_to">Ship to</string>
     <string name="orders_product_no">#products</string>
     <string name="orders_date">Date</string>
+    <string name="sort_asc">&#x25B2;</string>
+    <string name="sort_dsc">&#x25BC;</string>
+    <string name="client">Client</string>
+    <string name="location">Location</string>
+    <string name="date">Date</string>
+    <string name="user">User</string>
+    <string name="state">State</string>
     <string name="code">Code</string>
     <string name="description">Description</string>
     <string name="id">Id</string>
@@ -62,6 +69,7 @@
     <string name="no">No</string>
     <string name="sure">Are you sure?</string>
     <string name="search">Search</string>
+    <string name="search_hint">Enter value to search</string>
     <string name="synchronization_in_progress">Synchronization in progress.</string>
     <string name="edit">Edit</string>
     <string name="assign_position">Assign position</string>

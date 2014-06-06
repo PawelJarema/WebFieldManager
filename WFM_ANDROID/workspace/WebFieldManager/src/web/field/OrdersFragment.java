@@ -6,25 +6,68 @@ import java.util.List;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.simple.OrderSimple;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.SearchView;
 
 public class OrdersFragment extends WebFieldListFragment {
+	
 	private List<OrderSimple> data;
 	private IDBAdapter db;
 	private OrdersAdapter adapter;
+
+	private static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
+	private static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
+	
+	// two meths to customize the view for sort and searchbar
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_orders, container, false);
+		castViewIDs(view);
+		return view;
+	}
+
+	// method is needed to make list fragment helpers work with custom layout
+	public static void castViewIDs(View view) {
+		view.findViewById(R.id.ordersListContainerId).setId(INTERNAL_LIST_CONTAINER_ID);
+		view.findViewById(R.id.ordersProgressContainerId).setId(INTERNAL_PROGRESS_CONTAINER_ID);
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		menu.clear();
+		inflater.inflate(R.menu.orders_search, menu);
+		
+		// Associate searchable configuration with the SearchView
+	    SearchManager searchManager =
+	           (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView =
+	            (SearchView) menu.findItem(R.id.ordersSearch).getActionView();
+	    searchView.setSearchableInfo(
+	            searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-
+		setHasOptionsMenu(true);
+		
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest
 		if (adapter == null) {
@@ -86,12 +129,10 @@ public class OrdersFragment extends WebFieldListFragment {
 		} else {
 			setListShownNoAnimation(true);
 		}
-
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Void> arg0) {
 		// TODO Auto-generated method stub
-
 	}
 }
