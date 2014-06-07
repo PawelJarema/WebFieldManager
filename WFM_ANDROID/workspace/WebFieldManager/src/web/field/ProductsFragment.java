@@ -7,9 +7,8 @@ import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.entity.Product;
 import web.field.model.entity.adapter.ProductModelAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.Menu;
@@ -17,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 
 public class ProductsFragment extends WebFieldListFragment {
 	
@@ -25,11 +25,13 @@ public class ProductsFragment extends WebFieldListFragment {
 	private List<ProductModelAdapter> dataTmp;
 	private IDBAdapter db;
 	
+	private LinearLayout moreData; // cashing expanding drawer in row 
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.clear();
-		inflater.inflate(R.menu.logout, menu);	
+		inflater.inflate(R.menu.logout_with_search, menu);	
 	}
 	
 	@Override
@@ -59,8 +61,21 @@ public class ProductsFragment extends WebFieldListFragment {
 					int position, long id) {
 				// TODO check if id corresponds to position
 				view = parent.getChildAt(position);
+				Drawable rememberedListRowColor = view.getBackground();
 				view.setBackgroundResource(R.color.holo_blue);
-				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				
+				// TODO for now: instead of inflating new screen to show more product data
+				// use expanding row like on iOS
+				if (moreData != null && moreData.getVisibility() == View.VISIBLE)
+					moreData.setVisibility(View.GONE);
+				else {
+					moreData = (LinearLayout) view.findViewById(R.id.productsExpandingContainer);
+					moreData.setVisibility(View.VISIBLE);
+				}
+				
+				view.setBackground(rememberedListRowColor);
+				
+				/* FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 				Fragment fragment = new ProductFragment();
 				Bundle bundle = new Bundle();
 				bundle.putInt("productr_id", position);
@@ -69,7 +84,7 @@ public class ProductsFragment extends WebFieldListFragment {
 				fragmentManager.beginTransaction()
 					.replace(R.id.home_content_frame, fragment)
 					.addToBackStack("subLevel1")
-					.commit();
+					.commit(); */
 			}
 		});
 
