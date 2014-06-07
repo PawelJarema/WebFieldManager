@@ -1,10 +1,12 @@
 package web.field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.entity.Product;
+import web.field.model.entity.adapter.ProductModelAdapter;
 import web.field.model.simple.ProductSimple;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +15,7 @@ import android.widget.ListView;
 
 public class ProductsActivity extends WebFieldActivity {
 
-	ProductsAdapter adapter;
+	ProductsArrayAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +27,10 @@ public class ProductsActivity extends WebFieldActivity {
 		ListView lvProducts = (ListView) findViewById(R.id.product_list);
 
 		List<Product> products = db.listProductsFull();
+		List<ProductModelAdapter> data = new ArrayList<ProductModelAdapter>();
 
-		adapter = new ProductsAdapter(ProductsActivity.this,
-				R.layout.product_entry, products);
+		adapter = new ProductsArrayAdapter(ProductsActivity.this,
+				R.layout.product_entry, data);
 
 		lvProducts.setAdapter(adapter);
 

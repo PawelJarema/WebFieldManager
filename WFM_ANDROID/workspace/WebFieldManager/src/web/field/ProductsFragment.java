@@ -6,7 +6,7 @@ import java.util.List;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.entity.Product;
-import web.field.model.simple.ProductSimple;
+import web.field.model.entity.adapter.ProductModelAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,8 +20,9 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ProductsFragment extends WebFieldListFragment {
 	
-	private ProductsAdapter adapter;
-	private List<Product> data;
+	private ProductsArrayAdapter adapter;
+	private List<ProductModelAdapter> data;
+	private List<ProductModelAdapter> dataTmp;
 	private IDBAdapter db;
 	
 	@Override
@@ -45,8 +46,8 @@ public class ProductsFragment extends WebFieldListFragment {
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest
 		if (adapter == null) {
-			data = new ArrayList<Product>();
-			adapter = new ProductsAdapter(getActivity(),
+			data = new ArrayList<ProductModelAdapter>();
+			adapter = new ProductsArrayAdapter(getActivity(),
 					R.layout.list_row_fragment_order_product, data);
 		}
 		getListView().setAdapter(adapter);
@@ -83,7 +84,15 @@ public class ProductsFragment extends WebFieldListFragment {
 			@Override
 			public Void loadInBackground() {
 				db = new DBAdapter(getHelper(), getTenantProvider());
-				data = db.listProductsFull();
+				List<Product> products = db.listProductsFull();
+				dataTmp = new ArrayList<ProductModelAdapter>();
+				for(Product product : products){
+					ProductModelAdapter adapter = new ProductModelAdapter(product);
+					dataTmp.add(adapter);
+					
+					//find promotions
+					
+				}
 				return null;
 			}
 		};
@@ -96,7 +105,7 @@ public class ProductsFragment extends WebFieldListFragment {
 	@Override
 	public void onLoadFinished(Loader<Void> arg0, Void arg1) {
 		adapter.clear();
-		adapter.addAll(data);
+		adapter.addAll(dataTmp);
 		// The list should now be shown.
 		if (isResumed()) {
 			setListShown(true);

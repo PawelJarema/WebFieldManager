@@ -93,7 +93,7 @@
 		        android:layout_height="wrap_content">
 		        
 		        <TextView
-			        android:id="@+id/order_product_code"
+			        android:id="@+id/listrow_product_code"
 			        android:layout_gravity="left|center_vertical"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
 			        
 			        <TextView
 			            android:layout_marginTop="10dp"
-				        android:id="@+id/order_product_code_detail"
+				        android:id="@+id/listrow_product_code_detail"
 				        android:layout_gravity="left|center_vertical"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
 				        android:text="TODO code:" />
 			        
 			        <TextView
-				        android:id="@+id/order_product_price_detail"
+				        android:id="@+id/listrow_product_price_detail"
 				        android:layout_gravity="left|center_vertical"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
 				        android:text="TODO price:" />
 			        
 			        <TextView
-				        android:id="@+id/order_product_stock_detail"
+				        android:id="@+id/listrow_product_stock_detail"
 				        android:layout_gravity="left|center_vertical"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
 				        android:text="@string/promotions" />
 			        
 			        <TextView
-				        android:id="@+id/order_product_tempdiscount_detail"
+				        android:id="@+id/listrow_product_tempdiscount_detail"
 				        android:layout_gravity="left|center_vertical"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
 				        android:text="TODO TEMPLATE DISCOUNT 01 | up to 25%" />
 			        
 			        <TextView
-				        android:id="@+id/order_product_bn1_detail"
+				        android:id="@+id/listrow_product_bn1_detail"
 				        android:layout_gravity="left|center_vertical"
 				        android:layout_width="wrap_content"
 				        android:layout_height="wrap_content"

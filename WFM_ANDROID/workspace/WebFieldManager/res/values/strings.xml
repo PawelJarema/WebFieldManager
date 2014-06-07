@@ -146,6 +146,10 @@
     <string name="pref_category_security">Security</string>
     <string name="pref_title_service_address">Service address</string>
     
+    <string name="product_code">Code</string>
+    <string name="product_price">Price</string>
+    <string name="product_stock">Stock</string>
+    
     <string-array name="nav_titles">
         <item>Home</item>
         <item>Orders</item>
