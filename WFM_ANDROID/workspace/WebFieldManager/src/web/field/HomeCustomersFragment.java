@@ -38,7 +38,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.clear();
-		inflater.inflate(R.menu.logout, menu);	
+		inflater.inflate(R.menu.logout_with_search, menu);	
 	}
 	
 	@Override
@@ -56,7 +56,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(false);
-
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest
 		if (adapter == null) {
@@ -144,7 +143,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 					.addToBackStack("subLevel1")
 					.commit();
 		}
-
 		return true;
 	}
 
@@ -180,7 +178,6 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 		} else {
 			setListShownNoAnimation(true);
 		}
-
 	}
 
 	@Override

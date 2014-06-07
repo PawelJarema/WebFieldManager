@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import web.field.model.simple.CustomerSimple;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
@@ -37,9 +36,16 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			row = inflater.inflate(layoutResourceId, parent, false);
 			holder = new CustomersHolder();
-			holder.tvName = (TextView) row.findViewById(R.id.customer_name);
 			holder.tvId = (TextView) row.findViewById(R.id.customer_id);
-			holder.tvVat = (TextView) row.findViewById(R.id.customer_vat);
+			holder.tvClient = (TextView) row.findViewById(R.id.customer_client);
+			holder.tvLocation = (TextView) row.findViewById(R.id.customer_location);
+			
+			holder.bQuickDetails = (Button) row.findViewById(R.id.customer_go_to_quick_details);
+			holder.bQuickNewOrder = (Button) row.findViewById(R.id.customer_go_to_quick_new_order);
+			holder.bQuickEmail = (Button) row.findViewById(R.id.customer_go_to_quick_email);
+			holder.bGoToCustomer = (Button) row.findViewById(R.id.customer_go_to_customer);
+			//holder.tvVat = (TextView) row.findViewById(R.id.customer_vat);
+			
 			// holder.cbStatus = (CheckBox)
 			// row.findViewById(R.id.customer_status);
 			row.setTag(holder);
@@ -47,9 +53,9 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 			holder = (CustomersHolder) row.getTag();
 		}
 		CustomerSimple customer = data.get(position);
-		holder.tvName.setText(customer.getCustomerName());
-		holder.tvId.setText(String.valueOf(customer.getCustomerId()));
-		holder.tvVat.setText(customer.getVatId());
+		holder.tvClient.setText(customer.getCustomerName());
+		holder.tvId.setText(takeFirst8CharsFrom(String.valueOf(customer.getCustomerId())));
+		//holder.tvVat.setText(customer.getVatId());
 		// holder.cbStatus.setChecked(customer.isActive());
 		
 		// style list depending on position
@@ -76,10 +82,20 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 		return data.get(index).getCustomerId();
 	}
 
+	private String takeFirst8CharsFrom(String user) {
+		if (user != null && user.length() > 8)
+			return user.substring(0, 8);
+		return user;
+	}
+	
 	static class CustomersHolder {
 		TextView tvId;
-		TextView tvName;
-		TextView tvVat;
-		CheckBox cbStatus;
+		TextView tvClient;
+		TextView tvLocation;
+		
+		Button bQuickDetails;
+		Button bQuickNewOrder;
+		Button bQuickEmail;
+		Button bGoToCustomer;
 	}
 }

@@ -6,56 +6,73 @@
     android:weightSum="100"
     android:paddingBottom="7dip" >
     
-     <TextView
+    <TextView
         android:id="@+id/customer_id"
         android:layout_width="0dip"
-        android:layout_height="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="12"
         android:focusable="false"
-        android:visibility="gone" />
+        android:text="TODO id" />
+     
+    <TextView
+        android:id="@+id/customer_client"
+        android:layout_gravity="left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="25"
+        android:textSize="16sp"
+        android:text="TODO client" />
     
-    <ImageView 
-        android:id="@+id/customer_picture"
-        android:layout_width="0dip"
-        android:layout_height="50dip"
-        android:layout_weight="5" />
-    
-    <LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="50dip"
-	    android:orientation="vertical"
-	    android:paddingLeft="17dip"
-	    android:layout_weight="95"
-	    android:weightSum="100">
+	<TextView
+	    android:id="@+id/customer_location"
+	    android:layout_gravity="left"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+		android:layout_weight="30"
+	    android:textSize="12sp"
+	    android:textColor="@color/grey"
+	    android:text="TODO location" />
 	    
-        <TextView
-        android:id="@+id/customer_name"
-        android:layout_gravity="left|top"
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:layout_weight="40"
-        android:textSize="16sp" />
-    
-	    <TextView
-	        android:id="@+id/customer_address"
-	        android:layout_gravity="left|center_vertical"
-	        android:layout_width="wrap_content"
-	        android:layout_height="0dip"
-	        android:layout_weight="30"
-	        android:textSize="11sp"
-	        android:textColor="@color/grey"
-	        />
-	    
-	    <TextView
-	        android:id="@+id/customer_vat"
-	        android:layout_gravity="left|bottom"
-	        android:layout_width="wrap_content"
-	        android:layout_height="0dip"
-	        android:layout_weight="30"
-	        android:textSize="11sp"
-	        android:textColor="@color/grey"
-	        />
-    
-    </LinearLayout>
+	<Button
+	    android:id="@+id/customer_go_to_quick_details"
+	    android:layout_gravity="left"
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="8"
+	    android:textSize="11sp"
+	    android:textColor="@color/grey"
+	    android:drawableStart="@drawable/ic_details" />
+	
+	<Button
+	    android:id="@+id/customer_go_to_quick_new_order"
+	    android:layout_gravity="left"
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="8"
+	    android:textSize="11sp"
+	    android:textColor="@color/grey"
+	    android:drawableStart="@drawable/ic_orders" />
+	
+	<Button
+	    android:id="@+id/customer_go_to_quick_email"
+	    android:layout_gravity="left"
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="8"
+	    android:textSize="11sp"
+	    android:textColor="@color/grey"
+	    android:drawableStart="@drawable/ic_email" />
+	
+	<Button
+	    android:id="@+id/customer_go_to_customer"
+	    android:layout_gravity="left"
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="9"
+	    android:textSize="11sp"
+	    android:textColor="@color/grey"
+	    android:drawableStart="@drawable/ic_go" />
+   
     
 
 </LinearLayout>

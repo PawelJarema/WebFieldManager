@@ -7,11 +7,11 @@ import web.field.helpers.StatusTranslator;
 import web.field.model.simple.OrderSimple;
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
@@ -59,6 +59,8 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 		holder.tvLocation.setText(order.getOrderSummary());
 		holder.tvUser.setText(order.getUser());
 		holder.tvStatus.setText(StatusTranslator.getOrderStatus(order.getStatus(), this.context));
+		
+		holder.centerText();
 
 		// holder.cbStatus.setChecked(customer.isActive());
 
@@ -102,6 +104,13 @@ public class OrdersAdapter extends ArrayAdapter<OrderSimple> {
 		TextView tvLocation;
 		TextView tvUser;
 		TextView tvStatus;
+		
+		public void centerText() {
+			tvId.setGravity(Gravity.CENTER);
+			tvDate.setGravity(Gravity.CENTER);
+			tvUser.setGravity(Gravity.CENTER);
+			tvStatus.setGravity(Gravity.CENTER);
+		}
 	}
 
 }

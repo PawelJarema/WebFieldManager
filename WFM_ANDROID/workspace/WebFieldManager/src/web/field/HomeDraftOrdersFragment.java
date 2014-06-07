@@ -15,16 +15,21 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HomeDraftOrdersFragment extends WebFieldListFragment {
 	private List<OrderSimple> data;
 	private IDBAdapter db;
-	private DraftOrdersAdapter adapter;
+	private OrdersAdapter adapter;
+
+	private static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
+	private static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -40,6 +45,20 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_orders, container, false);
+		castViewIDs(view);
+		return view;
+	}
+
+	// method is needed to make list fragment helpers work with custom layout
+	public static void castViewIDs(View view) {
+		view.findViewById(R.id.ordersListContainerId).setId(INTERNAL_LIST_CONTAINER_ID);
+		view.findViewById(R.id.ordersProgressContainerId).setId(INTERNAL_PROGRESS_CONTAINER_ID);
+	}
+	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(false);
@@ -48,8 +67,8 @@ public class HomeDraftOrdersFragment extends WebFieldListFragment {
 		// created; then, the method above will do the rest
 		if (adapter == null) {
 			data = new ArrayList<OrderSimple>();
-			adapter = new DraftOrdersAdapter(getActivity(),
-					R.layout.list_row_home_draft_orders, data);
+			adapter = new OrdersAdapter(getActivity(),
+					R.layout.list_row_fragment_orders, data);
 		}
 		getListView().setAdapter(adapter);
 
