@@ -30,9 +30,6 @@ public class CustomersActivity extends WebFieldActivity {
 
 		List<CustomerSimple> customers = db.listCustomers();
 
-		adapter = new CustomersAdapter(CustomersActivity.this,
-				R.layout.customers_entry, customers);
-
 		lvCustomers.setAdapter(adapter);
 
 		lvCustomers

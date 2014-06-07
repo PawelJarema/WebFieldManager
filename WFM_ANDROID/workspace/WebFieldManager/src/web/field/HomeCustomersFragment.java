@@ -19,13 +19,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
-public class HomeCustomersFragment extends WebFieldListFragment {
+public class HomeCustomersFragment extends WebFieldListFragment implements OnClickListener {
 
 	int uniqueContextMenuId = 11111;
 
@@ -33,6 +32,9 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	private List<CustomerSimple> data;
 	private IDBAdapter db;
 	private CustomersAdapter adapter;
+	
+	private static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
+	private static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -45,13 +47,29 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		getActivity().getActionBar().setTitle(getResources().getString(R.string.title_activity_customers));
 	}
 	
 	@Override
 	public void onViewStateRestored(Bundle bundle) {
 		super.onViewStateRestored(bundle);
 	}
+	
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view =  inflater.inflate(R.layout.fragment_home_customers, container, false);
+		castViewIDs(view);
+		return view;
+	}
 
+	// method is needed to make list fragment helpers work with custom layout
+	public static void castViewIDs(View view) {
+		view.findViewById(R.id.customersListContainerId).setId(INTERNAL_LIST_CONTAINER_ID);
+		view.findViewById(R.id.customersProgressContainerId).setId(INTERNAL_PROGRESS_CONTAINER_ID);
+	}
+		
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -61,11 +79,11 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 		if (adapter == null) {
 			data = new ArrayList<CustomerSimple>();
 			adapter = new CustomersAdapter(getActivity(),
-					R.layout.list_row_home_customers, data);
+					R.layout.list_row_home_customers, data, (OnClickListener)this);
 		}
 		
 		getListView().setAdapter(adapter);
-		getListView().setOnItemClickListener(new OnItemClickListener() {
+		/* getListView().setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -88,7 +106,7 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 						.commit();
 			}
 
-		}); 
+		});  */
 		// initiate the loader to do the background work
 		getLoaderManager().initLoader(0, null, this);
 	}
@@ -184,5 +202,28 @@ public class HomeCustomersFragment extends WebFieldListFragment {
 	public void onLoaderReset(Loader<Void> arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	// This click handler is for list row adapter used in this fragment (list rows have buttons handled higher) 
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()) {
+			case R.id.customer_go_to_quick_new_order:
+				int id = (Integer) v.getTag(); // customers id for new order
+				getActivity().getActionBar().setNavigationMode(
+						ActionBar.NAVIGATION_MODE_STANDARD);
+				FragmentManager fragmentManager = getActivity()
+						.getSupportFragmentManager();
+				Fragment fragment = new NewOrderFragment();
+				Bundle bundle = new Bundle();
+				bundle.putLong("customerId", id);
+				bundle.putInt(WebFieldFragment.DRAWER_FRAGMENT_PROPERTY, WebFieldFragment.SUBLEVELNAV);
+				fragment.setArguments(bundle);
+				fragmentManager.beginTransaction()
+						.replace(R.id.home_content_frame, fragment)
+						.addToBackStack("displayUIMsgOnBack")
+						.commit();
+			break;
+		}
 	}
 }

@@ -31,7 +31,7 @@ public class OrdersFragment extends WebFieldListFragment {
 	private static final int INTERNAL_PROGRESS_CONTAINER_ID = 0x00ff0002;
 	private static final int INTERNAL_LIST_CONTAINER_ID = 0x00ff0003;
 	
-	// two meths to customize the view for sort and searchbar
+	// two meths to customize the view for sort and search bar
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -59,7 +59,6 @@ public class OrdersFragment extends WebFieldListFragment {
 	            (SearchView) menu.findItem(R.id.ordersSearch).getActionView();
 	    searchView.setSearchableInfo(
 	            searchManager.getSearchableInfo(getActivity().getComponentName()));
-
 	}
 
 	@Override

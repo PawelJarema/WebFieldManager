@@ -1,15 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-	
-	<ListView
-        android:id="@+id/home_customer_list"
+
+    <LinearLayout
+        android:id="@+id/customersProgressContainerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dip"
-        android:divider="@color/list_div"
-        android:dividerHeight="1dip" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/customersListContainerId"
+        android:layout_width="match_parent"	
+        android:layout_height="match_parent">
+        
+        <LinearLayout
+            android:id="@+id/customersSortButtonContainerId"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentLeft="true"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    android:weightSum="100">
+		    <Button
+		        android:id="@+id/customersSortBtn_id"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="12"
+		     	android:text="@string/id"/>	      
+		    <Button
+		        android:id="@+id/customersSortBtn_client"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="25"
+		     	android:text="@string/client"/>	
+		    <Button
+		        android:id="@+id/customersSortBtn_location"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="25"
+		     	android:text="@string/location"/>	
+		</LinearLayout>
+        
+		<ListView
+	        android:id="@android:id/list"
+	        android:layout_below="@+id/customersSortButtonContainerId"
+	        android:layout_alignParentLeft="true"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:divider="@color/list_div"
+        	android:dividerHeight="1dip" />
+		
+	</RelativeLayout>
 	
-</LinearLayout>
+</RelativeLayout>

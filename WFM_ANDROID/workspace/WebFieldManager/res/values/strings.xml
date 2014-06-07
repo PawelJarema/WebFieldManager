@@ -70,6 +70,9 @@
     <string name="sure">Are you sure?</string>
     <string name="search">Search</string>
     <string name="search_hint">Enter value to search</string>
+    <string name="info">info</string>
+    <string name="new_order">new order</string>
+    <string name="new_email">email</string>
     <string name="synchronization_in_progress">Synchronization in progress.</string>
     <string name="edit">Edit</string>
     <string name="assign_position">Assign position</string>

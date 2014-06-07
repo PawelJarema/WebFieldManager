@@ -41,7 +41,8 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableStart="@drawable/ic_details" />
+	    android:drawableTop="@drawable/ic_details"
+	    android:text="@string/info" />
 	
 	<Button
 	    android:id="@+id/customer_go_to_quick_new_order"
@@ -51,7 +52,8 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableStart="@drawable/ic_orders" />
+	    android:drawableTop="@drawable/ic_orders"
+	    android:text="@string/new_order" />
 	
 	<Button
 	    android:id="@+id/customer_go_to_quick_email"
@@ -61,18 +63,17 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableStart="@drawable/ic_email" />
+	    android:drawableTop="@drawable/ic_email"
+	    android:text="@string/new_email" />
 	
 	<Button
 	    android:id="@+id/customer_go_to_customer"
 	    android:layout_gravity="left"
 	    android:layout_width="0dp"
-	    android:layout_height="wrap_content"
+	    android:layout_height="match_parent"
 	    android:layout_weight="9"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableStart="@drawable/ic_go" />
+	    android:drawableRight="@drawable/ic_go" />
    
-    
-
 </LinearLayout>

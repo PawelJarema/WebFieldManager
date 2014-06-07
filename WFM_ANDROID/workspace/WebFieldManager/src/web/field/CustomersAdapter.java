@@ -6,8 +6,10 @@ import java.util.List;
 import web.field.model.simple.CustomerSimple;
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,13 +20,15 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 	Context context;
 	int layoutResourceId;
 	List<CustomerSimple> data = new ArrayList<CustomerSimple>();
+	static OnClickListener listButtonListener;
 
 	public CustomersAdapter(Context context, int layoutResourceId,
-			List<CustomerSimple> data) {
+			List<CustomerSimple> data, OnClickListener listButtonListener) {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.data = data;
+		this.listButtonListener = listButtonListener;
 	}
 
 	@Override
@@ -44,6 +48,7 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 			holder.bQuickNewOrder = (Button) row.findViewById(R.id.customer_go_to_quick_new_order);
 			holder.bQuickEmail = (Button) row.findViewById(R.id.customer_go_to_quick_email);
 			holder.bGoToCustomer = (Button) row.findViewById(R.id.customer_go_to_customer);
+			holder.setOnClickListeners();
 			//holder.tvVat = (TextView) row.findViewById(R.id.customer_vat);
 			
 			// holder.cbStatus = (CheckBox)
@@ -55,6 +60,12 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 		CustomerSimple customer = data.get(position);
 		holder.tvClient.setText(customer.getCustomerName());
 		holder.tvId.setText(takeFirst8CharsFrom(String.valueOf(customer.getCustomerId())));
+		
+		// IMPORTANT pass id to button tag for NEW ORDER action
+		holder.bQuickNewOrder.setTag(customer.getCustomerId());
+		//
+		
+		holder.centerText();
 		//holder.tvVat.setText(customer.getVatId());
 		// holder.cbStatus.setChecked(customer.isActive());
 		
@@ -97,5 +108,13 @@ public class CustomersAdapter extends ArrayAdapter<CustomerSimple> {
 		Button bQuickNewOrder;
 		Button bQuickEmail;
 		Button bGoToCustomer;
+		
+		public void centerText() {
+			tvId.setGravity(Gravity.CENTER);
+		}
+
+		public void setOnClickListeners() {
+			bQuickNewOrder.setOnClickListener(listButtonListener);			
+		}
 	}
 }
