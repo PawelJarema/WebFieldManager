@@ -121,7 +121,7 @@
     
 		    <ImageView
 		        android:id="@+id/order_product_image_detail"
-		        android:src="@drawable/ic_action_settings"
+		        android:src="@drawable/ic_action_settings_new"
 		        android:layout_alignParentTop="true"
 		        android:layout_alignParentLeft="true"
 		        android:layout_width="wrap_content"

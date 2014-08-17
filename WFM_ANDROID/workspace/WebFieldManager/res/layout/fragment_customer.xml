@@ -16,25 +16,25 @@
     	    android:layout_width="0dip"
     		android:layout_height="match_parent"
     		android:gravity="center_horizontal"
-    		android:src="@drawable/ic_email"
+    		android:src="@drawable/ic_email_new"
     		android:layout_weight="30" />
         <ImageView
     	    android:layout_width="0dip"
     		android:layout_height="match_parent"
     		android:layout_gravity="center_horizontal"
-    		android:src="@drawable/ic_phone"
+    		android:src="@drawable/ic_phone_new"
     		android:layout_weight="20" />
         <ImageView
     	    android:layout_width="0dip"
     		android:layout_height="match_parent"
     		android:layout_gravity="center_horizontal"
-    		android:src="@drawable/ic_phone"
+    		android:src="@drawable/ic_phone_new"
     		android:layout_weight="20" />
         <ImageView
     	    android:layout_width="0dip"
     		android:layout_height="match_parent"
     		android:layout_gravity="center_horizontal"
-    		android:src="@drawable/ic_fax"
+    		android:src="@drawable/ic_fax_new"
     		android:layout_weight="20" />
         <TextView
     	    android:layout_width="0dip"

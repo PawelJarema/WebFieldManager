@@ -18,7 +18,7 @@
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/BusinessTheme" >
+        android:theme="@style/Theme.Example" >
            
         <activity
             android:name="web.field.CustomersActivity"

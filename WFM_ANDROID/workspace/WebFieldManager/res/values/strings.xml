@@ -162,11 +162,11 @@
         <item>Settings</item>
     </string-array>
     <string-array name="nav_icons">
-        <item>ic_action_home</item>
-        <item>ic_action_orders</item>
-        <item>ic_action_customers</item>
-        <item>ic_action_products</item>
-        <item>ic_action_settings</item>
+        <item>ic_action_home_new</item>
+        <item>ic_action_orders_new</item>
+        <item>ic_action_customers_new</item>
+        <item>ic_action_products_new</item>
+        <item>ic_action_settings_new</item>
     </string-array>
     <string-array name="home_tabs">
         <item>Customers</item>
@@ -180,11 +180,11 @@
 
     <!-- Dummy Db -->
     <string-array name="customers">
-        <item>ic_action_customers</item>
+        <item>ic_action_customers_new</item>
         <item>Pablo Picasso</item>
         <item>Methodist University, 5400 Ramsey Street Fayetteville NC 28311</item>
         <item>no vat, sorry</item>
-        <item>ic_action_customers</item>
+        <item>ic_action_customers_new</item>
         <item>Bill Gates</item>
         <item>Bullion Ave. 56 St</item>
         <item>1232435654... 2 big 2 fit</item>

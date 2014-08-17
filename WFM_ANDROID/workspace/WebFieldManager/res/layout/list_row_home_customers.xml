@@ -41,7 +41,7 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableTop="@drawable/ic_details"
+	    android:drawableTop="@drawable/ic_details_new"
 	    android:text="@string/info" />
 	
 	<Button
@@ -52,7 +52,7 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableTop="@drawable/ic_orders"
+	    android:drawableTop="@drawable/ic_orders_new"
 	    android:text="@string/new_order" />
 	
 	<Button
@@ -63,7 +63,7 @@
 	    android:layout_weight="8"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableTop="@drawable/ic_email"
+	    android:drawableTop="@drawable/ic_email_new"
 	    android:text="@string/new_email" />
 	
 	<Button
@@ -74,6 +74,6 @@
 	    android:layout_weight="9"
 	    android:textSize="11sp"
 	    android:textColor="@color/grey"
-	    android:drawableRight="@drawable/ic_go" />
+	    android:drawableRight="@drawable/ic_go_new" />
    
 </LinearLayout>

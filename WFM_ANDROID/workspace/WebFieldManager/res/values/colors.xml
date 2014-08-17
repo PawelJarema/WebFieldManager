@@ -5,6 +5,7 @@
     <color name="grey">#eeeeee</color>
     <color name="dark_grey">#888888</color>
     <color name="holo_blue">#0099cc</color>
+    <color name="wfm_blue">#103564</color>
     
     <color name="background">#2d3b49</color>
     <color name="list_light">#2c3948</color>

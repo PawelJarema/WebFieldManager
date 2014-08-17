@@ -6,14 +6,14 @@
         android:id="@+id/action_save_draft"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_save_draft"
+        android:icon="@drawable/ic_action_save_draft_new"
         android:title="@string/action_save_draft"/>
     
     <item
         android:id="@+id/action_send_order"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/ic_action_send"
+        android:icon="@drawable/ic_action_send_new"
         android:title="@string/action_send_order"/>
 
 </menu>
