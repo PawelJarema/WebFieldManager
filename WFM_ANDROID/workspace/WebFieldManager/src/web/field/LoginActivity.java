@@ -241,6 +241,8 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 					post.setEntity(new StringEntity(json));
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
+					KillLogin();
+					return;
 				}
 				mAuthTask = new LongRunningHttpRequest(json, post) {
 					
@@ -259,9 +261,9 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 								answer = new Gson().fromJson(results,
 										LogOnAnswer.class);
 							} catch (JsonSyntaxException e) {
-								message(results);
-								//dismissProgressDialog();
 								mAuthTask = null;
+								KillLogin();
+								GoToSettings();
 								return;
 							}
 
@@ -280,8 +282,7 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 							String user_token = SharedPreferencesKeys.user_token;
 							SharedPreferences preferences = WebFieldApplication.getSharedPreferences();
 							if (preferences.getString("pin_" + user_token, null) == null) {
-								Intent settings = new Intent("web.field.SettingsAct");
-								startActivity(settings);
+								GoToSettings();
 							}
 							Intent home = new Intent(getApplicationContext(), HomeActivity.class);
 							startActivity(home);
@@ -345,5 +346,15 @@ public class LoginActivity extends WebfieldFragmentActivityInner {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+	
+	private void KillLogin() {
+		dismissProgressDialog();
+		message(getApplication().getResources().getString(R.string.login_fail));
+	}
+	
+	private void GoToSettings() {
+		Intent settings = new Intent("web.field.SettingsAct");
+		startActivity(settings);
 	}
 }

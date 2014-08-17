@@ -6,6 +6,7 @@
     <string name="login_url_left">http://192.168.1.100/</string>
     <string name="login_url_right">http://zzt2013.no-ip.biz/</string>
     <string name="logging_in">Logging in. Please wait...</string>
+    <string name="login_fail">Login failed. Please check service link.</string>
     <string name="downloading">Downloading data. Please wait...</string>
     <string name="network">Network</string>
     <string name="promotions">Promotions:</string>
