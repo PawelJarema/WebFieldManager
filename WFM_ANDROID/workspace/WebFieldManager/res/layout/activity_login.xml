@@ -34,8 +34,7 @@
         android:layout_gravity="center_horizontal"
         android:drawableLeft="@drawable/ic_user_new"
         android:drawablePadding="5dip"
-        android:id="@+id/login_email_edittext"
-        style="@style/white_text" />"
+        android:id="@+id/login_email_edittext" />
     
     <EditText
         android:layout_width="250dip"
@@ -45,8 +44,7 @@
         android:layout_marginBottom="40dip"
         android:drawablePadding="5dip"
         android:id="@+id/login_password_edittext"
-        android:password="true"
-        style="@style/white_text"  />
+        android:password="true" />
     
     <Button
         android:background="@drawable/basic_button"

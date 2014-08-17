@@ -8,9 +8,9 @@
     <color name="wfm_blue">#103564</color>
     
     <color name="background">#2d3b49</color>
-    <color name="list_light">#2c3948</color>
-    <color name="list_dark">#2a3744</color>
-    <color name="list_div">#2f3c4b</color>
+    <color name="list_light">#ffffff</color>
+    <color name="list_dark">#e8e8ee</color>
+    <color name="list_div">#ffffff</color>
     
     <color name="app_orange">#ff7f66</color>
     <color name="app_orange_clicked">#e06050</color>

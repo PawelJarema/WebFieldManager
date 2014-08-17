@@ -40,7 +40,6 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="8"
 	    android:textSize="11sp"
-	    android:textColor="@color/grey"
 	    android:drawableTop="@drawable/ic_details_new"
 	    android:text="@string/info" />
 	
@@ -51,7 +50,6 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="8"
 	    android:textSize="11sp"
-	    android:textColor="@color/grey"
 	    android:drawableTop="@drawable/ic_orders_new"
 	    android:text="@string/new_order" />
 	
@@ -62,7 +60,6 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="8"
 	    android:textSize="11sp"
-	    android:textColor="@color/grey"
 	    android:drawableTop="@drawable/ic_email_new"
 	    android:text="@string/new_email" />
 	
@@ -73,7 +70,6 @@
 	    android:layout_height="match_parent"
 	    android:layout_weight="9"
 	    android:textSize="11sp"
-	    android:textColor="@color/grey"
 	    android:drawableRight="@drawable/ic_go_new" />
    
 </LinearLayout>

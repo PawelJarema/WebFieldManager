@@ -3,7 +3,7 @@
     <PreferenceCategory 
         android:title="@string/pref_category_user">
 	    <EditTextPreference
-	        android:icon="@drawable/ic_user"
+	        android:icon="@drawable/ic_user_new"
 	        android:paddingLeft="10dp"
 	        android:key="user_name"
 	        android:inputType="textCapWords"
@@ -16,7 +16,7 @@
     <PreferenceCategory 
         android:title="@string/pref_category_connection">
 	    <EditTextPreference
-	        android:icon="@drawable/ic_service"
+	        android:icon="@drawable/ic_service_new"
 	        android:paddingLeft="10dp"
 	        android:key="connection_service"
 	        android:defaultValue="@string/pref_default_connection_service"
@@ -30,7 +30,7 @@
     <PreferenceCategory 
         android:title="@string/pref_category_security">
 	    <web.field.PinPickerPreference
-	        android:icon="@drawable/ic_pass"
+	        android:icon="@drawable/ic_pass_new"
 	        android:paddingLeft="10dp"
 	        android:key="change_pin_button"
 	        android:title="@string/pref_security_change_pin" />
