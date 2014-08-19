@@ -11,9 +11,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -40,6 +42,20 @@ public class ProductsFragment extends WebFieldListFragment {
 		setHasOptionsMenu(true);
 	}
 	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view =  inflater.inflate(R.layout.fragment_products, container, false);
+		castViewIDs(view);
+		return view;
+	}
+	
+	// method is needed to make list fragment helpers work with custom layout
+	private static void castViewIDs(View view) {
+		view.findViewById(R.id.productsListContainerId).setId(INTERNAL_LIST_CONTAINER_ID);
+		view.findViewById(R.id.productsProgressContainerId).setId(INTERNAL_PROGRESS_CONTAINER_ID);
+	}
+		
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -127,7 +143,6 @@ public class ProductsFragment extends WebFieldListFragment {
 		} else {
 			setListShownNoAnimation(true);
 		}
-		
 	}
 
 	@Override

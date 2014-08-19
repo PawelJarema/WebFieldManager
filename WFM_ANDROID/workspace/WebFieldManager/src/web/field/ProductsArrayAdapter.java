@@ -87,7 +87,7 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(
 				R.drawable.ic_action_search));
 		holder.tvCode.setText(product.getCode());
-		holder.tvPrice.setText(Converter.formatDecimal(product.getPrice()));
+		holder.tvPrice.setText(Converter.formatMoney(product.getPrice()));
 		holder.tvDescription.setText(product.getProductDescription());
 		holder.tvManufacturer.setText(product.getProductManufacturerDescription());
 		holder.tvBrand.setText(product.getProductBrandDescription());
@@ -101,7 +101,7 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		holder.tvDescriptionDetail.setText(product.getProductDescription());
 
 		holder.tvPriceDetail.setText(priceLbl + ": "
-				+ Converter.formatDecimal(product.getPrice()));
+				+ Converter.formatMoney(product.getPrice()));
 		holder.tvCodeDetail.setText(codeLbl + ": " + product.getCode());
 		holder.tvStockDetails.setText(stockLbl + ": ");
 
