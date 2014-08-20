@@ -83,11 +83,6 @@
 			    
 		</LinearLayout>
 		
-		<View
-		    android:layout_height="2dip"
-		    android:layout_width="match_parent"
-		    android:background="@color/app_orange" />
-		
 		<ListView
 	        android:id="@android:id/list"
 	        android:layout_width="match_parent"

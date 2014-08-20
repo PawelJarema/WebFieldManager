@@ -1,6 +1,8 @@
 package web.field;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import web.field.helpers.Converter;
@@ -129,7 +131,40 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 	public long getItemId(int index) {
 		return data.get(index).getProductId();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public void sortDataBy(final int byWhat) 
+	{
+		if (data == null)
+			return;
+		
+		Collections.sort(data, new Comparator() {
+			@Override
+			public int compare(Object lhs, Object rhs) {
+				ProductModelAdapter first = (ProductModelAdapter) lhs;
+				ProductModelAdapter second = (ProductModelAdapter) rhs;
+				switch(byWhat)
+				{
+					case R.id.sortProductsByManufacturer:
+						return first.getProductManufacturerDescription().compareToIgnoreCase(
+								second.getProductManufacturerDescription());
+					case R.id.sortProductsByBrand:
+						return first.getProductBrandDescription().compareToIgnoreCase(
+								second.getProductBrandDescription());
+					case R.id.sortProductsByFamily:
+						return first.getProductFamilyDescription().compareToIgnoreCase(
+								second.getProductFamilyDescription());
+					case R.id.sortProductsByCategory:
+						return first.getProductCategoryDescription().compareToIgnoreCase(
+								second.getProductCategoryDescription());			
+				}
+				return 0;
+			}
+		});
+		
+		this.notifyDataSetChanged();
+	}
+	
 	static class ProductsHolder {
 		ImageView ivPicture;
 		// TextView tvId;

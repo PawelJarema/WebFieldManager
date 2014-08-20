@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class ProductsFragment extends WebFieldListFragment {
+public class ProductsFragment extends WebFieldListFragment implements OnClickListener {
 	
 	private ProductsArrayAdapter adapter;
 	private List<ProductModelAdapter> data;
@@ -28,6 +30,10 @@ public class ProductsFragment extends WebFieldListFragment {
 	private IDBAdapter db;
 	
 	private LinearLayout moreData; // cashing expanding drawer in row 
+	private TextView sortProductsByManufacturer;
+	private TextView sortProductsByBrand;
+	private TextView sortProductsByFamily;
+	private TextView sortProductsByCategory;
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -45,8 +51,20 @@ public class ProductsFragment extends WebFieldListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		// add custom fragment view
 		View view =  inflater.inflate(R.layout.fragment_products, container, false);
 		castViewIDs(view);
+		
+		// add sort panel functionality
+		sortProductsByManufacturer = (TextView) view.findViewById(R.id.sortProductsByManufacturer);
+		sortProductsByBrand = (TextView) view.findViewById(R.id.sortProductsByBrand);
+		sortProductsByFamily = (TextView) view.findViewById(R.id.sortProductsByFamily);
+		sortProductsByCategory = (TextView) view.findViewById(R.id.sortProductsByCategory);
+		sortProductsByManufacturer.setOnClickListener(this); // listener is implemented in this fragment
+		sortProductsByBrand.setOnClickListener(this);
+		sortProductsByFamily.setOnClickListener(this);
+		sortProductsByCategory.setOnClickListener(this);
+		
 		return view;
 	}
 	
@@ -76,20 +94,20 @@ public class ProductsFragment extends WebFieldListFragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO check if id corresponds to position
-				view = parent.getChildAt(position);
-				Drawable rememberedListRowColor = view.getBackground();
-				view.setBackgroundResource(R.color.holo_blue);
+				View rowView = adapter.getView(position, view, parent);
+				Drawable rememberedListRowColor = rowView.getBackground();
+				rowView.setBackgroundResource(R.color.holo_blue);
 				
 				// TODO for now: instead of inflating new screen to show more product data
 				// use expanding row like on iOS
 				if (moreData != null && moreData.getVisibility() == View.VISIBLE)
 					moreData.setVisibility(View.GONE);
 				else {
-					moreData = (LinearLayout) view.findViewById(R.id.productsExpandingContainer);
+					moreData = (LinearLayout) rowView.findViewById(R.id.productsExpandingContainer);
 					moreData.setVisibility(View.VISIBLE);
 				}
 				
-				view.setBackground(rememberedListRowColor);
+				rowView.setBackground(rememberedListRowColor);
 				
 				/* FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 				Fragment fragment = new ProductFragment();
@@ -147,7 +165,15 @@ public class ProductsFragment extends WebFieldListFragment {
 
 	@Override
 	public void onLoaderReset(Loader<Void> arg0) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	// sort panel click handling
+	@Override
+	public void onClick(View v) {
+		if (adapter == null)
+			return;
+		
+		adapter.sortDataBy(v.getId());
 	}
 }
