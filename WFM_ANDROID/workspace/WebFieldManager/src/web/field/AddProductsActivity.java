@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import web.field.QtyPickerFragment.OnCompleteListener;
+import web.field.SortPickerFragment.SortPickerDialogListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.helpers.Converter;
@@ -54,13 +55,13 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 public class AddProductsActivity extends WebfieldFragmentActivityInner
-		implements View.OnClickListener, ISendOrderCallback, OnCompleteListener {
+		implements SortPickerDialogListener, View.OnClickListener, ISendOrderCallback, OnCompleteListener {
 
 	// Ui and TextViews
-	private Button bFilterByFamily;
-	private Button bFilterByCategory;
-	private Button bFilterByManufacturer;
-	private Button bFilterByBrand;
+	private TextView bFilterByFamily;
+	private TextView bFilterByCategory;
+	private TextView bFilterByManufacturer;
+	private TextView bFilterByBrand;
 
 	private TextView tvOrderTemplateDiscount;
 	private TextView tvTemplateThresholdDiscount;
@@ -509,56 +510,19 @@ public class AddProductsActivity extends WebfieldFragmentActivityInner
 					sortByList.add(entry.getName());
 				break;	
 		}	
-		sortPhrasePickerFragment sortDialog = new sortPhrasePickerFragment((Button) v, sortByList);
+		SortPickerFragment sortDialog = new SortPickerFragment((Button) v, sortByList, this);
 		sortDialog.show(getSupportFragmentManager(), null);
 		sort(((Button) v).getText().toString(), sortBy);
 	}
 	
-	private class sortPhrasePickerFragment extends DialogFragment implements OnClickListener, OnItemClickListener {
-		
-		private Button cancelButton;
-		private ListView lvSortPhrase;
-		private List<String> sortPhraseList;
-		
-		private Button sortControl;
-		
-		public sortPhrasePickerFragment(Button control, List<String> sortPhraseList) {
-			this.sortControl = control;
-			this.sortPhraseList = sortPhraseList;
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = inflater.inflate(R.layout.sort_phrase_picker_fragment, container, false);
-			
-			lvSortPhrase = (ListView) view.findViewById(R.id.sortPhrasePicker_PhraseList);
-			lvSortPhrase.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,
-					android.R.id.text1, sortPhraseList));
-			lvSortPhrase.setOnItemClickListener(this);
-			
-			cancelButton = (Button) view.findViewById(R.id.sortPhrasePicker_OkButton);
-			cancelButton.setOnClickListener(this);
-			
-			return view;
-		}
-
-		@Override
-		public void onClick(View v) {
-			this.dismiss();
-		}
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			sortControl.setText(sortPhraseList.get(position));
-			// sortControl.setBackgroundColor(R.color.app_orange);
-			this.dismiss();
-		}
-	}
-	
 	private void sort(String name, String by) {
 		//TODO implement sort
+		
+	}
+
+	@Override
+	public void onSortDialogDismiss() {
+		// TODO Auto-generated method stub
 		
 	}
 }

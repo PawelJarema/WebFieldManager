@@ -3,12 +3,16 @@ package web.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import web.field.SortPickerFragment.SortPickerDialogListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
 import web.field.model.entity.Product;
 import web.field.model.entity.adapter.ProductModelAdapter;
+import web.field.model.simple.ProductManufacturerSimple;
+import web.field.helpers.DataHelpers;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -19,10 +23,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ProductsFragment extends WebFieldListFragment implements OnClickListener {
+public class ProductsFragment extends WebFieldListFragment implements SortPickerDialogListener,
+	OnClickListener {
 	
 	private ProductsArrayAdapter adapter;
 	private List<ProductModelAdapter> data;
@@ -35,6 +41,12 @@ public class ProductsFragment extends WebFieldListFragment implements OnClickLis
 	private TextView sortProductsByFamily;
 	private TextView sortProductsByCategory;
 	
+	// sort panel data
+	private List<String> manufacturers;
+	private List<String> brands;
+	private List<String> families;
+	private List<String> categories;
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
@@ -46,6 +58,7 @@ public class ProductsFragment extends WebFieldListFragment implements OnClickLis
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+		db = new DBAdapter(getHelper(), getTenantProvider());
 	}
 	
 	@Override
@@ -78,7 +91,9 @@ public class ProductsFragment extends WebFieldListFragment implements OnClickLis
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setRetainInstance(true);
-
+		// prepare data for sort panel
+		prepareDataForSortPanel();
+		
 		// you only need to instantiate these the first time your fragment is
 		// created; then, the method above will do the rest
 		if (adapter == null) {
@@ -174,6 +189,58 @@ public class ProductsFragment extends WebFieldListFragment implements OnClickLis
 		if (adapter == null)
 			return;
 		
-		adapter.sortDataBy(v.getId());
+		// just sort
+		// adapter.sortDataBy(v.getId()); 
+		
+		// as filters
+		List<String> sortByList = null;
+		switch(v.getId())
+		{
+			case R.id.sortProductsByManufacturer:
+				sortByList = manufacturers;
+				break;
+			case R.id.sortProductsByBrand:
+				sortByList = brands;
+				break;
+			case R.id.sortProductsByFamily:
+				sortByList = families;
+				break;
+			case R.id.sortProductsByCategory:
+				sortByList = categories;
+		}
+		SortPickerFragment sortDialog = new SortPickerFragment((TextView) v, sortByList, this);
+		sortDialog.show(getActivity().getSupportFragmentManager(), null);
+	
+		// set filters in adapter - callback onSortDialogDismiss
+	}
+	
+	private void prepareDataForSortPanel() {
+		DataHelpers helper = new DataHelpers();
+		
+		manufacturers = helper.getProductManufacturerNames(db);
+		brands = helper.getProductBrandNames(db);
+		families = helper.getProductFamilyNames(db);
+		categories = helper.getProductCategoryNames(db);
+	}
+	
+	private void filterData() {
+		String manufacturer = sortProductsByManufacturer.getText().toString();
+		String brand = sortProductsByBrand.getText().toString();
+		String family = sortProductsByFamily.getText().toString();
+		String category = sortProductsByCategory.getText().toString();
+		if (!manufacturers.contains(manufacturer))
+			manufacturer = "";
+		if (!brands.contains(brand))
+			brand = "";
+		if (!families.contains(family))
+			family = "";
+		if (!categories.contains(category))
+			category = "";
+		adapter.applyDataFilters(manufacturer, brand, family, category);
+	}
+
+	@Override
+	public void onSortDialogDismiss() {
+		filterData();
 	}
 }

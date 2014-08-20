@@ -17,9 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
+	
 	Context context;
+	
 	int layoutResourceId;
-	List<ProductModelAdapter> data = new ArrayList<ProductModelAdapter>();
+	
+	List<ProductModelAdapter> seenData = new ArrayList<ProductModelAdapter>();
+	List<ProductModelAdapter> allData = new ArrayList<ProductModelAdapter>();
 	String priceLbl;
 	String codeLbl;
 	String stockLbl;
@@ -29,7 +33,7 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		super(context, layoutResourceId, data);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
-		this.data = data;
+		this.seenData = data;
 		priceLbl = context.getResources().getString(R.string.product_price);
 		codeLbl = context.getResources().getString(R.string.product_code);
 		stockLbl = context.getResources().getString(R.string.product_stock);
@@ -85,7 +89,7 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		} else {
 			holder = (ProductsHolder) row.getTag();
 		}
-		ProductModelAdapter product = data.get(position);
+		ProductModelAdapter product = seenData.get(position);
 		holder.ivPicture.setImageDrawable(context.getResources().getDrawable(
 				R.drawable.ic_action_search));
 		holder.tvCode.setText(product.getCode());
@@ -119,26 +123,87 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 
 	@Override
 	public int getCount() {
-		return data.size();
+		return seenData.size();
 	}
 
 	@Override
 	public ProductModelAdapter getItem(int index) {
-		return data.get(index);
+		return seenData.get(index);
 	}
 
 	@Override
 	public long getItemId(int index) {
-		return data.get(index).getProductId();
+		return seenData.get(index).getProductId();
+	}
+	
+	// sort and filtering
+	
+	public void applyDataFilters(String manufacturer, String brand, 
+			String family, String category) {
+		
+		if (allData.isEmpty())
+			allData = seenData;
+		else 
+			seenData = allData;
+		seenData = filterDataByManufacturer(manufacturer, seenData);
+		seenData = filterDataByBrand(brand, seenData);
+		seenData = filterDataByFamily(family, seenData);
+		seenData = filterDataByCategory(category, seenData);
+		
+		this.notifyDataSetChanged();
+	}
+	
+	private List<ProductModelAdapter> filterDataByManufacturer(
+			String manufacturerName, List<ProductModelAdapter> filteredData) {
+		List<ProductModelAdapter> newDataset = new ArrayList<ProductModelAdapter>(); 
+		for (ProductModelAdapter item : filteredData)
+		{
+			if (item.getProductManufacturerDescription().contains(manufacturerName))
+				newDataset.add(item);
+		}
+		return newDataset;
+	}
+	
+	private List<ProductModelAdapter> filterDataByBrand(
+			String brandName, List<ProductModelAdapter> filteredData) {
+		List<ProductModelAdapter> newDataset = new ArrayList<ProductModelAdapter>(); 
+		for (ProductModelAdapter item : filteredData)
+		{
+			if (item.getProductBrandDescription().contains(brandName))
+				newDataset.add(item);
+		}
+		return newDataset;
+	}
+	
+	private List<ProductModelAdapter> filterDataByFamily(
+			String familyName, List<ProductModelAdapter> filteredData) {
+		List<ProductModelAdapter> newDataset = new ArrayList<ProductModelAdapter>(); 
+		for (ProductModelAdapter item : filteredData)
+		{
+			if (item.getProductFamilyDescription().contains(familyName))
+				newDataset.add(item);
+		}
+		return newDataset;
+	}
+	
+	private List<ProductModelAdapter> filterDataByCategory(
+			String categoryName, List<ProductModelAdapter> filteredData) {
+		List<ProductModelAdapter> newDataset = new ArrayList<ProductModelAdapter>(); 
+		for (ProductModelAdapter item : filteredData)
+		{
+			if (item.getProductCategoryDescription().contains(categoryName))
+				newDataset.add(item);
+		}
+		return newDataset;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void sortDataBy(final int byWhat) 
 	{
-		if (data == null)
+		if (seenData == null)
 			return;
 		
-		Collections.sort(data, new Comparator() {
+		Collections.sort(seenData, new Comparator() {
 			@Override
 			public int compare(Object lhs, Object rhs) {
 				ProductModelAdapter first = (ProductModelAdapter) lhs;
