@@ -117,6 +117,22 @@ public class Product {
 
 	public void setFlagActive(boolean flagActive) {
 		FlagActive = flagActive;
+	}	
+	
+	public Product MakeDeepCopy() {
+		Product newInstance = new Product();
+		
+		newInstance.ProductId = this.ProductId;
+		newInstance.TenantId = this.TenantId;
+		newInstance.Code = this.Code;
+		newInstance.ProductDescription = this.ProductDescription;
+		newInstance.Price = Price;
+		newInstance.FlagActive = this.FlagActive;
+		newInstance.ProductBrands = this.ProductBrands;
+		newInstance.ProductCategory = this.ProductCategory;
+		newInstance.ProductFamily = this.ProductFamily;
+		newInstance.ProductManufacturer = this.ProductManufacturer;
+		
+		return newInstance;
 	}
-
 }

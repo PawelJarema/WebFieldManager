@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import web.field.helpers.Converter;
+import web.field.model.entity.Product;
 import web.field.model.entity.adapter.ProductModelAdapter;
 import android.app.Activity;
 import android.content.Context;
@@ -136,15 +137,27 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		return seenData.get(index).getProductId();
 	}
 	
-	// sort and filtering
+	// sort and filter data
 	
 	public void applyDataFilters(String manufacturer, String brand, 
 			String family, String category) {
 		
 		if (allData.isEmpty())
-			allData = seenData;
+			allData = MakeDeepCopyOfSeenData();
 		else 
 			seenData = allData;
+		seenData = filterDataByManufacturer(manufacturer, seenData);
+		seenData = filterDataByBrand(brand, seenData);
+		seenData = filterDataByFamily(family, seenData);
+		seenData = filterDataByCategory(category, seenData);
+		
+		this.notifyDataSetChanged();
+	}
+	
+	public void applyDataFilters(String manufacturer, String brand, 
+			String family, String category, List<ProductModelAdapter> entryData) {
+		
+		seenData = entryData;
 		seenData = filterDataByManufacturer(manufacturer, seenData);
 		seenData = filterDataByBrand(brand, seenData);
 		seenData = filterDataByFamily(family, seenData);
@@ -228,6 +241,22 @@ public class ProductsArrayAdapter extends ArrayAdapter<ProductModelAdapter> {
 		});
 		
 		this.notifyDataSetChanged();
+	}
+	
+	public void setSeenData(List<ProductModelAdapter> data)
+	{
+		seenData = data;
+		this.notifyDataSetChanged();
+	}
+	
+	public List<ProductModelAdapter> MakeDeepCopyOfSeenData()
+	{
+		List<ProductModelAdapter> newList = new ArrayList();
+		for(ProductModelAdapter product : seenData)
+		{
+			newList.add(product.MakeDeepCopy());
+		}
+		return newList;
 	}
 	
 	static class ProductsHolder {

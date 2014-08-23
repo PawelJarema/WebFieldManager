@@ -1,14 +1,16 @@
 package web.field;
 
-import java.text.DecimalFormat;
-import java.util.Currency;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import web.field.helpers.ITenantProvider;
 import web.field.helpers.TenantProvider;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.view.View;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 

@@ -56,7 +56,7 @@ public class OrdersFragment extends WebFieldListFragment {
 	    SearchManager searchManager =
 	           (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 	    SearchView searchView =
-	            (SearchView) menu.findItem(R.id.ordersSearch).getActionView();
+	            (SearchView) menu.findItem(R.id.searchField).getActionView();
 	    searchView.setSearchableInfo(
 	            searchManager.getSearchableInfo(getActivity().getComponentName()));
 	}

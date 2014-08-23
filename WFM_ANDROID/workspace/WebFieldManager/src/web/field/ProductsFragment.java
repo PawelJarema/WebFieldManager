@@ -1,18 +1,17 @@
 package web.field;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import web.field.SortPickerFragment.SortPickerDialogListener;
 import web.field.db.DBAdapter;
 import web.field.db.IDBAdapter;
+import web.field.helpers.DataHelpers;
 import web.field.model.entity.Product;
 import web.field.model.entity.adapter.ProductModelAdapter;
-import web.field.model.simple.ProductManufacturerSimple;
-import web.field.helpers.DataHelpers;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -23,12 +22,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 
 public class ProductsFragment extends WebFieldListFragment implements SortPickerDialogListener,
-	OnClickListener {
+	OnClickListener, OnQueryTextListener {
 	
 	private ProductsArrayAdapter adapter;
 	private List<ProductModelAdapter> data;
@@ -47,11 +47,18 @@ public class ProductsFragment extends WebFieldListFragment implements SortPicker
 	private List<String> families;
 	private List<String> categories;
 	
+	private boolean loaderIsRunning = false;
+	private boolean searchQueryInProgress = false;
+	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.clear();
-		inflater.inflate(R.menu.logout_with_search, menu);	
+		inflater.inflate(R.menu.logout_with_search, menu);
+		
+		// enable search widget
+		SearchView searchField= (SearchView) menu.findItem(R.id.searchField).getActionView();
+		searchField.setOnQueryTextListener(this);
 	}
 	
 	@Override
@@ -147,6 +154,7 @@ public class ProductsFragment extends WebFieldListFragment implements SortPicker
 		AsyncTaskLoader<Void> loader = new AsyncTaskLoader<Void>(getActivity()) {
 			@Override
 			public Void loadInBackground() {
+				loaderIsRunning = true;
 				db = new DBAdapter(getHelper(), getTenantProvider());
 				List<Product> products = db.listProductsFull();
 				dataTmp = new ArrayList<ProductModelAdapter>();
@@ -176,6 +184,7 @@ public class ProductsFragment extends WebFieldListFragment implements SortPicker
 		} else {
 			setListShownNoAnimation(true);
 		}
+		loaderIsRunning = false;
 	}
 
 	@Override
@@ -223,7 +232,7 @@ public class ProductsFragment extends WebFieldListFragment implements SortPicker
 		categories = helper.getProductCategoryNames(db);
 	}
 	
-	private void filterData() {
+	private void filterData(List<ProductModelAdapter> entryData) {
 		String manufacturer = sortProductsByManufacturer.getText().toString();
 		String brand = sortProductsByBrand.getText().toString();
 		String family = sortProductsByFamily.getText().toString();
@@ -236,11 +245,59 @@ public class ProductsFragment extends WebFieldListFragment implements SortPicker
 			family = "";
 		if (!categories.contains(category))
 			category = "";
-		adapter.applyDataFilters(manufacturer, brand, family, category);
+		if (entryData == null)
+			adapter.applyDataFilters(manufacturer, brand, family, category);
+		else
+			adapter.applyDataFilters(manufacturer, brand, family, category, entryData);
+	}
+	
+	// sort dialog listener / callback
+	@Override
+	public void onSortDialogDismiss() {
+		filterData(null);
+	}
+
+	// individual methods for search field 
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		showSearchResultsOnList(query);
+		return false;
 	}
 
 	@Override
-	public void onSortDialogDismiss() {
-		filterData();
+	public boolean onQueryTextChange(String newText) {
+		
+		if (newText.length() > 0)
+			showSearchResultsOnList(newText);
+		if (newText.length() == 0)
+			showAllDataOnList();
+		
+		return false;
+	}
+	
+	private void showSearchResultsOnList(String query)
+	{
+		searchQueryInProgress = true;
+		List<ProductModelAdapter> dataCopy = new ArrayList<ProductModelAdapter>();
+		
+		for (ProductModelAdapter product : data)
+		{
+			if (product.getProductDescription().toLowerCase()
+					.contains(query.toLowerCase()))
+					{
+						dataCopy.add(product.MakeDeepCopy());
+					}
+		}
+
+		adapter.setSeenData(dataCopy);
+		filterData(dataCopy);
+		searchQueryInProgress = false;
+	}
+	
+	private void showAllDataOnList()
+	{
+		adapter.setSeenData(data);
+		filterData(data);
+		searchQueryInProgress = false;
 	}
 }

@@ -59,8 +59,6 @@ public class ProductModelAdapter {
 		return product.getPrice();
 	}
 
-
-
 	public boolean isFlagActive() {
 		return product.isFlagActive();
 	}
@@ -72,6 +70,12 @@ public class ProductModelAdapter {
 	public void setMaxPromos(Hashtable<String, Double> maxPromos) {
 		this.maxPromos = maxPromos;
 	}
-
+	
+	public ProductModelAdapter MakeDeepCopy()
+	{
+		Product newProduct = product.MakeDeepCopy();
+		ProductModelAdapter newInstance = new ProductModelAdapter(newProduct);
+		return newInstance;
+	}
 	
 }
